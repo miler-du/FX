@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#070b18">
+<title>HAIYI｜駭異科技.FX</title>
+<style>
+:root{--bg:#070b18;--panel:#0c1326;--panel2:#141d38;--line:#1e2a4c;--tx:#e8ecf8;--mut:#8491b4;--cy:#22d3ee;--vi:#8b5cf6;--up:#26a69a;--dn:#ef5350;--buy:#2f7de1;--sell:#e0473f;--warn:#e3b341}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font:14px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;overscroll-behavior:none}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+#app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:900px;margin:0 auto;padding-top:env(safe-area-inset-top)}
+header{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid;border-image:linear-gradient(90deg,var(--cy),var(--vi) 45%,var(--line) 80%) 1;background:var(--panel)}
+#hSym{font-weight:700;font-size:16px;padding:4px 8px;border:1px solid var(--line);border-radius:6px}
+#hPx{flex:1;display:flex;gap:12px;font-variant-numeric:tabular-nums;font-size:15px}
+#hPx small{color:var(--mut);font-size:10px;display:block;line-height:1}
+#stat{font-size:11px;color:var(--mut);display:flex;align-items:center;gap:5px;max-width:150px;text-align:right;min-width:0}
+#statTx{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px}
+#dot{width:8px;height:8px;border-radius:50%;background:var(--mut);flex:none}
+#gear{font-size:20px;padding:2px 6px}
+#banner{display:none;background:#3a2f0b;color:var(--warn);font-size:12px;padding:5px 12px;text-align:center}
+main{flex:1;min-height:0;position:relative}
+.view{position:absolute;inset:0;display:none;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.view.on{display:block}
+#vChart.on{display:flex;flex-direction:column;overflow:hidden}
+#tfs{display:flex;gap:2px;padding:5px 8px;border-bottom:1px solid var(--line);overflow-x:auto;flex:none}
+#tfs button{padding:5px 9px;border-radius:5px;color:var(--mut);font-size:13px;white-space:nowrap}
+#tfs button.on{background:var(--panel2);color:var(--tx);font-weight:600}
+#tfs .sp{flex:1}
+#cwrap{flex:1;min-height:0;position:relative}
+#cv{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+#qbar{display:flex;gap:8px;padding:8px 10px;border-top:1px solid var(--line);background:var(--panel);flex:none;align-items:stretch}
+#qbar .b{flex:1;border-radius:8px;padding:6px 4px;color:#fff;font-weight:700;line-height:1.2}
+#qbar .b small{display:block;font-weight:500;font-size:13px;font-variant-numeric:tabular-nums}
+.sellbg{background:var(--sell)}.buybg{background:var(--buy)}
+#lotBox{display:flex;align-items:center;background:var(--panel2);border-radius:8px;border:1px solid var(--line)}
+#lotBox button{width:32px;height:100%;font-size:18px;color:var(--mut)}
+#lotBox input{width:52px;text-align:center;background:none;border:0;outline:0;font-variant-numeric:tabular-nums}
+nav{display:flex;border-top:1px solid var(--line);background:var(--panel);padding-bottom:env(safe-area-inset-bottom);flex:none}
+nav button{flex:1;min-width:0;padding:8px 0 7px;color:var(--mut);font-size:11px}
+nav button i{display:block;font-style:normal;font-size:18px;line-height:1.2}
+nav button.on{color:var(--cy)}
+.row{display:flex;align-items:center;padding:11px 14px;border-bottom:1px solid var(--line);gap:10px}
+.row:active{background:var(--panel)}
+.row .g{flex:1;min-width:0}
+.row b{font-size:15px}
+.mut{color:var(--mut)}.sm{font-size:12px}.num{font-variant-numeric:tabular-nums}
+.up{color:var(--up)}.dn{color:var(--dn)}.cb{color:#58a6ff}.cs{color:#ff7b72}
+.card{margin:10px;padding:12px;background:var(--panel);border:1px solid var(--line);border-radius:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px}
+.kv{display:flex;justify-content:space-between;gap:8px}
+.kv span:first-child{color:var(--mut)}
+h3{margin:14px 14px 4px;font-size:12px;color:var(--mut);font-weight:600;letter-spacing:.05em}
+.btn{padding:10px 14px;border-radius:8px;background:var(--panel2);border:1px solid var(--line);font-weight:600}
+.btn.pri{background:var(--buy);border-color:var(--buy);color:#fff}
+.btn.brand{background:linear-gradient(90deg,#0e9fb8,#6d47d9);border:0;color:#fff}
+.btn.red{background:var(--sell);border-color:var(--sell);color:#fff}
+.btn.full{width:100%}
+.empty{padding:28px 14px;text-align:center;color:var(--mut)}
+#shade{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;z-index:10;align-items:flex-end;justify-content:center}
+#shade.on{display:flex}
+#sheet{background:var(--panel);width:100%;max-width:900px;max-height:88dvh;overflow-y:auto;border-radius:14px 14px 0 0;padding:14px 14px calc(16px + env(safe-area-inset-bottom))}
+#sheet h2{margin:0 0 10px;font-size:16px;display:flex;justify-content:space-between;align-items:center}
+#sheet h2 button{font-size:22px;color:var(--mut);padding:0 6px}
+label.f{display:block;margin:8px 0}
+label.f span{display:block;font-size:12px;color:var(--mut);margin-bottom:3px}
+label.f input,label.f select{width:100%;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);outline:0;font-size:16px}
+.seg{display:flex;background:var(--bg);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:6px 0}
+.seg button{flex:1;padding:9px 4px;color:var(--mut);font-weight:600}
+.seg button.on{background:var(--panel2);color:var(--tx)}
+.seg button.on.s{background:var(--sell);color:#fff}.seg button.on.b{background:var(--buy);color:#fff}
+.err{color:var(--dn);font-size:13px;min-height:18px;margin:6px 0}
+.hint{font-size:12px;color:var(--mut);margin:6px 0}
+.two{display:flex;gap:8px}.two>*{flex:1}
+#toast{position:fixed;left:50%;top:calc(60px + env(safe-area-inset-top));transform:translateX(-50%);background:#30363d;border:1px solid #484f58;padding:9px 14px;border-radius:8px;z-index:20;display:none;max-width:88%;font-size:13px;text-align:center}
+.chk{display:flex;align-items:center;justify-content:space-between;padding:11px 2px;border-bottom:1px solid var(--line)}
+.chk input{width:20px;height:20px}
+a{color:var(--cy)}
+.tag{font-size:10px;padding:1px 5px;border-radius:4px;border:1px solid var(--line);color:var(--mut);margin-left:6px}
+
+/* ---- HAIYI 品牌元素 ---- */
+#brand,#acctBar,#side,#dockTabs{display:none}
+#ctabs{display:flex;gap:2px;padding:4px 6px 0;overflow-x:auto;flex:none;background:var(--panel)}
+#ctabs button{display:flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--line);border-bottom:0;border-radius:7px 7px 0 0;color:var(--mut);font-size:13px;font-weight:600;white-space:nowrap}
+#ctabs button small{font-weight:500;font-size:11px;opacity:.8}
+#ctabs button.on{background:var(--bg);color:var(--tx);box-shadow:inset 0 2px 0 var(--cy)}
+#ctabs i{font-style:normal;color:var(--mut);padding:0 2px;border-radius:4px}#ctabs i:hover{color:var(--dn)}
+#ctabs #tabAdd{border-style:dashed;padding:6px 12px}
+.irow{display:flex;align-items:flex-end;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.irow>input[type=checkbox]{width:20px;height:20px;margin:0 0 9px;flex:none}
+.irow>b{width:92px;flex:none;padding-bottom:9px;font-size:13.5px}
+.irow label{flex:1;min-width:0}.irow label span{display:block;font-size:11px;color:var(--mut);margin-bottom:2px}
+.irow label input,.irow label select{width:100%;padding:8px;border-radius:7px;border:1px solid var(--line);background:var(--bg);outline:0;font-size:15px}
+.nwBar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;padding:6px 12px}
+.nwBar .seg{margin:0;flex:1;min-width:260px;max-width:420px}.nwBar .seg button{padding:6px 4px;font-size:13px}
+.nwLinks{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px}
+.nwGrid{display:flex;flex-direction:column}.nwBox{height:520px;margin:0 8px 8px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--panel)}
+.ph{display:flex;align-items:center;gap:8px;padding:9px 12px 7px;font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--mut)}
+.ph::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--cy);box-shadow:0 0 8px var(--cy);flex:none}
+.ph::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--cy),var(--vi) 40%,transparent)}
+.card{clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
+#tfs button.on{box-shadow:inset 0 -2px 0 var(--cy)}
+table.tb{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
+.tb th{position:sticky;top:0;background:var(--panel);color:var(--mut);font-weight:600;text-align:right;padding:6px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tb td{text-align:right;padding:6px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tb th:nth-child(-n+4),.tb td:nth-child(-n+4){text-align:left}
+.tb tbody tr{cursor:pointer}.tb tbody tr:hover{background:var(--panel2)}
+.tb .x{padding:2px 9px;border:1px solid var(--line);border-radius:5px;color:var(--mut);font-size:12px}
+.tb .x:hover{border-color:var(--dn);color:var(--dn)}
+.stats{display:flex;flex-wrap:wrap;gap:6px 22px;padding:8px 12px;font-size:12.5px;border-bottom:1px solid var(--line)}
+.stats span span{color:var(--mut);margin-right:6px}
+@media(min-width:1000px){
+ #app{max-width:none}
+ nav,#qbar,#hSym{display:none}
+ #brand{display:flex;flex-direction:column;line-height:1.15;padding-right:14px;margin-right:4px;border-right:1px solid var(--line)}
+ #brand b{font-size:15px;letter-spacing:.22em;background:linear-gradient(90deg,var(--cy),var(--vi));-webkit-background-clip:text;background-clip:text;color:transparent}
+ #brand span{font-size:10.5px;color:var(--mut);letter-spacing:.12em}
+ #hPx{flex:none;align-items:center}
+ #hPx::before{content:attr(data-sym);font-weight:700;font-size:17px;margin-right:4px}
+ #acctBar{display:flex;flex:1;justify-content:flex-end;gap:22px;font-size:12.5px;font-variant-numeric:tabular-nums}
+ #acctBar small{display:block;color:var(--mut);font-size:10px;line-height:1.1}
+ #stat{max-width:260px}
+ main{display:grid;grid-template-columns:270px minmax(0,1fr) 320px;grid-template-rows:minmax(0,1fr) auto 240px}
+ .view{position:static;inset:auto}
+ #vQuotes{display:block;grid-column:1;grid-row:1/4;border-right:1px solid var(--line);background:var(--panel)}
+ #vQuotes .row{padding:8px 12px}#vQuotes .row b{font-size:14px}
+ #vQuotes .tag{display:none}#vQuotes .row .sm{white-space:nowrap}
+ #vQuotes .row.cur{background:var(--panel2);box-shadow:inset 2px 0 0 var(--cy)}
+ #vChart,#vChart.on{display:flex;flex-direction:column;grid-column:2;grid-row:1;overflow:hidden;min-height:0}
+ #dockTabs{display:flex;grid-column:2;grid-row:2;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--panel)}
+ #dockTabs button{padding:7px 16px;color:var(--mut);font-size:13px;font-weight:600}
+ #dockTabs button.on{color:var(--tx);box-shadow:inset 0 -2px 0 var(--cy)}
+ #vTrade,#vHist,#vInfo,#vNews{grid-column:2;grid-row:3;min-height:0}
+ main.big{grid-template-rows:minmax(0,1fr) auto 60%}
+ #vNews.on{display:flex;flex-direction:column;overflow:hidden}
+ .nwGrid{flex-direction:row;flex:1;min-height:0}.nwCol{flex:1;min-width:0;display:flex;flex-direction:column}.nwBox{flex:1;height:auto;min-height:0}
+ #vNews .hint{margin:0 0 6px}
+ #vInfo{columns:330px;column-gap:0}#vInfo .card{break-inside:avoid;margin-top:4px}#vInfo h3{break-after:avoid}
+ #side{display:block;grid-column:3;grid-row:1/4;border-left:1px solid var(--line);background:var(--panel);overflow-y:auto}
+ #ticket,#acctBox{padding:2px 12px 10px}
+ #acctBox .kv{padding:3px 0;font-size:13px;font-variant-numeric:tabular-nums}
+ #shade{align-items:center}#sheet{max-width:470px;border-radius:12px;border:1px solid var(--line)}
+ .row:active{background:none}.row{cursor:pointer}.row:hover{background:var(--panel2)}
+ ::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:var(--line);border-radius:5px}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div id="brand"><b>HAIYI</b><span>駭異科技.FX</span></div>
+    <button id="hSym"></button>
+    <div id="hPx"><div><small>賣出 Bid</small><span id="hBid" class="num">—</span></div><div><small>買入 Ask</small><span id="hAsk" class="num">—</span></div></div>
+    <div id="acctBar"></div>
+    <div id="stat"><span id="statTx"></span><span id="dot"></span></div>
+    <button id="gear" aria-label="設定">⚙</button>
+  </header>
+  <div id="banner"></div>
+  <main>
+    <section class="view" id="vQuotes"></section>
+    <section class="view" id="vChart">
+      <div id="ctabs"></div>
+      <div id="tfs"></div>
+      <div id="cwrap"><canvas id="cv"></canvas></div>
+      <div id="qbar">
+        <button class="b sellbg" id="qSell">賣出 SELL<small id="qBid">—</small></button>
+        <div id="lotBox"><button id="lotM">−</button><input id="lotIn" inputmode="decimal" aria-label="手數"><button id="lotP">＋</button></div>
+        <button class="b buybg" id="qBuy">買入 BUY<small id="qAsk">—</small></button>
+      </div>
+    </section>
+    <section class="view" id="vTrade"></section>
+    <section class="view" id="vHist"></section>
+    <section class="view" id="vInfo"></section>
+    <section class="view" id="vNews"></section>
+    <div id="dockTabs"></div>
+    <aside id="side"><div class="ph">下單 ORDER</div><div id="ticket"></div><div class="ph">帳戶 ACCOUNT</div><div id="acctBox"></div></aside>
+  </main>
+  <nav id="nav"></nav>
+</div>
+<div id="shade"><div id="sheet"></div></div>
+<div id="toast"></div>
+<script>
+'use strict';
+/* ================= 基本設定 ================= */
+const SYMS={
+ 'USD/JPY':{d:3,pip:0.01,spread:1.4,contract:100000,name:'美元/日圓'},
+ 'EUR/USD':{d:5,pip:0.0001,spread:1.0,contract:100000,name:'歐元/美元'},
+ 'GBP/USD':{d:5,pip:0.0001,spread:1.5,contract:100000,name:'英鎊/美元'},
+ 'AUD/USD':{d:5,pip:0.0001,spread:1.2,contract:100000,name:'澳幣/美元'},
+ 'USD/CHF':{d:5,pip:0.0001,spread:1.5,contract:100000,name:'美元/瑞郎'},
+ 'USD/CAD':{d:5,pip:0.0001,spread:1.6,contract:100000,name:'美元/加幣'},
+ 'EUR/JPY':{d:3,pip:0.01,spread:2.0,contract:100000,name:'歐元/日圓'},
+ 'XAU/USD':{d:2,pip:0.1,spread:3.0,contract:100,name:'黃金/美元'}
+};
+const TFS=[['1min','M1',60],['5min','M5',300],['15min','M15',900],['30min','M30',1800],['1h','H1',3600],['4h','H4',14400],['1day','D1',86400],['1week','W1',604800]];
+const tfSec=tf=>TFS.find(t=>t[0]===tf)[2], tfName=tf=>TFS.find(t=>t[0]===tf)[1];
+const DEMO_BASE={'USD/JPY':152.4,'EUR/USD':1.085,'GBP/USD':1.27,'AUD/USD':0.655,'USD/CHF':0.885,'USD/CAD':1.37,'EUR/JPY':165.3,'XAU/USD':2650};
+const KEY='fxp1';
+const DEF={v:1,key:'',interval:30,lev:100,bal:10000,pos:[],orders:[],hist:[],nextId:1,sym:'USD/JPY',tf:'15min',
+  ic:{ma:[{on:true,n:20,t:'SMA'},{on:false,n:60,t:'SMA'},{on:false,n:120,t:'EMA'}],bb:{on:false,n:20,k:2},rsi:{on:false,n:14},macd:{on:false,f:12,s:26,g:9},kd:{on:false,n:9,k:3,d:3}},tabs:null,tab:0,upRed:false,lots:0.1,lastSeen:{},credits:{day:'',n:0},px:{}};
+let S=load();
+function load(){let o=JSON.parse(JSON.stringify(DEF));try{const j=JSON.parse(localStorage.getItem(KEY));if(j&&j.v===1){const ic=o.ic;o=Object.assign(o,j);
+    if(!j.ic){o.ic=ic;if(j.ind){ic.ma[0].on=!!j.ind.ma20;ic.ma[1].on=!!j.ind.ma60;ic.bb.on=!!j.ind.bb;ic.rsi.on=!!j.ind.rsi;ic.macd.on=!!j.ind.macd}}
+    else for(const k in ic)if(!o.ic[k])o.ic[k]=ic[k];delete o.ind}}catch(e){}
+  if(!Array.isArray(o.tabs)||!o.tabs.length){o.tabs=[{sym:o.sym,tf:o.tf}];o.tab=0}if(!o.tabs[o.tab])o.tab=0;o.sym=o.tabs[o.tab].sym;o.tf=o.tabs[o.tab].tf;return o}
+let saveT=null;
+function save(){clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}},150)}
+const px=S.px;                 // {sym:{mid,t}}
+const cache={};                // 'sym|tf' -> {bars,at}
+const $=s=>document.querySelector(s);
+const demo=()=>!S.key;
+const fP=(sym,v)=>v==null||!isFinite(v)?'—':v.toFixed(SYMS[sym].d);
+const fM=v=>(v<0?'-':'')+'$'+Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fT=ms=>{const d=new Date(ms),p=n=>String(n).padStart(2,'0');return p(d.getMonth()+1)+'/'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes())};
+const num=v=>{const n=parseFloat(String(v).replace(',','.'));return isFinite(n)?n:null};
+const r2=v=>Math.round(v*100)/100;
+function toast(m,ms){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display='none',ms||2600)}
+
+/* ================= 價格與帳戶計算 ================= */
+const half=sym=>SYMS[sym].spread*SYMS[sym].pip/2;
+const bid=sym=>px[sym]?px[sym].mid-half(sym):null;
+const ask=sym=>px[sym]?px[sym].mid+half(sym):null;
+function convSym(sym){const q=sym.split('/')[1];return q==='USD'?null:'USD/'+q}
+function q2usd(sym){const c=convSym(sym);if(!c)return 1;return px[c]?1/px[c].mid:null}
+function pnl(p,close){const k=q2usd(p.sym);if(k==null||close==null)return null;return (p.side==='buy'?close-p.open:p.open-close)*p.lots*SYMS[p.sym].contract*k}
+function marginFor(sym,lots,price){const k=q2usd(sym);if(k==null)return null;return lots*SYMS[sym].contract*price*k/S.lev}
+const closePx=p=>p.side==='buy'?bid(p.sym):ask(p.sym);
+function acct(){let fl=0,mg=0;for(const p of S.pos){fl+=pnl(p,closePx(p))||0;mg+=p.margin}const eq=S.bal+fl;return{fl,mg,eq,free:eq-mg,lvl:mg?eq/mg*100:null}}
+function marketOpen(){if(demo())return true;const d=new Date(),w=d.getUTCDay(),h=d.getUTCHours();return!(w===6||(w===5&&h>=22)||(w===0&&h<22))}
+
+/* ================= 交易引擎 ================= */
+function openPos(sym,side,lots,price,sl,tp,t,note){
+  const m=marginFor(sym,lots,price);
+  if(m==null)return'缺少換算匯率，請稍候再試';
+  if(acct().free<m)return'可用保證金不足（需要 '+fM(m)+'）';
+  S.pos.push({id:S.nextId++,sym,side,lots,open:price,sl:sl||null,tp:tp||null,t,margin:m,note:note||''});
+  save();return null;
+}
+function closePos(p,price,t,reason){
+  const i=S.pos.indexOf(p);if(i<0)return;
+  const v=pnl(p,price)||0;S.pos.splice(i,1);S.bal=r2(S.bal+v);
+  S.hist.unshift({id:p.id,sym:p.sym,side:p.side,lots:p.lots,open:p.open,close:price,ot:p.t,ct:t,pnl:r2(v),reason});
+  save();
+  const R={sl:'停損觸發',tp:'停利觸發',so:'保證金不足，強制平倉',manual:'已平倉',off:'離線期間觸發'};
+  toast(`${p.sym} ${p.side==='buy'?'買':'賣'} ${p.lots} ${R[reason]||''}　${fM(v)}`,3500);
+}
+function checkBar(sym,b,t,off){
+  const hs=half(sym);
+  for(const o of S.orders.slice()){ if(o.sym!==sym)continue;
+    const isBuy=o.type[0]==='b',lim=o.type.endsWith('limit'),a=isBuy?hs:-hs,lo=b.l+a,hi=b.h+a,op=b.o+a;
+    let hit=false,fill=o.price;
+    if(isBuy===lim){ if(lo<=o.price){hit=true;if(op<o.price)fill=op} }   // buy limit / sell stop：價格往下碰到
+    else{ if(hi>=o.price){hit=true;if(op>o.price)fill=op} }              // buy stop / sell limit：價格往上碰到
+    if(hit){ S.orders.splice(S.orders.indexOf(o),1);
+      const e=openPos(sym,isBuy?'buy':'sell',o.lots,fill,o.sl,o.tp,t,'掛單成交');
+      toast(e?`掛單 #${o.id} 觸發但未成交：${e}`:`掛單成交：${sym} ${isBuy?'買':'賣'} ${o.lots} @ ${fP(sym,fill)}`,3500); save(); }
+  }
+  for(const p of S.pos.slice()){ if(p.sym!==sym||(off&&p.t>=t))continue;
+    const buy=p.side==='buy',a=buy?-hs:hs,lo=b.l+a,hi=b.h+a,op=b.o+a,why=off?'off':null;
+    if(buy){ if(p.sl&&lo<=p.sl)closePos(p,op<p.sl?op:p.sl,t,why||'sl'); else if(p.tp&&hi>=p.tp)closePos(p,op>p.tp?op:p.tp,t,why||'tp'); }
+    else{ if(p.sl&&hi>=p.sl)closePos(p,op>p.sl?op:p.sl,t,why||'sl'); else if(p.tp&&lo<=p.tp)closePos(p,op<p.tp?op:p.tp,t,why||'tp'); }
+  }
+}
+function stopOut(){
+  let g=0;
+  while(S.pos.length&&g++<200){const a=acct();if(a.lvl==null||a.lvl>=50)break;
+    let w=null,wv=Infinity;for(const p of S.pos){const v=pnl(p,closePx(p));if(v!=null&&v<wv){wv=v;w=p}}
+    if(!w)break;closePos(w,closePx(w),Date.now(),'so');}
+}
+function setPx(sym,mid,t){
+  t=t||Date.now();px[sym]={mid,t};
+  if(sym===S.sym)liveCandle(mid,t);
+  checkBar(sym,{o:mid,h:mid,l:mid},t,false);
+  S.lastSeen[sym]=t;stopOut();save();
+}
+
+/* ================= 行情來源（Twelve Data / 示範） ================= */
+let spendLog=[];
+function creditsLeft(){const n=Date.now();spendLog=spendLog.filter(x=>n-x<61000);return 8-spendLog.length}
+function spend(k){const n=Date.now(),day=new Date().toISOString().slice(0,10);for(let i=0;i<k;i++)spendLog.push(n);if(S.credits.day!==day)S.credits={day,n:0};S.credits.n+=k;save()}
+async function td(path,params,k){
+  if(creditsLeft()<k){const e=new Error('每分鐘行情額度已滿，請稍候');e.rate=true;throw e}
+  spend(k);
+  let r;try{r=await fetch('https://api.twelvedata.com/'+path+'?'+new URLSearchParams(Object.assign({},params,{apikey:S.key})))}
+  catch(_){spendLog.splice(-k,k);S.credits.n=Math.max(0,S.credits.n-k);save();const e=new Error(navigator.onLine===false?'沒有網路連線':'連不上行情');e.net=true;throw e}
+  const j=await r.json();
+  if(j&&(j.status==='error'||j.code>=400)){const e=new Error(j.code===401?'API 金鑰無效':j.code===429?'行情額度已用完（每分鐘 8 次／每天 800 次）':(j.message||'行情服務錯誤'));e.code=j.code;throw e}
+  return j;
+}
+let netWarned=false;
+function netHelp(){if(netWarned)return;netWarned=true;const inFrame=(()=>{try{return window.self!==window.top}catch(_){return true}})(),local=location.protocol==='file:';
+  const bn=$('#banner');bn.style.display='block';bn.dataset.lock='1';
+  bn.innerHTML=inFrame?'<b>你現在是在預覽視窗裡開啟</b>（例如 Claude 的檔案預覽），預覽會擋住對外連線，所以抓不到行情。請把這個網頁放到網路上（如 GitHub Pages），再用 Safari／Chrome 開那個網址。'
+   :local?'這個網頁是以本機檔案開啟，部分瀏覽器（尤其手機）會擋住對外連線。請把它放到網路上（如 GitHub Pages）再開啟。'
+   :'連不上行情伺服器，請確認網路，或關閉廣告攔截器後重新整理。'}
+function setStatus(kind,msg){const c={ok:'#3fb950',err:'#f85149',demo:'#e3b341',closed:'#8b949e',wait:'#e3b341'}[kind];$('#dot').style.background=c;$('#statTx').textContent=msg||''}
+async function fetchPrices(syms){
+  if(demo())return;
+  const j=await td('price',{symbol:syms.join(',')},syms.length);
+  const map=syms.length===1?{[syms[0]]:j}:j;let bad=[];
+  for(const s of syms){const v=map[s];if(v&&v.price!=null&&isFinite(+v.price))setPx(s,+v.price);else bad.push(s)}
+  if(bad.length)toast('無法取得報價：'+bad.join('、')+'（免費方案可能不含此商品）',4000);
+  if(netWarned){netWarned=false;delete $('#banner').dataset.lock}
+  setStatus(marketOpen()?'ok':'closed',marketOpen()?'即時 '+new Date().toLocaleTimeString('zh-TW',{hour12:false}):'休市中');
+}
+function parseT(s){const m=s.match(/(\d+)-(\d+)-(\d+)(?:[ T](\d+):(\d+):(\d+))?/);return Date.UTC(+m[1],+m[2]-1,+m[3],+(m[4]||0),+(m[5]||0),+(m[6]||0))/1000}
+async function getSeries(sym,tf,n){
+  if(demo())return demoCandles(sym,tfSec(tf),n);
+  const j=await td('time_series',{symbol:sym,interval:tf,outputsize:n,timezone:'UTC'},1);
+  return (j.values||[]).map(v=>({t:parseT(v.datetime),o:+v.open,h:+v.high,l:+v.low,c:+v.close})).filter(b=>isFinite(b.c)).sort((a,b)=>a.t-b.t);
+}
+function demoCandles(sym,sec,n){
+  n=Math.min(n,600);let c=px[sym]?px[sym].mid:DEMO_BASE[sym];const now=Math.floor(Date.now()/1000/sec)*sec,vol=c*0.0004*Math.sqrt(sec/60),out=[];
+  for(let i=0;i<n;i++){const o=c-(Math.random()-0.5)*2*vol,h=Math.max(o,c)+Math.random()*vol*0.6,l=Math.min(o,c)-Math.random()*vol*0.6;out.unshift({t:now-i*sec,o,h,l,c});c=o}
+  return out;
+}
+function neededSyms(){
+  const s=new Set([S.sym]);S.pos.forEach(p=>s.add(p.sym));S.orders.forEach(o=>s.add(o.sym));
+  for(const x of [...s]){const c=convSym(x);if(c)s.add(c)}
+  return [...s];
+}
+let timer=null;
+async function tick(){
+  if(demo()){for(const s in SYMS){const m=px[s]?px[s].mid:DEMO_BASE[s];setPx(s,m+(Math.random()-0.5)*2*m*0.00008)}renderLive();return}
+  if(document.hidden)return;
+  try{await fetchPrices(neededSyms())}catch(e){if(e.net)netHelp();setStatus(e.rate?'wait':'err',e.message)}
+  renderLive();
+}
+function schedule(){
+  clearTimeout(timer);let iv;
+  if(demo())iv=2;else if(!marketOpen())iv=600;else iv=Math.max(S.interval,Math.ceil(neededSyms().length*60/7));
+  timer=setTimeout(async()=>{await tick();schedule()},iv*1000);
+}
+let loadSeq=0,lastResync=0;
+async function loadChart(force){
+  const key=S.sym+'|'+S.tf,c=cache[key],seq=++loadSeq;
+  C.data=c?c.bars:[];recompute();draw();
+  if(!force&&c&&Date.now()-c.at<Math.max(60000,tfSec(S.tf)*500))return;
+  try{
+    const bars=await getSeries(S.sym,S.tf,1000);
+    if(!bars.length)throw new Error('沒有K線資料');
+    cache[key]={bars,at:Date.now()};
+    const lb=bars[bars.length-1];if(!px[S.sym]||px[S.sym].t<lb.t*1000)px[S.sym]={mid:lb.c,t:lb.t*1000};
+    if(seq===loadSeq){C.data=bars;if(Date.now()-px[S.sym].t<90000)liveCandle(px[S.sym].mid,Date.now(),true);recompute();draw();renderLive()}
+  }catch(e){if(e.net)netHelp();if(seq===loadSeq){C.msg=e.message;draw()}setStatus(e.rate?'wait':'err',e.message)}
+}
+function liveCandle(mid,t,quiet){
+  const d=C.data;if(!d.length)return;const sec=tfSec(S.tf),last=d[d.length-1],now=t/1000;
+  if(sec<86400&&now>=last.t+sec){
+    const nt=last.t+Math.floor((now-last.t)/sec)*sec;d.push({t:nt,o:mid,h:mid,l:mid,c:mid});
+    if(!demo()&&Date.now()-lastResync>300000){lastResync=Date.now();resync()}
+  }else{last.c=mid;if(mid>last.h)last.h=mid;if(mid<last.l)last.l=mid}
+  if(!quiet){recompute();}
+}
+async function resync(){ // 用真實K線修正最近幾根（輪詢取樣會漏掉高低點）
+  try{const key=S.sym+'|'+S.tf,bars=await getSeries(S.sym,S.tf,5),d=cache[key]&&cache[key].bars;if(!d)return;
+    for(const b of bars){const i=d.findIndex(x=>x.t===b.t);if(i>=0)d[i]=b;else if(b.t>d[d.length-1].t)d.push(b)}
+    recompute();draw()}catch(e){}
+}
+async function catchUp(){ // 重新開啟時，用離線期間的真實K線檢查停損/停利/掛單
+  if(demo())return;
+  const syms=[...new Set([...S.pos.filter(p=>p.sl||p.tp).map(p=>p.sym),...S.orders.map(o=>o.sym)])];
+  for(const sym of syms){const ls=S.lastSeen[sym];if(!ls)continue;const gap=(Date.now()-ls)/60000;if(gap<3)continue;
+    const big=gap>4900,tf=big?'15min':'1min',n=Math.min(5000,Math.ceil(gap/(big?15:1))+3);
+    try{const bars=await getSeries(sym,tf,n);for(const b of bars)if(b.t*1000>ls)checkBar(sym,b,b.t*1000,true)}catch(e){}
+  }
+}
+
+/* ================= 指標 ================= */
+const I={};
+function sma(a,n){const o=new Array(a.length).fill(null);let s=0;for(let i=0;i<a.length;i++){s+=a[i];if(i>=n)s-=a[i-n];if(i>=n-1)o[i]=s/n}return o}
+function ema(a,n){const o=new Array(a.length).fill(null),k=2/(n+1);let e=null,s=0;for(let i=0;i<a.length;i++){if(a[i]==null)continue;if(e==null){s+=a[i];if(i>=n-1){e=s/n;o[i]=e}}else{e=a[i]*k+e*(1-k);o[i]=e}}return o}
+function recompute(){
+  const d=C.data,c=d.map(b=>b.c),n=c.length;
+  I.ma20=sma(c,20);I.ma60=sma(c,60);
+  I.bbU=[];I.bbL=[];for(let i=0;i<n;i++){if(i<19){I.bbU.push(null);I.bbL.push(null);continue}let m=I.ma20[i],v=0;for(let j=i-19;j<=i;j++)v+=(c[j]-m)**2;const sd=Math.sqrt(v/20);I.bbU.push(m+2*sd);I.bbL.push(m-2*sd)}
+  I.rsi=new Array(n).fill(null);let g=0,l=0;for(let i=1;i<n;i++){const ch=c[i]-c[i-1],u=Math.max(ch,0),dn=Math.max(-ch,0);if(i<=14){g+=u;l+=dn;if(i===14){g/=14;l/=14;I.rsi[i]=l===0?100:100-100/(1+g/l)}}else{g=(g*13+u)/14;l=(l*13+dn)/14;I.rsi[i]=l===0?100:100-100/(1+g/l)}}
+  const e12=ema(c,12),e26=ema(c,26);I.macd=c.map((_,i)=>e12[i]!=null&&e26[i]!=null?e12[i]-e26[i]:null);
+  const first=I.macd.findIndex(v=>v!=null);I.sig=new Array(n).fill(null);
+  if(first>=0){const s=ema(I.macd.slice(first),9);for(let i=0;i<s.length;i++)I.sig[first+i]=s[i]}
+  I.hist=I.macd.map((v,i)=>v!=null&&I.sig[i]!=null?v-I.sig[i]:null);
+  let atr=null,s=0;I.atr=null;for(let i=1;i<n;i++){const tr=Math.max(d[i].h-d[i].l,Math.abs(d[i].h-c[i-1]),Math.abs(d[i].l-c[i-1]));if(i<=14){s+=tr;if(i===14)atr=s/14}else atr=(atr*13+tr)/14}I.atr=atr;
+  recomputeJ();
+}
+
+const J={ma:[]};
+function bbCalc(c,n,k){const m=sma(c,n),u=[],l=[];for(let i=0;i<c.length;i++){if(m[i]==null){u.push(null);l.push(null);continue}let v=0;for(let j=i-n+1;j<=i;j++)v+=(c[j]-m[i])**2;const sd=Math.sqrt(v/n);u.push(m[i]+k*sd);l.push(m[i]-k*sd)}return{m,u,l}}
+function rsiCalc(c,n){const o=new Array(c.length).fill(null);let g=0,l=0;for(let i=1;i<c.length;i++){const ch=c[i]-c[i-1],u=Math.max(ch,0),d=Math.max(-ch,0);if(i<=n){g+=u;l+=d;if(i===n){g/=n;l/=n;o[i]=l===0?100:100-100/(1+g/l)}}else{g=(g*(n-1)+u)/n;l=(l*(n-1)+d)/n;o[i]=l===0?100:100-100/(1+g/l)}}return o}
+function macdCalc(c,f,sl,g){const a=ema(c,f),b=ema(c,sl),m=c.map((_,i)=>a[i]!=null&&b[i]!=null?a[i]-b[i]:null),first=m.findIndex(v=>v!=null),sg=new Array(c.length).fill(null);
+  if(first>=0){const e=ema(m.slice(first),g);for(let i=0;i<e.length;i++)sg[first+i]=e[i]}return{m,sg,h:m.map((v,i)=>v!=null&&sg[i]!=null?v-sg[i]:null)}}
+function kdCalc(d,n,ks,ds){const K=new Array(d.length).fill(null),D=K.slice();let k=50,dd=50;for(let i=n-1;i<d.length;i++){let hh=-Infinity,ll=Infinity;for(let j=i-n+1;j<=i;j++){hh=Math.max(hh,d[j].h);ll=Math.min(ll,d[j].l)}
+    const rsv=hh===ll?50:(d[i].c-ll)/(hh-ll)*100;k=k+(rsv-k)/ks;dd=dd+(k-dd)/ds;K[i]=k;D[i]=dd}return{K,D}}
+function recomputeJ(){const d=C.data,c=d.map(b=>b.c),ic=S.ic;
+  J.ma=ic.ma.map(m=>m.on?(m.t==='EMA'?ema(c,m.n):sma(c,m.n)):null);
+  const b=ic.bb.on?bbCalc(c,ic.bb.n,ic.bb.k):null;J.bbU=b&&b.u;J.bbL=b&&b.l;J.bbM=b&&b.m;
+  J.rsi=ic.rsi.on?rsiCalc(c,ic.rsi.n):null;
+  const m=ic.macd.on?macdCalc(c,ic.macd.f,ic.macd.s,ic.macd.g):null;J.macd=m&&m.m;J.sig=m&&m.sg;J.hist=m&&m.h;
+  const k=ic.kd.on?kdCalc(d,ic.kd.n,ic.kd.k,ic.kd.d):null;J.k=k&&k.K;J.d=k&&k.D}
+/* ================= 圖表（Canvas） ================= */
+const C={cv:$('#cv'),ctx:null,w:0,h:0,barW:7,off:0,cross:null,data:[],msg:''};
+C.ctx=C.cv.getContext('2d');let dpr=1;
+function resize(){const r=C.cv.getBoundingClientRect();if(!r.width)return;dpr=window.devicePixelRatio||1;C.cv.width=Math.round(r.width*dpr);C.cv.height=Math.round(r.height*dpr);C.w=r.width;C.h=r.height;draw()}
+function niceStep(x){const p=Math.pow(10,Math.floor(Math.log10(x))),f=x/p;return(f<1.5?1:f<3.5?2:f<7.5?5:10)*p}
+function draw(){
+  const x=C.ctx,d=C.data,N=d.length,W=C.w,H=C.h;if(!W)return;
+  x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,W,H);x.font='11px -apple-system,"Segoe UI",sans-serif';x.textBaseline='middle';
+  const UP=S.upRed?'#ef5350':'#26a69a',DN=S.upRed?'#26a69a':'#ef5350';
+  if(!N){x.fillStyle='#8b949e';x.textAlign='center';x.fillText(C.msg||'載入K線中…',W/2,H/2);return}
+  const sym=S.sym,AX=62,TA=18,ic=S.ic,MAC=['#e3b341','#bc8cff','#f778ba'],subs=[ic.rsi.on&&'rsi',ic.macd.on&&'macd',ic.kd.on&&'kd'].filter(Boolean),subH=Math.round((H-TA)*(subs.length>2?0.16:0.2)),mainH=H-TA-subs.length*subH,pw=W-AX,PAD=4;
+  const last=N-1-C.off+PAD,first=last-pw/C.barW,i0=Math.max(0,Math.floor(first)),i1=Math.min(N-1,Math.ceil(last));
+  if((ic.rsi.on&&!J.rsi)||(ic.macd.on&&!J.macd)||(ic.kd.on&&!J.k)||(ic.bb.on&&!J.bbU)||J.ma.length!==ic.ma.length)recomputeJ();
+  const X=i=>pw-(last-i+0.5)*C.barW;
+  let lo=Infinity,hi=-Infinity;
+  for(let i=i0;i<=i1;i++){lo=Math.min(lo,d[i].l);hi=Math.max(hi,d[i].h);if(J.bbU&&J.bbU[i]!=null){lo=Math.min(lo,J.bbL[i]);hi=Math.max(hi,J.bbU[i])}}
+  if(!isFinite(lo)){lo=d[N-1].l;hi=d[N-1].h}
+  const pd=(hi-lo)*0.08||hi*0.0005;lo-=pd;hi+=pd;
+  const Y=p=>8+(hi-p)/(hi-lo)*(mainH-16),P=y=>hi-(y-8)/(mainH-16)*(hi-lo);
+  // 格線
+  x.strokeStyle='#121a33';x.lineWidth=1;x.fillStyle='#8b949e';x.textAlign='left';
+  const st=niceStep((hi-lo)/6);
+  for(let p=Math.ceil(lo/st)*st;p<hi;p+=st){const y=Math.round(Y(p))+.5;x.beginPath();x.moveTo(0,y);x.lineTo(pw,y);x.stroke();x.fillText(fP(sym,p),pw+5,y)}
+  const k=Math.max(1,Math.ceil(78/C.barW)),sec=tfSec(S.tf),p2=n=>String(n).padStart(2,'0');let prevDay='';
+  x.textAlign='center';
+  for(let i=Math.ceil(i0/k)*k;i<=i1;i+=k){const xx=Math.round(X(i))+.5;if(xx<22||xx>pw-22)continue;x.strokeStyle='#121a33';x.beginPath();x.moveTo(xx,0);x.lineTo(xx,H-TA);x.stroke();
+    const dt=new Date(d[i].t*1000);let lb;
+    if(sec>=86400)lb=p2(dt.getUTCMonth()+1)+'/'+p2(dt.getUTCDate());
+    else{const day=p2(dt.getMonth()+1)+'/'+p2(dt.getDate());lb=day!==prevDay&&prevDay?day:p2(dt.getHours())+':'+p2(dt.getMinutes());prevDay=day}
+    x.fillStyle='#8b949e';x.fillText(lb,xx,H-TA/2)}
+  // K線
+  x.save();x.beginPath();x.rect(0,0,pw,mainH);x.clip();
+  const bw=Math.max(1,Math.floor(C.barW*0.7));
+  for(let i=i0;i<=i1;i++){const b=d[i],up=b.c>=b.o,cx=Math.round(X(i));x.fillStyle=x.strokeStyle=up?UP:DN;
+    x.beginPath();x.moveTo(cx+.5,Y(b.h));x.lineTo(cx+.5,Y(b.l));x.stroke();
+    const y1=Y(Math.max(b.o,b.c)),y2=Y(Math.min(b.o,b.c));x.fillRect(cx-Math.floor(bw/2),y1,bw,Math.max(1,y2-y1))}
+  const line=(arr,col,yf)=>{x.strokeStyle=col;x.lineWidth=1.2;x.beginPath();let on=false;for(let i=Math.max(0,i0-1);i<=i1;i++){if(arr[i]==null){on=false;continue}const yy=yf(arr[i]);if(on)x.lineTo(X(i),yy);else{x.moveTo(X(i),yy);on=true}}x.stroke();x.lineWidth=1};
+  if(J.bbU){line(J.bbU,'#58a6ff',Y);line(J.bbL,'#58a6ff',Y);line(J.bbM,'#58a6ff77',Y)}
+  J.ma.forEach((a,n)=>{if(a)line(a,MAC[n],Y)});
+  x.restore();
+  // 水平線（報價、持倉、掛單）
+  const hl=(p,col,lb,dash,solid)=>{if(p==null)return;const y=Math.round(Y(p))+.5;if(y<0||y>mainH)return;x.strokeStyle=col;x.setLineDash(dash||[]);x.beginPath();x.moveTo(0,y);x.lineTo(pw,y);x.stroke();x.setLineDash([]);
+    if(lb){x.textAlign='left';x.fillStyle=col;x.fillText(lb,4,y-7)}
+    x.fillStyle=solid?col:'#070b18';x.fillRect(pw,y-8,AX,16);if(!solid){x.strokeStyle=col;x.strokeRect(pw+.5,y-7.5,AX-1,15)}x.fillStyle=solid?'#fff':col;x.textAlign='left';x.fillText(fP(sym,p),pw+5,y)};
+  for(const o of S.orders)if(o.sym===sym)hl(o.price,'#8b949e',o.type.toUpperCase()+' '+o.lots,[2,3]);
+  for(const p of S.pos)if(p.sym===sym){const c=p.side==='buy'?'#58a6ff':'#ff7b72';hl(p.open,c,(p.side==='buy'?'BUY ':'SELL ')+p.lots,[6,3]);hl(p.sl,'#ef5350','SL',[3,3]);hl(p.tp,'#3fb950','TP',[3,3])}
+  if(C.off<pw/C.barW){hl(ask(sym),'#e0473f',null,[1,3]);hl(bid(sym),'#484f58',null,null,true)}
+  // 副圖
+  const hv=C.cross?Math.max(0,Math.min(N-1,Math.round(last-0.5-(pw-C.cross.x)/C.barW))):N-1,fx1=v=>v!=null?v.toFixed(1):'';
+  subs.forEach((s,n)=>{const top=mainH+n*subH;x.strokeStyle='#1e2a4c';x.beginPath();x.moveTo(0,top+.5);x.lineTo(W,top+.5);x.stroke();let lb='';
+    x.save();x.beginPath();x.rect(0,top,pw,subH);x.clip();
+    if(s==='macd'){let m=0;for(let i=i0;i<=i1;i++){if(J.macd[i]!=null)m=Math.max(m,Math.abs(J.macd[i]),Math.abs(J.sig[i]||0),Math.abs(J.hist[i]||0))}m=m||1;const yf=v=>top+subH/2-v/m*(subH/2-5);
+      for(let i=i0;i<=i1;i++){const v=J.hist[i];if(v==null)continue;x.fillStyle=v>=0?UP+'99':DN+'99';const y0=yf(0),y1=yf(v);x.fillRect(Math.round(X(i))-Math.floor(bw/2),Math.min(y0,y1),bw,Math.abs(y1-y0)||1)}
+      line(J.macd,'#58a6ff',yf);line(J.sig,'#f0883e',yf);x.restore();lb=`MACD(${ic.macd.f},${ic.macd.s},${ic.macd.g})`}
+    else{const yf=v=>top+4+(100-v)/100*(subH-8),lo2=s==='rsi'?30:20,hi2=100-lo2;x.strokeStyle='#1e2a4c';x.setLineDash([2,3]);[lo2,hi2].forEach(v=>{x.beginPath();x.moveTo(0,yf(v));x.lineTo(pw,yf(v));x.stroke()});x.setLineDash([]);
+      if(s==='rsi'){line(J.rsi,'#e3b341',yf);lb=`RSI(${ic.rsi.n}) ${fx1(J.rsi[hv])}`}else{line(J.k,'#58a6ff',yf);line(J.d,'#f0883e',yf);lb=`KD(${ic.kd.n},${ic.kd.k},${ic.kd.d})  K ${fx1(J.k[hv])}  D ${fx1(J.d[hv])}`}
+      x.restore();x.fillStyle='#8b949e';x.textAlign='left';x.fillText(hi2,pw+5,yf(hi2));x.fillText(lo2,pw+5,yf(lo2))}
+    x.fillStyle='#8b949e';x.textAlign='left';x.fillText(lb,4,top+9)});
+  x.strokeStyle='#1e2a4c';x.beginPath();x.moveTo(pw+.5,0);x.lineTo(pw+.5,H-TA);x.moveTo(0,H-TA+.5);x.lineTo(W,H-TA+.5);x.stroke();
+  // 十字線 + 資訊
+  let ii=N-1;
+  if(C.cross){const cx=C.cross.x,cy=C.cross.y;ii=Math.max(0,Math.min(N-1,Math.round(last-0.5-(pw-cx)/C.barW)));const sx=Math.round(X(ii))+.5;
+    x.strokeStyle='#6e7681';x.setLineDash([3,3]);x.beginPath();x.moveTo(sx,0);x.lineTo(sx,H-TA);if(cy<mainH){x.moveTo(0,cy);x.lineTo(pw,cy)}x.stroke();x.setLineDash([]);
+    if(cy<mainH){x.fillStyle='#30363d';x.fillRect(pw,cy-8,AX,16);x.fillStyle='#e6edf3';x.textAlign='left';x.fillText(fP(sym,P(cy)),pw+5,cy)}
+    const dt=new Date(d[ii].t*1000),lb=sec>=86400?dt.getUTCFullYear()+'/'+p2(dt.getUTCMonth()+1)+'/'+p2(dt.getUTCDate()):fT(d[ii].t*1000);
+    const tw=x.measureText(lb).width+10,tx=Math.max(tw/2,Math.min(pw-tw/2,sx));x.fillStyle='#30363d';x.fillRect(tx-tw/2,H-TA,tw,TA);x.fillStyle='#e6edf3';x.textAlign='center';x.fillText(lb,tx,H-TA/2)}
+  const b=d[ii];x.textAlign='left';x.fillStyle='#070b18cc';x.fillRect(0,0,pw,J.bbU||J.ma.some(Boolean)?32:17);
+  x.fillStyle=b.c>=b.o?UP:DN;x.fillText(`${tfName(S.tf)}  開${fP(sym,b.o)} 高${fP(sym,b.h)} 低${fP(sym,b.l)} 收${fP(sym,b.c)}`,4,9);
+  let tx=4;const lab=(t,c)=>{x.fillStyle=c;x.fillText(t,tx,24);tx+=x.measureText(t).width+8};
+  J.ma.forEach((a,n)=>{if(a&&a[ii]!=null)lab((ic.ma[n].t==='EMA'?'EMA':'MA')+ic.ma[n].n+' '+fP(sym,a[ii]),MAC[n])});
+  if(J.bbU&&J.bbU[ii]!=null)lab(`BB(${ic.bb.n},${ic.bb.k}) `+fP(sym,J.bbU[ii])+' / '+fP(sym,J.bbM[ii])+' / '+fP(sym,J.bbL[ii]),'#58a6ff');
+}
+(function gestures(){
+  const cv=C.cv,pts=new Map();let drag=null,pinch=null,lp=null,crossMode=false;
+  const pos=e=>{const r=cv.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}};
+  const clampOff=()=>{const vis=(C.w-62)/C.barW;C.off=Math.max(-vis*0.5,Math.min(C.data.length-5,C.off))};
+  cv.addEventListener('pointerdown',e=>{try{cv.setPointerCapture(e.pointerId)}catch(_){}const p=pos(e);pts.set(e.pointerId,p);
+    if(pts.size===1){drag={x:p.x,off:C.off};if(e.pointerType!=='mouse')lp=setTimeout(()=>{crossMode=true;C.cross=p;draw()},350)}
+    else if(pts.size===2){clearTimeout(lp);crossMode=false;C.cross=null;const[a,b]=[...pts.values()];pinch={dist:Math.hypot(a.x-b.x,a.y-b.y)||1,barW:C.barW};drag=null}});
+  cv.addEventListener('pointermove',e=>{const p=pos(e);
+    if(!pts.has(e.pointerId)){if(e.pointerType==='mouse'){C.cross=p;draw()}return}
+    pts.set(e.pointerId,p);
+    if(pts.size===2&&pinch){const[a,b]=[...pts.values()];C.barW=Math.max(2,Math.min(40,pinch.barW*Math.hypot(a.x-b.x,a.y-b.y)/pinch.dist));clampOff();draw();return}
+    if(crossMode){C.cross=p;draw();return}
+    if(drag){const dx=p.x-drag.x;if(Math.abs(dx)>5)clearTimeout(lp);C.off=drag.off+dx/C.barW;clampOff();if(e.pointerType==='mouse')C.cross=p;draw()}});
+  const end=e=>{pts.delete(e.pointerId);clearTimeout(lp);if(pts.size<2)pinch=null;if(pts.size===0){drag=null;if(crossMode||e.pointerType!=='mouse'){crossMode=false;C.cross=null;draw()}}else{const p=[...pts.values()][0];drag={x:p.x,off:C.off}}};
+  cv.addEventListener('pointerup',end);cv.addEventListener('pointercancel',end);
+  cv.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'&&!pts.size){C.cross=null;draw()}});
+  cv.addEventListener('wheel',e=>{e.preventDefault();C.barW=Math.max(2,Math.min(40,C.barW*(e.deltaY<0?1.12:0.89)));clampOff();draw()},{passive:false});
+  cv.addEventListener('contextmenu',e=>e.preventDefault());
+  new ResizeObserver(resize).observe($('#cwrap'));
+})();
+
+/* ================= 介面 ================= */
+const mq=matchMedia('(min-width:1000px)'),desk=()=>mq.matches;
+let view='vChart',histN=-1;
+const TABS=[['vQuotes','報價','☰'],['vChart','圖表','📈'],['vTrade','交易','⇅'],['vHist','歷史','🕘'],['vNews','新聞','📰'],['vInfo','資訊','ℹ']];
+function go(v){if(desk()&&(v==='vChart'||v==='vQuotes'))v=(view==='vChart'||view==='vQuotes')?'vTrade':view;view=v;document.querySelectorAll('.view').forEach(e=>e.classList.toggle('on',e.id===v));
+  $('#nav').innerHTML=TABS.map(t=>`<button data-v="${t[0]}" class="${t[0]===v?'on':''}"><i>${t[2]}</i>${t[1]}</button>`).join('');
+  $('main').classList.toggle('big',desk()&&v==='vNews');if(v==='vChart'||desk())requestAnimationFrame(resize);rDock();render()}
+function rDock(){$('#dockTabs').innerHTML=[['vTrade',`交易（持倉 ${S.pos.length}／掛單 ${S.orders.length}）`],['vHist','歷史'],['vNews','新聞・財經日曆'],['vInfo','資訊']].map(t=>`<button data-v="${t[0]}" class="${t[0]===view?'on':''}">${t[1]}</button>`).join('')}
+$('#dockTabs').onclick=e=>{const b=e.target.closest('button');if(b)go(b.dataset.v)};
+function rAcct(){const a=acct(),c=v=>v>=0?'up':'dn',L=[['餘額',fM(S.bal)],['淨值',fM(a.eq)],['已用保證金',fM(a.mg)],['可用保證金',fM(a.free)],['保證金比例',a.lvl==null?'—':a.lvl.toFixed(0)+'%'],['浮動損益',fM(a.fl),c(a.fl)]];
+  $('#acctBar').innerHTML=[0,1,3,4,5].map(i=>`<div><small>${L[i][0]}</small><span class="${L[i][2]||''}">${L[i][1]}</span></div>`).join('');
+  $('#acctBox').innerHTML=L.concat([['槓桿','1:'+S.lev]]).map(l=>`<div class="kv"><span>${l[0]}</span><span class="${l[2]||''}">${l[1]}</span></div>`).join('')}
+async function closeNow(p){if(!demo()){if(!marketOpen())return'休市中，無法平倉';try{await fetchPrices(neededSyms())}catch(e){return e.message}}
+  if(!S.pos.includes(p))return null;const c=closePx(p);if(c==null)return'尚無報價';closePos(p,c,Date.now(),'manual');schedule();return null}
+$('#nav').onclick=e=>{const b=e.target.closest('button');if(b)go(b.dataset.v)};
+function renderTabs(){$('#ctabs').innerHTML=S.tabs.map((t,i)=>`<button data-i="${i}" class="${i===S.tab?'on':''}">${t.sym}<small>${tfName(t.tf)}</small>${S.tabs.length>1?`<i data-c="${i}" title="關閉分頁">×</i>`:''}</button>`).join('')+(S.tabs.length<8?'<button id="tabAdd" title="新增分頁">＋</button>':'')}
+function showTab(i){S.tab=i;const t=S.tabs[i];S.tf=t.tf;renderTfs();setSym(t.sym)}
+$('#ctabs').onclick=e=>{const c=e.target.closest('[data-c]');
+  if(c){const i=+c.dataset.c;S.tabs.splice(i,1);if(S.tab>i||S.tab>=S.tabs.length)S.tab=Math.max(0,S.tab-1);else if(S.tab!==i){save();return renderTabs()}return showTab(S.tab)}
+  const b=e.target.closest('button');if(!b)return;
+  if(b.id==='tabAdd'){S.tabs.push({sym:S.sym,tf:S.tf});showTab(S.tabs.length-1);return toast('已新增分頁：從報價清單選商品、上方選週期')}
+  if(+b.dataset.i!==S.tab)showTab(+b.dataset.i)};
+function renderTfs(){$('#tfs').innerHTML=TFS.map(t=>`<button data-tf="${t[0]}" class="${t[0]===S.tf?'on':''}">${t[1]}</button>`).join('')+'<span class="sp"></span><button id="indBtn">ƒ 指標</button>'}
+$('#tfs').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='indBtn')return indSheet();S.tf=b.dataset.tf;S.tabs[S.tab].tf=S.tf;C.off=0;save();renderTfs();renderTabs();loadChart()};
+function setSym(sym){S.sym=sym;S.tabs[S.tab]={sym,tf:S.tf};renderTabs();C.off=0;if(view==='vNews')setTimeout(rNews,0);else newsKey='';['#oPrice','#oSL','#oTP'].forEach(i=>{const e=document.querySelector('#ticket '+i);if(e)e.value=''});save();loadChart();schedule();if(!demo()&&!px[sym])tick();renderLive()}
+function renderLive(){
+  $('#hSym').textContent=S.sym+' ▾';$('#hBid').textContent=fP(S.sym,bid(S.sym));$('#hAsk').textContent=fP(S.sym,ask(S.sym));
+  $('#qBid').textContent=fP(S.sym,bid(S.sym));$('#qAsk').textContent=fP(S.sym,ask(S.sym));
+  const bn=$('#banner');if(bn.dataset.lock&&!demo()){}
+  else if(demo()){bn.style.display='block';bn.innerHTML='示範模式：目前是<b>隨機產生的假行情</b>。到 ⚙ 設定輸入 Twelve Data 金鑰後才是真實K線。';setStatus('demo','示範')}
+  else if(!marketOpen()){bn.style.display='block';bn.textContent='外匯市場休市中（週末）。可看圖、掛單，市價單要等開盤。'}
+  else bn.style.display='none';
+  if(desk()){$('#hPx').dataset.sym=S.sym;draw();rQuotes();rDock();rAcct();if(view==='vTrade')rTrade();else if(view==='vHist'&&histN!==S.hist.length)rHist();if(O.upd&&document.querySelector('#ticket #oInfo'))O.upd();return}
+  if(view==='vChart')draw();else if(view!=='vInfo'&&view!=='vHist'&&view!=='vNews')render();
+}
+function render(){({vQuotes:rQuotes,vTrade:rTrade,vHist:rHist,vInfo:rInfo,vNews:rNews,vChart:draw})[view]()}
+/* ---------- 新聞與財經日曆（TradingView 官方嵌入元件） ---------- */
+let newsMode='market',newsKey='';
+const tvSym=s=>s==='XAU/USD'?'OANDA:XAUUSD':'FX:'+s.replace('/','');
+function tvWidget(el,name,cfg){
+  el.innerHTML='<div class="tradingview-widget-container" style="height:100%;width:100%"><div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div></div>';
+  const sc=document.createElement('script');sc.type='text/javascript';sc.async=true;sc.src='https://s3.tradingview.com/external-embedding/embed-widget-'+name+'.js';
+  sc.innerHTML=JSON.stringify(Object.assign({width:'100%',height:'100%',colorTheme:'dark',isTransparent:true,locale:'zh_TW'},cfg));el.firstChild.appendChild(sc);
+}
+function rNews(){
+  const key=newsMode+(newsMode==='symbol'?S.sym:'');if(key===newsKey&&$('#nwNews'))return;newsKey=key;
+  const L=[['Investing.com 外匯新聞','https://hk.investing.com/news/forex-news'],['Investing.com 財經日曆','https://hk.investing.com/economic-calendar/'],['鉅亨網 外匯','https://news.cnyes.com/news/cat/forex'],['Forex Factory','https://www.forexfactory.com/calendar']];
+  $('#vNews').innerHTML=`<div class="nwBar"><div class="seg" id="nwMode"><button data-v="market" class="${newsMode==='market'?'on':''}">外匯市場新聞</button><button data-v="symbol" class="${newsMode==='symbol'?'on':''}">${S.sym} 相關新聞</button></div>
+   <div class="nwLinks">${L.map(l=>`<a href="${l[1]}" target="_blank" rel="noopener">${l[0]} ↗</a>`).join('')}</div></div>
+   <div class="nwGrid"><div class="nwCol"><div class="ph">新聞 NEWS</div><div class="nwBox" id="nwNews"></div></div><div class="nwCol"><div class="ph">財經日曆 CALENDAR</div><div class="nwBox" id="nwCal"></div></div></div>
+   <p class="hint" style="padding:0 12px">新聞與日曆由 TradingView 提供，需要網路連線。若這裡一片空白，代表瀏覽器或廣告攔截器擋住了外部元件，請改用上方連結。點新聞標題會在新分頁開啟全文。</p>`;
+  tvWidget($('#nwNews'),'timeline',newsMode==='symbol'?{feedMode:'symbol',symbol:tvSym(S.sym),displayMode:'regular'}:{feedMode:'market',market:'forex',displayMode:'regular'});
+  tvWidget($('#nwCal'),'events',{importanceFilter:'0,1',countryFilter:'us,jp,eu,gb,au,ca,ch,cn'});
+}
+$('#vNews').onclick=e=>{const b=e.target.closest('#nwMode button');if(b){newsMode=b.dataset.v;rNews()}};
+function rQuotes(){
+  $('#vQuotes').innerHTML=(desk()?'<div class="ph">報價 MARKET WATCH</div>':'')+Object.keys(SYMS).map(s=>{const p=px[s];return`<div class="row${s===S.sym?' cur':''}" data-s="${s}"><div class="g"><b>${s}</b>${s===S.sym?'<span class="tag">圖表中</span>':''}<div class="sm mut">${SYMS[s].name}　點差 ${SYMS[s].spread}${p&&!desk()?'　'+fT(p.t):''}</div></div>
+   <div class="num" style="text-align:right"><span class="cs">${fP(s,bid(s))}</span>　<span class="cb">${fP(s,ask(s))}</span></div></div>`}).join('')
+   +(demo()?'':`<div style="padding:12px"><button class="btn full" id="refAll">更新全部報價（每個商品用 1 點額度）</button><p class="hint">為了節省免費額度，平常只會自動更新「圖表中的商品」和「有持倉／掛單的商品」。今日已用額度：${S.credits.day===new Date().toISOString().slice(0,10)?S.credits.n:0} / 800</p></div>`);
+}
+$('#vQuotes').onclick=async e=>{if(e.target.id==='refAll'){const all=Object.keys(SYMS).sort((a,b)=>(px[a]?px[a].t:0)-(px[b]?px[b].t:0)).slice(0,Math.max(0,creditsLeft()));
+    if(!all.length)return toast('每分鐘額度已滿，請稍候');try{await fetchPrices(all);if(all.length<8)toast('額度有限，本次更新 '+all.length+' 個商品')}catch(err){toast(err.message)}rQuotes();return}
+  const r=e.target.closest('.row');if(r){setSym(r.dataset.s);go('vChart')}};
+function rTradeDesk(){
+  const cls=v=>v>=0?'up':'dn',f=(s,v)=>v?fP(s,v):'—';
+  const rows=S.pos.map(p=>{const c=closePx(p),v=pnl(p,c);return`<tr data-p="${p.id}"><td>#${p.id}</td><td>${fT(p.t)}</td><td><b>${p.sym}</b></td><td class="${p.side==='buy'?'cb':'cs'}">${p.side==='buy'?'買 BUY':'賣 SELL'}</td><td>${p.lots}</td><td>${fP(p.sym,p.open)}</td><td>${f(p.sym,p.sl)}</td><td>${f(p.sym,p.tp)}</td><td>${fP(p.sym,c)}</td><td class="${v==null?'mut':cls(v)}"><b>${v==null?'—':fM(v)}</b></td><td><button class="x" data-close="${p.id}">平倉</button></td></tr>`}).join('')
+   +S.orders.map(o=>`<tr data-o="${o.id}"><td>#${o.id}</td><td>${fT(o.t)}</td><td><b>${o.sym}</b></td><td class="${o.type[0]==='b'?'cb':'cs'}">${o.type.toUpperCase()}</td><td>${o.lots}</td><td>${fP(o.sym,o.price)}</td><td>${f(o.sym,o.sl)}</td><td>${f(o.sym,o.tp)}</td><td>${fP(o.sym,px[o.sym]?px[o.sym].mid:null)}</td><td class="mut">掛單中</td><td><button class="x" data-del="${o.id}">取消</button></td></tr>`).join('');
+  $('#vTrade').innerHTML=rows?`<table class="tb"><thead><tr><th>單號</th><th>時間</th><th>商品</th><th>方向</th><th>手數</th><th>價格</th><th>停損</th><th>停利</th><th>現價</th><th>損益</th><th>${S.pos.length>1?'<button class="x" id="closeAll">全部平倉</button>':''}</th></tr></thead><tbody>${rows}</tbody></table>`:'<div class="empty">沒有持倉或掛單。用右側的下單面板開始練習；點一下列表中的訂單可以修改停損／停利。</div>';
+}
+function rHistDesk(){
+  histN=S.hist.length;const t=S.hist.filter(h=>h.sym),w=t.filter(h=>h.pnl>0),l=t.filter(h=>h.pnl<0),net=t.reduce((s,h)=>s+h.pnl,0),gw=w.reduce((s,h)=>s+h.pnl,0),gl=-l.reduce((s,h)=>s+h.pnl,0);
+  const R={sl:'停損',tp:'停利',so:'強制平倉',manual:'手動',off:'離線觸發'},st=(a,b,c)=>`<span><span>${a}</span><b class="${c||''}">${b}</b></span>`;
+  $('#vHist').innerHTML=`<div class="stats num">${st('已實現損益',fM(net),net>=0?'up':'dn')}${st('交易筆數',t.length)}${st('勝率',t.length?(w.length/t.length*100).toFixed(0)+'%':'—')}${st('平均獲利',w.length?fM(gw/w.length):'—')}${st('平均虧損',l.length?fM(-gl/l.length):'—')}${st('獲利因子',gl?(gw/gl).toFixed(2):'—')}</div>`
+  +(S.hist.length?`<table class="tb"><thead><tr><th>單號</th><th>平倉時間</th><th>商品</th><th>方向</th><th>手數</th><th>開倉時間</th><th>進場價</th><th>出場價</th><th>原因</th><th>損益</th></tr></thead><tbody>`+S.hist.map(h=>h.sym?`<tr><td>#${h.id}</td><td>${fT(h.ct)}</td><td><b>${h.sym}</b></td><td class="${h.side==='buy'?'cb':'cs'}">${h.side==='buy'?'買 BUY':'賣 SELL'}</td><td>${h.lots}</td><td>${fT(h.ot)}</td><td>${fP(h.sym,h.open)}</td><td>${fP(h.sym,h.close)}</td><td>${R[h.reason]||''}</td><td class="${h.pnl>=0?'up':'dn'}"><b>${fM(h.pnl)}</b></td></tr>`
+   :`<tr><td></td><td>${fT(h.ct)}</td><td><b>${h.note}</b></td><td></td><td></td><td></td><td></td><td></td><td></td><td><b>${fM(h.amt)}</b></td></tr>`).join('')+'</tbody></table>':'<div class="empty">還沒有成交紀錄</div>');
+}
+function rTrade(){
+  if(desk())return rTradeDesk();
+  const a=acct(),cls=v=>v>=0?'up':'dn';
+  $('#vTrade').innerHTML=`<div class="card"><div class="kv" style="font-size:18px;font-weight:700"><span>浮動損益</span><span class="num ${cls(a.fl)}">${fM(a.fl)}</span></div>
+  <div class="grid2 sm num" style="margin-top:8px"><div class="kv"><span>餘額</span><span>${fM(S.bal)}</span></div><div class="kv"><span>淨值</span><span>${fM(a.eq)}</span></div>
+  <div class="kv"><span>已用保證金</span><span>${fM(a.mg)}</span></div><div class="kv"><span>可用保證金</span><span>${fM(a.free)}</span></div>
+  <div class="kv"><span>保證金比例</span><span>${a.lvl==null?'—':a.lvl.toFixed(0)+'%'}</span></div><div class="kv"><span>槓桿</span><span>1:${S.lev}</span></div></div></div>
+  <h3>持倉（${S.pos.length}）</h3>`+(S.pos.length?S.pos.map(p=>{const c=closePx(p),v=pnl(p,c);return`<div class="row" data-p="${p.id}"><div class="g"><b>${p.sym}</b> <span class="${p.side==='buy'?'cb':'cs'}">${p.side==='buy'?'買':'賣'} ${p.lots}</span>
+   <div class="sm mut num">${fP(p.sym,p.open)} → ${fP(p.sym,c)}${p.sl?'　SL '+fP(p.sym,p.sl):''}${p.tp?'　TP '+fP(p.sym,p.tp):''}</div></div><b class="num ${v==null?'mut':cls(v)}">${v==null?'—':fM(v)}</b></div>`}).join('')
+   +(S.pos.length>1?'<div style="padding:10px 14px"><button class="btn full" id="closeAll">全部平倉</button></div>':''):'<div class="empty">沒有持倉。到「圖表」按買入或賣出開始練習。</div>')
+  +`<h3>掛單（${S.orders.length}）</h3>`+(S.orders.length?S.orders.map(o=>`<div class="row" data-o="${o.id}"><div class="g"><b>${o.sym}</b> <span class="${o.type[0]==='b'?'cb':'cs'}">${o.type} ${o.lots}</span>
+   <div class="sm mut num">@ ${fP(o.sym,o.price)}${o.sl?'　SL '+fP(o.sym,o.sl):''}${o.tp?'　TP '+fP(o.sym,o.tp):''}</div></div><span class="mut sm">現價 ${fP(o.sym,px[o.sym]?px[o.sym].mid:null)}</span></div>`).join(''):'<div class="empty">沒有掛單</div>');
+}
+$('#vTrade').onclick=async e=>{
+  if(e.target.id==='closeAll'){if(!demo()){if(!marketOpen())return toast('休市中，無法平倉');try{await fetchPrices(neededSyms())}catch(err){return toast(err.message)}}
+    for(const p of S.pos.slice()){const c=closePx(p);if(c!=null)closePos(p,c,Date.now(),'manual')}schedule();render();return}
+  const cb=e.target.closest('[data-close]');if(cb){const p=S.pos.find(x=>x.id===+cb.dataset.close);if(p){cb.disabled=true;const m=await closeNow(p);if(m)toast(m);renderLive()}return}
+  const db=e.target.closest('[data-del]');if(db){const o=S.orders.find(x=>x.id===+db.dataset.del);if(o){S.orders.splice(S.orders.indexOf(o),1);save();schedule();toast('掛單已取消');renderLive()}return}
+  const r=e.target.closest('[data-p],[data-o]');if(!r)return;if(r.dataset.p)posSheet(+r.dataset.p);else if(r.dataset.o)ordSheet(+r.dataset.o)};
+function rHist(){
+  if(desk())return rHistDesk();
+  const t=S.hist.filter(h=>h.sym),w=t.filter(h=>h.pnl>0),l=t.filter(h=>h.pnl<0),net=t.reduce((s,h)=>s+h.pnl,0),gw=w.reduce((s,h)=>s+h.pnl,0),gl=-l.reduce((s,h)=>s+h.pnl,0);
+  const R={sl:'停損',tp:'停利',so:'強平',manual:'手動',off:'離線觸發'};
+  $('#vHist').innerHTML=`<div class="card"><div class="kv" style="font-size:18px;font-weight:700"><span>已實現損益</span><span class="num ${net>=0?'up':'dn'}">${fM(net)}</span></div>
+  <div class="grid2 sm num" style="margin-top:8px"><div class="kv"><span>交易筆數</span><span>${t.length}</span></div><div class="kv"><span>勝率</span><span>${t.length?(w.length/t.length*100).toFixed(0)+'%':'—'}</span></div>
+  <div class="kv"><span>平均獲利</span><span>${w.length?fM(gw/w.length):'—'}</span></div><div class="kv"><span>平均虧損</span><span>${l.length?fM(-gl/l.length):'—'}</span></div>
+  <div class="kv"><span>獲利因子</span><span>${gl?(gw/gl).toFixed(2):'—'}</span></div><div class="kv"><span>餘額</span><span>${fM(S.bal)}</span></div></div></div>`
+  +(S.hist.length?S.hist.map(h=>h.sym?`<div class="row"><div class="g"><b>${h.sym}</b> <span class="${h.side==='buy'?'cb':'cs'}">${h.side==='buy'?'買':'賣'} ${h.lots}</span><span class="tag">${R[h.reason]||''}</span>
+   <div class="sm mut num">${fP(h.sym,h.open)} → ${fP(h.sym,h.close)}　${fT(h.ot)} ～ ${fT(h.ct)}</div></div><b class="num ${h.pnl>=0?'up':'dn'}">${fM(h.pnl)}</b></div>`
+   :`<div class="row"><div class="g"><b>${h.note}</b><div class="sm mut">${fT(h.ct)}</div></div><b class="num">${fM(h.amt)}</b></div>`).join(''):'<div class="empty">還沒有成交紀錄</div>');
+}
+function tzHour(tz){const p=new Intl.DateTimeFormat('en-US',{timeZone:tz,hour:'numeric',minute:'numeric',hour12:false,weekday:'short'}).formatToParts(new Date());const g=k=>p.find(x=>x.type===k).value;return{h:+g('hour')%24,m:+g('minute'),w:g('weekday')}}
+function rInfo(){
+  const ses=[['雪梨','Australia/Sydney',7,16],['東京','Asia/Tokyo',9,18],['倫敦','Europe/London',8,17],['紐約','America/New_York',8,17]].map(s=>{const t=tzHour(s[1]),open=!['Sat','Sun'].includes(t.w)&&t.h>=s[2]&&t.h<s[3];
+    return`<div class="kv"><span>${s[0]}　${String(t.h).padStart(2,'0')}:${String(t.m).padStart(2,'0')}</span><span class="${open?'up':'mut'}">${open?'● 交易時段':'○ 休息'}</span></div>`}).join('');
+  const d=C.data,n=d.length-1,sym=S.sym,sp=SYMS[sym];let tech='<div class="empty">K線載入後顯示</div>';
+  if(n>60){const c=d[n].c,m20=I.ma20[n],m60=I.ma60[n],rsi=I.rsi[n],hs=I.hist[n],row=(a,b,cl)=>`<div class="kv"><span>${a}</span><span class="${cl||''}">${b}</span></div>`;
+    tech=row('收盤價 vs MA20',c>m20?'價格在均線之上':'價格在均線之下',c>m20?'up':'dn')+row('MA20 vs MA60',m20>m60?'短均在長均之上（偏多排列）':'短均在長均之下（偏空排列）',m20>m60?'up':'dn')
+     +row('RSI(14)',rsi.toFixed(1)+(rsi>=70?'　超買區':rsi<=30?'　超賣區':'　中性區'),rsi>=70?'dn':rsi<=30?'up':'')
+     +row('MACD 柱狀',hs>=0?'正值（動能偏多）':'負值（動能偏空）',hs>=0?'up':'dn')
+     +row('布林通道位置',c>I.bbU[n]?'突破上軌':c<I.bbL[n]?'跌破下軌':((c-I.bbL[n])/(I.bbU[n]-I.bbL[n])*100).toFixed(0)+'%（0=下軌，100=上軌）')
+     +row('ATR(14) 平均波幅',(I.atr/sp.pip).toFixed(1)+' 點')}
+  const dc=cache[sym+'|1day'];let piv='<button class="btn full" id="loadD">載入日線計算樞軸點'+(demo()?'':'（1 點額度）')+'</button>';
+  if(dc&&dc.bars.length>2){const y=dc.bars[dc.bars.length-2],P=(y.h+y.l+y.c)/3,f=v=>fP(sym,v);
+    piv=`<div class="grid2 num sm"><div class="kv"><span>R2</span><span>${f(P+y.h-y.l)}</span></div><div class="kv"><span>昨高</span><span>${f(y.h)}</span></div><div class="kv"><span>R1</span><span>${f(2*P-y.l)}</span></div><div class="kv"><span>昨低</span><span>${f(y.l)}</span></div>
+     <div class="kv"><span>樞軸 P</span><span>${f(P)}</span></div><div class="kv"><span>昨收</span><span>${f(y.c)}</span></div><div class="kv"><span>S1</span><span>${f(2*P-y.h)}</span></div><div></div><div class="kv"><span>S2</span><span>${f(P-(y.h-y.l))}</span></div></div>`}
+  const k=q2usd(sym);
+  $('#vInfo').innerHTML=`<h3>全球交易時段（當地時間）</h3><div class="card">${ses}<p class="hint">倫敦與紐約重疊的時段通常波動最大。</p></div>
+  <h3>${sym}・${tfName(S.tf)} 技術面摘要</h3><div class="card">${tech}<p class="hint">以上是依目前圖表K線算出的客觀讀數，用來練習判讀，不是買賣建議。切換圖表週期會跟著改變。</p></div>
+  <h3>${sym} 樞軸點（依前一日）</h3><div class="card">${piv}</div>
+  <h3>合約規格</h3><div class="card num"><div class="kv"><span>1 手</span><span>${sp.contract.toLocaleString()} ${sym==='XAU/USD'?'盎司':sym.split('/')[0]}</span></div><div class="kv"><span>1 點（pip）</span><span>${sp.pip}</span></div>
+   <div class="kv"><span>1 手每點價值</span><span>${k==null?'—':fM(sp.contract*sp.pip*k)}</span></div><div class="kv"><span>模擬點差</span><span>${sp.spread} 點</span></div><div class="kv"><span>強制平倉線</span><span>保證金比例 50%</span></div></div>
+  <h3>新聞與經濟日曆（外部網站）</h3><div class="card"><p style="margin:0 0 8px"><a href="https://www.forexfactory.com/calendar" target="_blank" rel="noopener">Forex Factory 經濟日曆</a></p><p style="margin:0 0 8px"><a href="https://hk.investing.com/economic-calendar/" target="_blank" rel="noopener">Investing.com 財經日曆（中文）</a></p><p style="margin:0"><a href="https://news.cnyes.com/news/cat/forex" target="_blank" rel="noopener">鉅亨網 外匯新聞</a></p><p class="hint">即時新聞需要付費資料源，這裡先提供連結。重大數據（非農、CPI、央行利率決議）公布前後波動會放大。</p></div>`;
+}
+$('#vInfo').onclick=async e=>{if(e.target.id==='loadD'){try{const bars=await getSeries(S.sym,'1day',30);cache[S.sym+'|1day']={bars,at:Date.now()};rInfo()}catch(err){toast(err.message)}}};
+
+/* ---------- 底部面板 ---------- */
+function sheet(html){$('#sheet').innerHTML=html;$('#shade').classList.add('on')}
+function closeSheet(){$('#shade').classList.remove('on');$('#sheet').innerHTML='';renderLive()}
+$('#shade').addEventListener('click',e=>{if(e.target.id==='shade'||e.target.dataset.x)closeSheet()});
+const head=t=>`<h2><span>${t}</span><button data-x="1">×</button></h2>`;
+function checkStops(sym,side,price,sl,tp){
+  if(sl!=null&&sl<=0||tp!=null&&tp<=0)return'價格必須大於 0';
+  if(side==='buy'){if(sl&&sl>=price)return'買單的停損必須低於進場價 '+fP(sym,price);if(tp&&tp<=price)return'買單的停利必須高於進場價 '+fP(sym,price)}
+  else{if(sl&&sl<=price)return'賣單的停損必須高於進場價 '+fP(sym,price);if(tp&&tp>=price)return'賣單的停利必須低於進場價 '+fP(sym,price)}
+  return null;
+}
+let O={};
+function orderSheet(side,el){
+  O={side,kind:'market'};let sym=S.sym;const modal=!el;
+  const html=`<div class="seg" id="oSide"><button data-v="sell" class="s">賣出 SELL</button><button data-v="buy" class="b">買入 BUY</button></div>
+  <div class="seg" id="oKind"><button data-v="market">市價</button><button data-v="limit">限價 Limit</button><button data-v="stop">停損單 Stop</button></div>
+  <div class="two"><label class="f"><span>手數（0.01～100）</span><input id="oLots" inputmode="decimal" value="${S.lots}"></label><label class="f" id="oPriceW"><span>掛單價格</span><input id="oPrice" inputmode="decimal"></label></div>
+  <div class="two"><label class="f"><span>停損 SL（選填）</span><input id="oSL" inputmode="decimal" placeholder="不設定"></label><label class="f"><span>停利 TP（選填）</span><input id="oTP" inputmode="decimal" placeholder="不設定"></label></div>
+  <div class="hint num" id="oInfo"></div><div class="err" id="oErr"></div><button class="btn full" id="oGo"></button>`;if(modal)sheet(head('新訂單　'+sym)+html);else el.innerHTML=html;
+  const upd=()=>{if(!$('#oInfo'))return;sym=S.sym;document.querySelectorAll('#oSide button').forEach(b=>b.classList.toggle('on',b.dataset.v===O.side));document.querySelectorAll('#oKind button').forEach(b=>b.classList.toggle('on',b.dataset.v===O.kind));
+    $('#oPriceW').style.visibility=O.kind==='market'?'hidden':'visible';
+    const cur=O.side==='buy'?ask(sym):bid(sym),lots=num($('#oLots').value)||0,pr=O.kind==='market'?cur:(num($('#oPrice').value)||cur),sl=num($('#oSL').value),tp=num($('#oTP').value),k=q2usd(sym),pv=k==null?null:lots*SYMS[sym].contract*SYMS[sym].pip*k,m=pr?marginFor(sym,lots,pr):null;
+    let t=`現價 ${fP(sym,cur)}　所需保證金 ${m==null?'—':fM(m)}　每點 ${pv==null?'—':fM(pv)}`;
+    if(pv!=null&&pr){if(sl)t+=`<br>停損距離 ${(Math.abs(pr-sl)/SYMS[sym].pip).toFixed(1)} 點 ≈ <span class="dn">${fM(-Math.abs(pr-sl)/SYMS[sym].pip*pv)}</span>`;if(tp)t+=`<br>停利距離 ${(Math.abs(tp-pr)/SYMS[sym].pip).toFixed(1)} 點 ≈ <span class="up">${fM(Math.abs(tp-pr)/SYMS[sym].pip*pv)}</span>`}
+    $('#oInfo').innerHTML=t;const g=$('#oGo');g.className='btn full '+(O.side==='buy'?'pri':'red');g.textContent=(O.kind==='market'?'以市價':'掛單：')+(O.side==='buy'?'買入':'賣出')+(O.kind==='market'?'':' '+O.kind.toUpperCase())};
+  $('#oSide').onclick=e=>{const b=e.target.closest('button');if(b){O.side=b.dataset.v;upd()}};
+  $('#oKind').onclick=e=>{const b=e.target.closest('button');if(b){O.kind=b.dataset.v;if(O.kind!=='market'&&!$('#oPrice').value)$('#oPrice').value=fP(sym,O.side==='buy'?ask(sym):bid(sym));upd()}};
+  (el||$('#sheet')).oninput=upd;O.upd=upd;upd();
+  $('#oGo').onclick=async()=>{const err=m=>{$('#oErr').textContent=m},lots=r2(num($('#oLots').value)||0),sl=num($('#oSL').value),tp=num($('#oTP').value);
+    if(!(lots>=0.01&&lots<=100))return err('手數需在 0.01 到 100 之間');S.lots=lots;$('#lotIn').value=lots;
+    if(O.kind==='market'){
+      if(!demo()){if(!marketOpen())return err('市場休市中，無法以市價成交（可以改用掛單）');$('#oGo').disabled=true;try{await fetchPrices(neededSyms())}catch(e){$('#oGo').disabled=false;return err(e.message)}$('#oGo').disabled=false}
+      const price=O.side==='buy'?ask(sym):bid(sym);if(price==null)return err('尚無報價，請稍候');
+      const e=checkStops(sym,O.side,price,sl,tp)||openPos(sym,O.side,lots,price,sl,tp,Date.now());if(e)return err(e);
+      toast(`成交：${sym} ${O.side==='buy'?'買入':'賣出'} ${lots} @ ${fP(sym,price)}`);
+    }else{
+      const price=num($('#oPrice').value),a=ask(sym),b=bid(sym);if(!price||price<=0)return err('請輸入掛單價格');if(a==null)return err('尚無報價，請稍候');
+      if(O.side==='buy'&&O.kind==='limit'&&price>=a)return err('Buy Limit 的價格必須低於現價 '+fP(sym,a));
+      if(O.side==='buy'&&O.kind==='stop'&&price<=a)return err('Buy Stop 的價格必須高於現價 '+fP(sym,a));
+      if(O.side==='sell'&&O.kind==='limit'&&price<=b)return err('Sell Limit 的價格必須高於現價 '+fP(sym,b));
+      if(O.side==='sell'&&O.kind==='stop'&&price>=b)return err('Sell Stop 的價格必須低於現價 '+fP(sym,b));
+      const e=checkStops(sym,O.side,price,sl,tp);if(e)return err(e);
+      S.orders.push({id:S.nextId++,sym,type:O.side+' '+O.kind,lots,price,sl:sl||null,tp:tp||null,t:Date.now()});S.lastSeen[sym]=Date.now();
+      toast('掛單已建立');
+    }
+    save();schedule();err('');if(modal)closeSheet();else{$('#oSL').value='';$('#oTP').value='';if(O.kind!=='market')$('#oPrice').value='';renderLive()}};
+}
+function posSheet(id){
+  const p=S.pos.find(x=>x.id===id);if(!p)return;const c=closePx(p),v=pnl(p,c);
+  sheet(head(`${p.sym}　${p.side==='buy'?'買':'賣'} ${p.lots} 手`)+`<div class="grid2 num sm"><div class="kv"><span>進場價</span><span>${fP(p.sym,p.open)}</span></div><div class="kv"><span>現價</span><span>${fP(p.sym,c)}</span></div>
+   <div class="kv"><span>開倉時間</span><span>${fT(p.t)}</span></div><div class="kv"><span>損益</span><span class="${v>=0?'up':'dn'}">${v==null?'—':fM(v)}</span></div><div class="kv"><span>占用保證金</span><span>${fM(p.margin)}</span></div><div class="kv"><span>單號</span><span>#${p.id}</span></div></div>
+   <div class="two"><label class="f"><span>停損 SL</span><input id="mSL" inputmode="decimal" value="${p.sl?fP(p.sym,p.sl):''}" placeholder="不設定"></label><label class="f"><span>停利 TP</span><input id="mTP" inputmode="decimal" value="${p.tp?fP(p.sym,p.tp):''}" placeholder="不設定"></label></div>
+   <div class="err" id="mErr"></div><div class="two"><button class="btn" id="mSave">修改停損／停利</button><button class="btn red" id="mClose">平倉</button></div>`);
+  $('#mSave').onclick=()=>{const sl=num($('#mSL').value),tp=num($('#mTP').value),cur=closePx(p);if(cur==null)return $('#mErr').textContent='尚無報價';
+    const e=checkStops(p.sym,p.side,cur,sl,tp);if(e)return $('#mErr').textContent=e.replace(/進場價/g,'現價');p.sl=sl||null;p.tp=tp||null;S.lastSeen[p.sym]=Date.now();save();toast('已修改');closeSheet()};
+  $('#mClose').onclick=async()=>{if(!demo()){if(!marketOpen())return $('#mErr').textContent='休市中，無法平倉';try{await fetchPrices(neededSyms())}catch(e){return $('#mErr').textContent=e.message}}
+    if(!S.pos.includes(p))return closeSheet();const cur=closePx(p);if(cur==null)return $('#mErr').textContent='尚無報價';closePos(p,cur,Date.now(),'manual');schedule();closeSheet()};
+}
+function ordSheet(id){
+  const o=S.orders.find(x=>x.id===id);if(!o)return;
+  sheet(head(`掛單 #${o.id}　${o.sym}`)+`<p class="num"><b class="${o.type[0]==='b'?'cb':'cs'}">${o.type.toUpperCase()}</b>　${o.lots} 手 @ ${fP(o.sym,o.price)}${o.sl?'　SL '+fP(o.sym,o.sl):''}${o.tp?'　TP '+fP(o.sym,o.tp):''}</p><p class="hint">建立於 ${fT(o.t)}。價格碰到掛單價時會自動成交。</p><button class="btn red full" id="oDel">取消掛單</button>`);
+  $('#oDel').onclick=()=>{S.orders.splice(S.orders.indexOf(o),1);save();schedule();toast('掛單已取消');closeSheet()};
+}
+function indSheet(){
+  const ic=S.ic,MAC=['#e3b341','#bc8cff','#f778ba'],ck=(k,on)=>`<input type="checkbox" data-k="${k}" ${on?'checked':''}>`,nm=(k,v,lab,step)=>`<label><span>${lab}</span><input data-k="${k}" inputmode="decimal" value="${v}" ${step?'data-f="1"':''}></label>`;
+  sheet(head('技術指標設定')+`<div class="ph" style="padding-left:0">主圖（疊在K線上）</div>`
+   +ic.ma.map((m,i)=>`<div class="irow">${ck('ma.'+i+'.on',m.on)}<b style="color:${MAC[i]}">均線 ${i+1}</b><label><span>類型</span><select data-k="ma.${i}.t"><option ${m.t==='SMA'?'selected':''}>SMA</option><option ${m.t==='EMA'?'selected':''}>EMA</option></select></label>${nm('ma.'+i+'.n',m.n,'週期')}</div>`).join('')
+   +`<div class="irow">${ck('bb.on',ic.bb.on)}<b style="color:#58a6ff">布林通道</b>${nm('bb.n',ic.bb.n,'週期')}${nm('bb.k',ic.bb.k,'標準差',1)}</div>
+   <div class="ph" style="padding-left:0">副圖（K線下方）</div>
+   <div class="irow">${ck('rsi.on',ic.rsi.on)}<b>RSI</b>${nm('rsi.n',ic.rsi.n,'週期')}</div>
+   <div class="irow">${ck('macd.on',ic.macd.on)}<b>MACD</b>${nm('macd.f',ic.macd.f,'快線')}${nm('macd.s',ic.macd.s,'慢線')}${nm('macd.g',ic.macd.g,'訊號')}</div>
+   <div class="irow">${ck('kd.on',ic.kd.on)}<b>KD 隨機指標</b>${nm('kd.n',ic.kd.n,'週期')}${nm('kd.k',ic.kd.k,'K 平滑')}${nm('kd.d',ic.kd.d,'D 平滑')}</div>
+   <label class="chk"><span>紅漲綠跌（台股習慣；預設為綠漲紅跌）</span><input type="checkbox" id="upRed" ${S.upRed?'checked':''}></label>
+   <div class="two" style="margin-top:10px"><button class="btn" id="icReset">恢復預設值</button><button class="btn brand" data-x="1">完成</button></div>
+   <p class="hint">改動會立刻套用到圖表。週期可填 1～500；指標是用已載入的K線在本機計算，不會消耗行情額度。</p>`);
+  const apply=e=>{const t=e.target;if(t.id==='upRed'){S.upRed=t.checked}else if(t.dataset.k){const p=t.dataset.k.split('.');let o=S.ic;for(let i=0;i<p.length-1;i++)o=o[p[i]];const k=p[p.length-1];
+      if(t.type==='checkbox')o[k]=t.checked;else if(t.tagName==='SELECT')o[k]=t.value;else{let v=num(t.value);if(v==null||v<=0)return;v=t.dataset.f?Math.max(0.1,Math.min(10,v)):Math.max(1,Math.min(500,Math.round(v)));o[k]=v}}
+    save();recomputeJ();draw()};
+  $('#sheet').onchange=apply;$('#sheet').oninput=apply;
+  $('#icReset').onclick=()=>{S.ic=JSON.parse(JSON.stringify(DEF.ic));save();recomputeJ();draw();indSheet()};
+}
+function setSheet(){
+  sheet(head('設定')+`<label class="f"><span>Twelve Data API 金鑰（留空＝示範模式）</span><input id="sKey" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="貼上金鑰"></label>
+  <p class="hint">到 <a href="https://twelvedata.com/" target="_blank" rel="noopener">twelvedata.com</a> 免費註冊後，在後台的 API Keys 頁面複製。金鑰只存在這台裝置的瀏覽器裡。</p>
+  <div class="two"><label class="f"><span>報價更新間隔</span><select id="sInt">${[10,15,20,30,60].map(v=>`<option value="${v}" ${v===S.interval?'selected':''}>${v} 秒</option>`).join('')}</select></label>
+  <label class="f"><span>槓桿（新倉適用）</span><select id="sLev">${[10,30,50,100,200,500].map(v=>`<option value="${v}" ${v===S.lev?'selected':''}>1:${v}</option>`).join('')}</select></label></div>
+  <p class="hint" id="sQuota"></p>
+  <button class="btn brand full" id="sSave">儲存</button>
+  <h3 style="margin-left:0">帳戶</h3><div class="two"><label class="f"><span>金額（美元）</span><input id="sAmt" inputmode="decimal" value="10000"></label><div style="display:flex;align-items:flex-end;padding-bottom:8px"><button class="btn full" id="sDep">入金</button></div></div>
+  <button class="btn red full" id="sReset">重設帳戶（清空持倉與紀錄，餘額設為上方金額）</button><div class="err" id="sErr"></div>
+  <h3 style="margin-left:0">備份</h3><div class="two"><button class="btn" id="sExp">匯出備份</button><button class="btn" id="sImp">匯入備份</button></div><input type="file" id="sFile" accept="application/json,.json" hidden>
+  <p class="hint">資料存在這台裝置的瀏覽器。換手機或清除瀏覽資料前，請先匯出備份。</p>`);
+  $('#sKey').value=S.key;
+  const quota=()=>{const iv=+$('#sInt').value,n=neededSyms().length,eff=Math.max(iv,Math.ceil(n*60/7)),perH=Math.round(3600/eff*n),used=S.credits.day===new Date().toISOString().slice(0,10)?S.credits.n:0;
+    $('#sQuota').innerHTML=`會影響。每次更新、每個商品扣 1 點；免費額度是每分鐘 8 點、每天 800 點。<br>目前需要更新 <b>${n}</b> 個商品，選 ${iv} 秒${eff>iv?`（商品較多，實際會放慢到 ${eff} 秒）`:''}＝每小時約 <b>${perH}</b> 點，800 點約可連續看盤 <b>${(800/perH).toFixed(1)}</b> 小時。<br>今日已用 ${used} 點，剩 ${Math.max(0,800-used)} 點。視窗切到背景或休市時會自動暫停，不扣點。`};
+  $('#sInt').onchange=quota;quota();
+  $('#sSave').onclick=async()=>{const was=demo();S.key=$('#sKey').value.trim();S.interval=+$('#sInt').value;S.lev=+$('#sLev').value;
+    if(was!==demo()){for(const k in px)delete px[k];for(const k in cache)delete cache[k];C.data=[];S.lastSeen={};if(S.pos.length||S.orders.length){S.pos=[];S.orders=[];toast('行情來源已切換，原本的持倉與掛單已清除（餘額與紀錄保留）',4500)}if(demo())for(const s in SYMS)px[s]={mid:DEMO_BASE[s],t:Date.now()}}
+    save();closeSheet();await loadChart(true);await tick();schedule()};
+  $('#sDep').onclick=()=>{const a=num($('#sAmt').value);if(!a||a<=0)return $('#sErr').textContent='請輸入金額';S.bal=r2(S.bal+a);S.hist.unshift({note:'入金',amt:a,ct:Date.now()});save();toast('已入金 '+fM(a));closeSheet()};
+  let armed=false;$('#sReset').onclick=()=>{const a=num($('#sAmt').value);if(!a||a<=0)return $('#sErr').textContent='請輸入金額';if(!armed){armed=true;$('#sReset').textContent='再按一次確認重設（無法復原）';return}
+    S.bal=r2(a);S.pos=[];S.orders=[];S.hist=[{note:'帳戶重設',amt:a,ct:Date.now()}];save();schedule();toast('帳戶已重設');closeSheet()};
+  $('#sExp').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:'application/json'}));a.download='fx-practice-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click()};
+  $('#sImp').onclick=()=>$('#sFile').click();
+  $('#sFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const j=JSON.parse(rd.result);if(j.v!==1||!Array.isArray(j.pos))throw 0;localStorage.setItem(KEY,JSON.stringify(j));location.reload()}catch(_){$('#sErr').textContent='這不是有效的備份檔'}};rd.readAsText(f)};
+}
+$('#gear').onclick=setSheet;$('#hSym').onclick=()=>go('vQuotes');
+$('#qSell').onclick=()=>orderSheet('sell');$('#qBuy').onclick=()=>orderSheet('buy');
+const lotIn=$('#lotIn');lotIn.value=S.lots;
+const setLots=v=>{S.lots=Math.max(0.01,Math.min(100,r2(v)));lotIn.value=S.lots;save()};
+$('#lotM').onclick=()=>setLots(S.lots-(S.lots>1?0.1:0.01));$('#lotP').onclick=()=>setLots(S.lots+(S.lots>=1?0.1:0.01));lotIn.onchange=()=>setLots(num(lotIn.value)||0.01);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!demo()){tick();schedule()}});
+window.addEventListener('pagehide',()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}});
+
+/* ================= 啟動 ================= */
+window.__fx={get S(){return S},px,C,I,setPx,openPos,closePos,checkBar,acct,pnl,marginFor,bid,ask};
+(async function init(){
+  if(demo()){for(const s in SYMS)if(!px[s])px[s]={mid:DEMO_BASE[s],t:Date.now()}}
+  const layout=()=>{O={};$('#ticket').innerHTML='';if($('#shade').classList.contains('on'))closeSheet();if(desk())orderSheet('buy',$('#ticket'));go(desk()?'vTrade':'vChart');renderLive()};
+  mq.addEventListener('change',layout);
+  renderTabs();renderTfs();layout();
+  if(!demo())setStatus('wait','連線中…');
+  await loadChart();
+  await catchUp();
+  await tick();schedule();
+})();
+</script>
+</body>
+</html>
