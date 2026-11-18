@@ -149,8 +149,9 @@ table.tb{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numer
  ::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:var(--line);border-radius:5px}
 }
 
-html,body{overflow:hidden;height:100%}
-#app{height:var(--apph,100dvh)}
+html,body{overflow:hidden;height:100%;background:var(--bg)}
+#app{position:fixed;top:0;left:0;right:0;height:var(--apph,100dvh)}
+#shade{bottom:auto;height:var(--apph,100dvh)}
 @media(max-width:360px){header{gap:6px;padding:7px 8px}#hSym{font-size:14px;padding:3px 6px}#hPx{font-size:13px;gap:8px}#bell,#gear{font-size:16px;padding:2px}#qbar .b{font-size:13px}#qbar .b small{font-size:12px}#tools button{padding:5px 7px;font-size:12px}}
 input,select,textarea{font-size:16px!important}
 input.sw{appearance:none;-webkit-appearance:none;width:46px;height:28px;border-radius:14px;background:#2a3557;position:relative;flex:none;cursor:pointer;transition:background .2s;margin:0;border:0}
@@ -974,9 +975,13 @@ const setLots=v=>{S.lots=Math.max(0.01,Math.min(100,r2(v)));lotIn.value=S.lots;s
 $('#lotM').onclick=()=>setLots(S.lots-(S.lots>1?0.1:0.01));$('#lotP').onclick=()=>setLots(S.lots+(S.lots>=1?0.1:0.01));lotIn.onchange=()=>setLots(num(lotIn.value)||0.01);
 /* 依實際螢幕高度調整版面（修正 iPhone 主畫面 App 底部留白） */
 const standalone=()=>!!(navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches));
+let insetProbe=null;
+function safeTop(){try{if(!insetProbe){insetProbe=document.createElement('div');insetProbe.style.cssText='position:fixed;top:0;left:0;width:0;height:env(safe-area-inset-top);visibility:hidden;pointer-events:none';document.body.appendChild(insetProbe)}return insetProbe.getBoundingClientRect().height}catch(_){return 0}}
 function fitApp(){const a=document.activeElement;if(a&&a.matches&&a.matches('input,select,textarea'))return;
-  let h=Math.max(window.innerHeight||0,document.documentElement.clientHeight||0,window.visualViewport?Math.round(visualViewport.height):0);
-  if(standalone()&&window.screen&&screen.height){const land=innerWidth>innerHeight,sh=land?Math.min(screen.width,screen.height):Math.max(screen.width,screen.height);if(sh>h&&sh-h<=140)h=sh}
+  let h=Math.max(window.innerHeight||0,document.documentElement.clientHeight||0);
+  // iOS 主畫面 App（透明狀態列）會把可用高度少算一個狀態列；只在「少的剛好等於狀態列」時才補回
+  if(standalone()&&window.screen&&screen.height){const land=innerWidth>innerHeight,sh=land?Math.min(screen.width,screen.height):Math.max(screen.width,screen.height),top=safeTop();
+    if(top>0&&sh>h&&Math.abs(sh-h-top)<=6)h=sh}
   const cur=document.documentElement.style.getPropertyValue('--apph');if(cur!==h+'px'){document.documentElement.style.setProperty('--apph',h+'px');requestAnimationFrame(resize)}}
 fitApp();window.addEventListener('resize',fitApp);window.addEventListener('pageshow',()=>setTimeout(fitApp,50));
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(fitApp,100)});
