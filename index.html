@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="theme-color" content="#070b18">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0c1326">
 <title>HAIYI｜駭異科技.FX</title>
 <style>
 :root{--bg:#070b18;--panel:#0c1326;--panel2:#141d38;--line:#1e2a4c;--tx:#e8ecf8;--mut:#8491b4;--cy:#22d3ee;--vi:#8b5cf6;--up:#26a69a;--dn:#ef5350;--buy:#2f7de1;--sell:#e0473f;--warn:#e3b341}
@@ -14,7 +14,8 @@
 html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font:14px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;overscroll-behavior:none}
 button,input,select{font:inherit;color:inherit}
 button{cursor:pointer;border:0;background:none}
-#app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:900px;margin:0 auto;padding-top:env(safe-area-inset-top)}
+#app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:900px;margin:0 auto;padding-top:var(--padTop,max(env(safe-area-inset-top),0px));background:var(--panel)}
+main{background:var(--bg)}
 header{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid;border-image:linear-gradient(90deg,var(--cy),var(--vi) 45%,var(--line) 80%) 1;background:var(--panel)}
 #hSym{font-weight:700;font-size:16px;padding:4px 8px;border:1px solid var(--line);border-radius:6px}
 #hPx{flex:1;display:flex;gap:12px;font-variant-numeric:tabular-nums;font-size:15px}
@@ -41,7 +42,7 @@ main{flex:1;min-height:0;position:relative}
 #lotBox{display:flex;align-items:center;background:var(--panel2);border-radius:8px;border:1px solid var(--line)}
 #lotBox button{width:32px;height:100%;font-size:18px;color:var(--mut)}
 #lotBox input{width:56px;text-align:center;background:none;border:0;outline:0;font-variant-numeric:tabular-nums}
-nav{display:flex;border-top:1px solid var(--line);background:var(--panel);padding-bottom:env(safe-area-inset-bottom);flex:none}
+nav{display:flex;border-top:1px solid var(--line);background:var(--panel);padding-bottom:var(--navPB,env(safe-area-inset-bottom));flex:none}
 nav button{flex:1;min-width:0;padding:8px 0 7px;color:var(--mut);font-size:11px}
 nav button i{display:block;font-style:normal;font-size:18px;line-height:1.2}
 nav button.on{color:var(--cy)}
@@ -239,7 +240,7 @@ const DEMO_BASE={'USD/JPY':152.4,'EUR/USD':1.085,'GBP/USD':1.27,'AUD/USD':0.655,
 const KEY='fxp1';
 const DEF={v:1,key:'',interval:30,lev:100,bal:10000,pos:[],orders:[],hist:[],nextId:1,sym:'USD/JPY',tf:'15min',
   ic:{ma:[{on:true,n:20,t:'SMA'},{on:false,n:60,t:'SMA'},{on:false,n:120,t:'EMA'}],bb:{on:false,n:20,k:2},rsi:{on:false,n:14},macd:{on:false,f:12,s:26,g:9},kd:{on:false,n:9,k:3,d:3},sar:{on:false,st:0.02,mx:0.2},ichi:{on:false,a:9,b:26,c:52},atr:{on:false,n:14},cci:{on:false,n:20},wr:{on:false,n:14}},tabs:null,draw:{},showTr:true,magnet:true,
-  nt:{on:false,asked:false,bg:false,sound:true,sl:{on:true,pips:10},mv:{},ref:{},log:[],unread:0},tab:0,upRed:false,lots:0.1,lastSeen:{},credits:{day:'',n:0},px:{}};
+  nt:{on:false,asked:false,bg:false,sound:true,sl:{on:true,pips:10},mv:{},ref:{},log:[],unread:0},tab:0,upRed:false,ui:{padT:null,padB:null},lots:0.1,lastSeen:{},credits:{day:'',n:0},px:{}};
 let S=load();
 function load(){let o=JSON.parse(JSON.stringify(DEF));try{const j=JSON.parse(localStorage.getItem(KEY));if(j&&j.v===1){const ic=o.ic;o=Object.assign(o,j);
     if(!j.ic){o.ic=ic;if(j.ind){ic.ma[0].on=!!j.ind.ma20;ic.ma[1].on=!!j.ind.ma60;ic.bb.on=!!j.ind.bb;ic.rsi.on=!!j.ind.rsi;ic.macd.on=!!j.ind.macd}}
@@ -955,7 +956,11 @@ function setSheet(gapHelp){
   <h3 style="margin-left:0" id="sBak">備份</h3><div class="two"><button class="btn" id="sCopy">複製備份碼</button><button class="btn" id="sPasteBtn">貼上備份碼還原</button></div>
   <div id="sPasteBox" style="display:none"><textarea id="sPaste" rows="3" placeholder="在這裡長按 → 貼上備份碼" style="width:100%;margin-top:8px;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--tx)"></textarea><button class="btn brand full" id="sRestore" style="margin-top:6px">還原</button></div>
   <div class="two" style="margin-top:8px"><button class="btn" id="sExp">匯出備份檔</button><button class="btn" id="sImp">匯入備份檔</button></div><input type="file" id="sFile" accept="application/json,.json" hidden>
-  <h3 style="margin-left:0">畫面診斷</h3><p class="hint" id="sDiag"></p>
+  <h3 style="margin-left:0" id="sCal">畫面校正</h3><p class="hint">如果頂端的商品名稱被遮住，或最下排離螢幕底部太遠，用下面的按鈕調整，畫面會立刻變化。</p>
+  <div class="ntrow"><div class="g">上方留白</div><button class="btn" data-pad="padT,-4">−</button><b class="num" id="padTv" style="min-width:64px;text-align:center"></b><button class="btn" data-pad="padT,4">＋</button></div>
+  <div class="ntrow"><div class="g">下方留白</div><button class="btn" data-pad="padB,-4">−</button><b class="num" id="padBv" style="min-width:64px;text-align:center"></b><button class="btn" data-pad="padB,4">＋</button></div>
+  <button class="btn full" id="padReset" style="margin-top:8px">恢復自動</button>
+  <p class="hint" id="sDiag"></p>
   <p class="hint">資料存在這台裝置的瀏覽器。換手機或清除瀏覽資料前，請先匯出備份。</p>`);
   $('#sKey').value=S.key;
   const quota=()=>{const iv=+$('#sInt').value,n=neededSyms().length,eff=Math.max(iv,Math.ceil(n*60/7)),perH=Math.round(3600/eff*n),used=S.credits.day===new Date().toISOString().slice(0,10)?S.credits.n:0;
@@ -969,12 +974,15 @@ function setSheet(gapHelp){
     S.bal=r2(a);S.pos=[];S.orders=[];S.hist=[{note:'帳戶重設',amt:a,ct:Date.now()}];save();schedule();toast('帳戶已重設');closeSheet()};
   $('#sExp').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:'application/json'}));a.download='fx-practice-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click()};
   $('#sImp').onclick=()=>$('#sFile').click();
-  const dg=screenDiag();$('#sDiag').innerHTML=`螢幕 ${dg.sw}×${dg.sh}，網頁可用 ${dg.sw}×${dg.vh}，頂部安全區 ${Math.round(dg.top)}，主畫面模式：${standalone()?'是':'否'}。`+(dg.bug?`<br><b style="color:var(--warn)">偵測到 iPhone 主畫面 App 的底部空白問題。</b>修正步驟：<br>1. 按上面的「複製備份碼」，貼到「備忘錄」保存。<br>2. 長按桌面上的這個 App 圖示 → 移除 → 從主畫面移除。<br>3. 用 Safari 打開 miler-du.github.io/FX → 分享 →「加入主畫面」。<br>4. 打開新的圖示 → ⚙ →「貼上備份碼還原」。`:'<br>畫面尺寸正常。');
+  const padShow=()=>{const cs=getComputedStyle(document.querySelector('#app')),nb=getComputedStyle(document.querySelector('nav'));$('#padTv').textContent=Math.round(parseFloat(cs.paddingTop))+(S.ui.padT==null?'（自動）':'');$('#padBv').textContent=Math.round(parseFloat(nb.paddingBottom))+(S.ui.padB==null?'（自動）':'')};
+  $('#sheet').querySelectorAll('[data-pad]').forEach(bt=>bt.onclick=()=>{const[k,d]=bt.dataset.pad.split(','),cur=k==='padT'?parseFloat(getComputedStyle(document.querySelector('#app')).paddingTop):parseFloat(getComputedStyle(document.querySelector('nav')).paddingBottom);S.ui[k]=Math.max(0,Math.min(160,Math.round(cur)+(+d)));save();fitApp();setTimeout(padShow,30)});
+  $('#padReset').onclick=()=>{S.ui={padT:null,padB:null};save();fitApp();setTimeout(padShow,30)};padShow();
+  const dg=screenDiag();$('#sDiag').innerHTML=`螢幕 ${dg.sw}×${dg.sh}，網頁可用 ${dg.sw}×${dg.vh}，頂部安全區 ${Math.round(dg.top)}，主畫面模式：${standalone()?'是':'否'}。`;
   const restore=txt=>{try{const j=JSON.parse(txt.trim());if(j.v!==1||!Array.isArray(j.pos))throw 0;localStorage.setItem(KEY,JSON.stringify(j));location.reload()}catch(_){$('#sErr').textContent='備份碼不正確，請確認有完整貼上'}};
   $('#sCopy').onclick=async()=>{const t=JSON.stringify(S);try{await navigator.clipboard.writeText(t);toast('備份碼已複製，請貼到備忘錄保存',3500)}catch(_){$('#sPasteBox').style.display='block';$('#sPaste').value=t;$('#sPaste').select();toast('無法自動複製，請在下方框內長按 → 全選 → 拷貝',4000)}};
   $('#sPasteBtn').onclick=()=>{$('#sPasteBox').style.display='block';$('#sPaste').value='';$('#sPaste').focus()};
   $('#sRestore').onclick=()=>restore($('#sPaste').value);
-  if(gapHelp)setTimeout(()=>{const e=$('#sDiag');if(e)e.scrollIntoView({block:'center'})},100);
+  if(gapHelp)setTimeout(()=>{const e=$('#sCal');if(e)e.scrollIntoView({block:'center'})},100);
   $('#sFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const j=JSON.parse(rd.result);if(j.v!==1||!Array.isArray(j.pos))throw 0;localStorage.setItem(KEY,JSON.stringify(j));location.reload()}catch(_){$('#sErr').textContent='這不是有效的備份檔'}};rd.readAsText(f)};
 }
 $('#gear').onclick=setSheet;$('#bell').onclick=ntSheet;$('#indBtn').onclick=indSheet;$('#drawBtn').onclick=drawSheet;$('#hSym').onclick=()=>go('vQuotes');
@@ -988,12 +996,14 @@ let insetProbe=null;
 function safeTop(){try{if(!insetProbe){insetProbe=document.createElement('div');insetProbe.style.cssText='position:fixed;top:0;left:0;width:0;height:env(safe-area-inset-top);visibility:hidden;pointer-events:none';document.body.appendChild(insetProbe)}return insetProbe.getBoundingClientRect().height}catch(_){return 0}}
 function screenDiag(){const land=innerWidth>innerHeight,sh=window.screen?(land?Math.min(screen.width,screen.height):Math.max(screen.width,screen.height)):0,top=safeTop();
   return{sw:innerWidth,sh,vh:innerHeight,top,bug:standalone()&&top>0&&sh>innerHeight&&Math.abs(sh-innerHeight-top)<=6}}
-let gapWarned=false;
+function applyPad(){const r=document.documentElement.style,ui=S.ui||(S.ui={padT:null,padB:null}),dg=screenDiag(),gap=standalone()?dg.sh-dg.vh:0;
+  if(ui.padT!=null)r.setProperty('--padTop',ui.padT+'px');else r.removeProperty('--padTop');
+  // iPhone 主畫面 App 底部若已被系統留白（gap），導覽列就不再重複加 home 鍵的安全距離
+  if(ui.padB!=null)r.setProperty('--navPB',ui.padB+'px');else if(gap>=30&&gap<=140)r.setProperty('--navPB','4px');else r.removeProperty('--navPB')}
 function fitApp(){const a=document.activeElement;if(a&&a.matches&&a.matches('input,select,textarea'))return;
   const h=Math.max(window.innerHeight||0,document.documentElement.clientHeight||0);
-  const cur=document.documentElement.style.getPropertyValue('--apph');if(cur!==h+'px'){document.documentElement.style.setProperty('--apph',h+'px');requestAnimationFrame(resize)}
-  if(!gapWarned&&screenDiag().bug){gapWarned=true;setTimeout(()=>{const bn=$('#banner');bn.style.display='block';bn.dataset.lock='1';
-    bn.innerHTML='底部空白需要<b>重新加入主畫面</b>一次才會修正（資料可先備份）。<u id="gapHow">點這裡看步驟</u>';const g=$('#gapHow');if(g)g.onclick=()=>setSheet(true)},800)}}
+  const cur=document.documentElement.style.getPropertyValue('--apph');if(cur!==h+'px')document.documentElement.style.setProperty('--apph',h+'px');
+  applyPad();requestAnimationFrame(resize)}
 fitApp();window.addEventListener('resize',fitApp);window.addEventListener('pageshow',()=>setTimeout(fitApp,50));
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(fitApp,100)});
 const resetScroll=()=>{if(window.scrollX||window.scrollY||document.documentElement.scrollTop||document.body.scrollTop){window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0}};
