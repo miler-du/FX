@@ -11,52 +11,52 @@
 <style>
 :root{--bg:#070b18;--panel:#0c1326;--panel2:#141d38;--line:#1e2a4c;--tx:#e8ecf8;--mut:#8491b4;--cy:#22d3ee;--vi:#8b5cf6;--up:#26a69a;--dn:#ef5350;--buy:#2f7de1;--sell:#e0473f;--warn:#e3b341}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font:14px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;overscroll-behavior:none}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font:calc(14px*var(--fz,1))/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;overscroll-behavior:none}
 button,input,select{font:inherit;color:inherit}
 button{cursor:pointer;border:0;background:none}
 #app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:900px;margin:0 auto;padding-top:var(--padTop,max(env(safe-area-inset-top),0px));background:var(--panel)}
 main{background:var(--bg)}
 header{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid;border-image:linear-gradient(90deg,var(--cy),var(--vi) 45%,var(--line) 80%) 1;background:var(--panel)}
-#hSym{font-weight:700;font-size:16px;padding:4px 8px;border:1px solid var(--line);border-radius:6px}
-#hPx{flex:1;display:flex;gap:12px;font-variant-numeric:tabular-nums;font-size:15px}
-#hPx small{color:var(--mut);font-size:10px;display:block;line-height:1}
-#stat{font-size:11px;color:var(--mut);display:flex;align-items:center;gap:5px;max-width:150px;text-align:right;min-width:0}
+#hSym{font-weight:700;font-size:calc(16px*var(--fz,1));padding:4px 8px;border:1px solid var(--line);border-radius:6px}
+#hPx{flex:1;display:flex;gap:12px;font-variant-numeric:tabular-nums;font-size:calc(15px*var(--fz,1))}
+#hPx small{color:var(--mut);font-size:calc(10px*var(--fz,1));display:block;line-height:1}
+#stat{font-size:calc(11px*var(--fz,1));color:var(--mut);display:flex;align-items:center;gap:5px;max-width:150px;text-align:right;min-width:0}
 #statTx{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px}
 #dot{width:8px;height:8px;border-radius:50%;background:var(--mut);flex:none}
-#gear{font-size:20px;padding:2px 6px}
-#banner{display:none;background:#3a2f0b;color:var(--warn);font-size:12px;padding:5px 12px;text-align:center}
+#gear{font-size:calc(20px*var(--fz,1));padding:2px 6px}
+#banner{display:none;background:#3a2f0b;color:var(--warn);font-size:calc(12px*var(--fz,1));padding:5px 12px;text-align:center}
 main{flex:1;min-height:0;position:relative}
 .view{position:absolute;inset:0;display:none;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .view.on{display:block}
 #vChart.on{display:flex;flex-direction:column;overflow:hidden}
 #tfs{display:flex;gap:2px;padding:5px 8px;border-bottom:1px solid var(--line);overflow-x:auto;flex:none}
-#tfs button{padding:5px 9px;border-radius:5px;color:var(--mut);font-size:13px;white-space:nowrap}
+#tfs button{padding:5px 9px;border-radius:5px;color:var(--mut);font-size:calc(13px*var(--fz,1));white-space:nowrap}
 #tfs button.on{background:var(--panel2);color:var(--tx);font-weight:600}
 #tfs .sp{flex:1}
 #cwrap{flex:1;min-height:0;position:relative}
 #cv{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
 #qbar{display:flex;gap:8px;padding:8px 10px;border-top:1px solid var(--line);background:var(--panel);flex:none;align-items:stretch}
 #qbar .b{flex:1;border-radius:8px;padding:6px 4px;color:#fff;font-weight:700;line-height:1.2}
-#qbar .b small{display:block;font-weight:500;font-size:13px;font-variant-numeric:tabular-nums}
+#qbar .b small{display:block;font-weight:500;font-size:calc(13px*var(--fz,1));font-variant-numeric:tabular-nums}
 .sellbg{background:var(--sell)}.buybg{background:var(--buy)}
 #lotBox{display:flex;align-items:center;background:var(--panel2);border-radius:8px;border:1px solid var(--line)}
-#lotBox button{width:32px;height:100%;font-size:18px;color:var(--mut)}
+#lotBox button{width:32px;height:100%;font-size:calc(18px*var(--fz,1));color:var(--mut)}
 #lotBox input{width:56px;text-align:center;background:none;border:0;outline:0;font-variant-numeric:tabular-nums}
 nav{display:flex;border-top:1px solid var(--line);background:var(--panel);padding-bottom:var(--navPB,env(safe-area-inset-bottom));flex:none}
-nav button{flex:1;min-width:0;padding:8px 0 7px;color:var(--mut);font-size:11px}
-nav button i{display:block;font-style:normal;font-size:18px;line-height:1.2}
+nav button{flex:1;min-width:0;padding:8px 0 7px;color:var(--mut);font-size:calc(11px*var(--fz,1))}
+nav button i{display:block;font-style:normal;font-size:calc(18px*var(--fz,1));line-height:1.2}
 nav button.on{color:var(--cy)}
 .row{display:flex;align-items:center;padding:11px 14px;border-bottom:1px solid var(--line);gap:10px}
 .row:active{background:var(--panel)}
 .row .g{flex:1;min-width:0}
-.row b{font-size:15px}
-.mut{color:var(--mut)}.sm{font-size:12px}.num{font-variant-numeric:tabular-nums}
+.row b{font-size:calc(15px*var(--fz,1))}
+.mut{color:var(--mut)}.sm{font-size:calc(12px*var(--fz,1))}.num{font-variant-numeric:tabular-nums}
 .up{color:var(--up)}.dn{color:var(--dn)}.cb{color:#58a6ff}.cs{color:#ff7b72}
 .card{margin:10px;padding:12px;background:var(--panel);border:1px solid var(--line);border-radius:10px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px}
 .kv{display:flex;justify-content:space-between;gap:8px}
 .kv span:first-child{color:var(--mut)}
-h3{margin:14px 14px 4px;font-size:12px;color:var(--mut);font-weight:600;letter-spacing:.05em}
+h3{margin:14px 14px 4px;font-size:calc(12px*var(--fz,1));color:var(--mut);font-weight:600;letter-spacing:.05em}
 .btn{padding:10px 14px;border-radius:8px;background:var(--panel2);border:1px solid var(--line);font-weight:600}
 .btn.pri{background:var(--buy);border-color:var(--buy);color:#fff}
 .btn.brand{background:linear-gradient(90deg,#0e9fb8,#6d47d9);border:0;color:#fff}
@@ -66,75 +66,75 @@ h3{margin:14px 14px 4px;font-size:12px;color:var(--mut);font-weight:600;letter-s
 #shade{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;z-index:10;align-items:flex-end;justify-content:center}
 #shade.on{display:flex}
 #sheet{background:var(--panel);width:100%;max-width:900px;max-height:88dvh;overflow-y:auto;border-radius:14px 14px 0 0;padding:14px 14px calc(16px + env(safe-area-inset-bottom))}
-#sheet h2{margin:0 0 10px;font-size:16px;display:flex;justify-content:space-between;align-items:center}
-#sheet h2 button{font-size:22px;color:var(--mut);padding:0 6px}
+#sheet h2{margin:0 0 10px;font-size:calc(16px*var(--fz,1));display:flex;justify-content:space-between;align-items:center}
+#sheet h2 button{font-size:calc(22px*var(--fz,1));color:var(--mut);padding:0 6px}
 label.f{display:block;margin:8px 0}
-label.f span{display:block;font-size:12px;color:var(--mut);margin-bottom:3px}
-label.f input,label.f select{width:100%;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);outline:0;font-size:16px}
+label.f span{display:block;font-size:calc(12px*var(--fz,1));color:var(--mut);margin-bottom:3px}
+label.f input,label.f select{width:100%;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);outline:0;font-size:calc(16px*var(--fz,1))}
 .seg{display:flex;background:var(--bg);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:6px 0}
 .seg button{flex:1;padding:9px 4px;color:var(--mut);font-weight:600}
 .seg button.on{background:var(--panel2);color:var(--tx)}
 .seg button.on.s{background:var(--sell);color:#fff}.seg button.on.b{background:var(--buy);color:#fff}
-.err{color:var(--dn);font-size:13px;min-height:18px;margin:6px 0}
-.hint{font-size:12px;color:var(--mut);margin:6px 0}
+.err{color:var(--dn);font-size:calc(13px*var(--fz,1));min-height:18px;margin:6px 0}
+.hint{font-size:calc(12px*var(--fz,1));color:var(--mut);margin:6px 0}
 .two{display:flex;gap:8px}.two>*{flex:1}
-#toast{position:fixed;left:0;right:0;margin:0 auto;width:max-content;top:calc(60px + env(safe-area-inset-top));background:#30363d;border:1px solid #484f58;padding:9px 14px;border-radius:8px;z-index:20;display:none;max-width:88%;font-size:13px;text-align:center}
+#toast{position:fixed;left:0;right:0;margin:0 auto;width:max-content;top:calc(60px + env(safe-area-inset-top));background:#30363d;border:1px solid #484f58;padding:9px 14px;border-radius:8px;z-index:20;display:none;max-width:88%;font-size:calc(13px*var(--fz,1));text-align:center}
 .chk{display:flex;align-items:center;justify-content:space-between;padding:11px 2px;border-bottom:1px solid var(--line)}
 .chk input:not(.sw){width:20px;height:20px}
 a{color:var(--cy)}
-.tag{font-size:10px;padding:1px 5px;border-radius:4px;border:1px solid var(--line);color:var(--mut);margin-left:6px}
+.tag{font-size:calc(10px*var(--fz,1));padding:1px 5px;border-radius:4px;border:1px solid var(--line);color:var(--mut);margin-left:6px}
 
 /* ---- HAIYI 品牌元素 ---- */
 #brand,#acctBar,#side,#dockTabs{display:none}
 #ctabs{display:flex;gap:2px;padding:4px 6px 0;overflow-x:auto;flex:none;background:var(--panel)}
-#ctabs button{display:flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--line);border-bottom:0;border-radius:7px 7px 0 0;color:var(--mut);font-size:13px;font-weight:600;white-space:nowrap}
-#ctabs button small{font-weight:500;font-size:11px;opacity:.8}
+#ctabs button{display:flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--line);border-bottom:0;border-radius:7px 7px 0 0;color:var(--mut);font-size:calc(13px*var(--fz,1));font-weight:600;white-space:nowrap}
+#ctabs button small{font-weight:500;font-size:calc(11px*var(--fz,1));opacity:.8}
 #ctabs button.on{background:var(--bg);color:var(--tx);box-shadow:inset 0 2px 0 var(--cy)}
 #ctabs i{font-style:normal;color:var(--mut);padding:0 2px;border-radius:4px}#ctabs i:hover{color:var(--dn)}
 #ctabs #tabAdd{border-style:dashed;padding:6px 12px}
 .irow{display:flex;align-items:flex-end;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
 .irow>input.sw{margin:0 0 6px}
-.irow>b{width:92px;flex:none;padding-bottom:9px;font-size:13.5px}
-.irow label{flex:1;min-width:0}.irow label span{display:block;font-size:11px;color:var(--mut);margin-bottom:2px}
-.irow label input,.irow label select{width:100%;padding:8px;border-radius:7px;border:1px solid var(--line);background:var(--bg);outline:0;font-size:15px}
+.irow>b{width:92px;flex:none;padding-bottom:9px;font-size:calc(13.5px*var(--fz,1))}
+.irow label{flex:1;min-width:0}.irow label span{display:block;font-size:calc(11px*var(--fz,1));color:var(--mut);margin-bottom:2px}
+.irow label input,.irow label select{width:100%;padding:8px;border-radius:7px;border:1px solid var(--line);background:var(--bg);outline:0;font-size:calc(15px*var(--fz,1))}
 .nwBar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;padding:6px 12px}
-.nwBar .seg{margin:0;flex:1;min-width:260px;max-width:420px}.nwBar .seg button{padding:6px 4px;font-size:13px}
-.nwLinks{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px}
+.nwBar .seg{margin:0;flex:1;min-width:260px;max-width:420px}.nwBar .seg button{padding:6px 4px;font-size:calc(13px*var(--fz,1))}
+.nwLinks{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:calc(12.5px*var(--fz,1))}
 .nwGrid{display:flex;flex-direction:column}.nwBox{height:520px;margin:0 8px 8px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--panel)}
-.ph{display:flex;align-items:center;gap:8px;padding:9px 12px 7px;font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--mut)}
+.ph{display:flex;align-items:center;gap:8px;padding:9px 12px 7px;font-size:calc(11px*var(--fz,1));font-weight:700;letter-spacing:.14em;color:var(--mut)}
 .ph::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--cy);box-shadow:0 0 8px var(--cy);flex:none}
 .ph::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--cy),var(--vi) 40%,transparent)}
 .card{clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
 #tfs button.on{box-shadow:inset 0 -2px 0 var(--cy)}
-table.tb{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
+table.tb{width:100%;border-collapse:collapse;font-size:calc(12.5px*var(--fz,1));font-variant-numeric:tabular-nums}
 .tb th{position:sticky;top:0;background:var(--panel);color:var(--mut);font-weight:600;text-align:right;padding:6px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
 .tb td{text-align:right;padding:6px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
 .tb th:nth-child(-n+4),.tb td:nth-child(-n+4){text-align:left}
 .tb tbody tr{cursor:pointer}.tb tbody tr:hover{background:var(--panel2)}
-.tb .x{padding:2px 9px;border:1px solid var(--line);border-radius:5px;color:var(--mut);font-size:12px}
+.tb .x{padding:2px 9px;border:1px solid var(--line);border-radius:5px;color:var(--mut);font-size:calc(12px*var(--fz,1))}
 .tb .x:hover{border-color:var(--dn);color:var(--dn)}
-.stats{display:flex;flex-wrap:wrap;gap:6px 22px;padding:8px 12px;font-size:12.5px;border-bottom:1px solid var(--line)}
+.stats{display:flex;flex-wrap:wrap;gap:6px 22px;padding:8px 12px;font-size:calc(12.5px*var(--fz,1));border-bottom:1px solid var(--line)}
 .stats span span{color:var(--mut);margin-right:6px}
-@media(min-width:1000px){
+@media(min-width:1000px) and (min-height:600px){
  #app{max-width:none}
  nav,#qbar,#hSym{display:none}
  #brand{display:flex;flex-direction:column;line-height:1.15;padding-right:14px;margin-right:4px;border-right:1px solid var(--line)}
- #brand b{font-size:15px;letter-spacing:.22em;background:linear-gradient(90deg,var(--cy),var(--vi));-webkit-background-clip:text;background-clip:text;color:transparent}
- #brand span{font-size:10.5px;color:var(--mut);letter-spacing:.12em}
+ #brand b{font-size:calc(15px*var(--fz,1));letter-spacing:.22em;background:linear-gradient(90deg,var(--cy),var(--vi));-webkit-background-clip:text;background-clip:text;color:transparent}
+ #brand span{font-size:calc(10.5px*var(--fz,1));color:var(--mut);letter-spacing:.12em}
  #hPx{flex:none;align-items:center}
- #hPx::before{content:attr(data-sym);font-weight:700;font-size:17px;margin-right:4px}
- #acctBar{display:flex;flex:1;justify-content:flex-end;gap:22px;font-size:12.5px;font-variant-numeric:tabular-nums}
- #acctBar small{display:block;color:var(--mut);font-size:10px;line-height:1.1}
+ #hPx::before{content:attr(data-sym);font-weight:700;font-size:calc(17px*var(--fz,1));margin-right:4px}
+ #acctBar{display:flex;flex:1;justify-content:flex-end;gap:22px;font-size:calc(12.5px*var(--fz,1));font-variant-numeric:tabular-nums}
+ #acctBar small{display:block;color:var(--mut);font-size:calc(10px*var(--fz,1));line-height:1.1}
  #stat{max-width:260px}
  main{display:grid;grid-template-columns:270px minmax(0,1fr) 320px;grid-template-rows:minmax(0,1fr) auto 240px}
  .view{position:static;inset:auto}
  #vQuotes{display:block;grid-column:1;grid-row:1/4;border-right:1px solid var(--line);background:var(--panel)}
- #vQuotes .row{padding:8px 12px}#vQuotes .row b{font-size:14px}
+ #vQuotes .row{padding:8px 12px}#vQuotes .row b{font-size:calc(14px*var(--fz,1))}
  #vQuotes .tag{display:none}#vQuotes .row .sm{white-space:nowrap}
  #vQuotes .row.cur{background:var(--panel2);box-shadow:inset 2px 0 0 var(--cy)}
  #vChart,#vChart.on{display:flex;flex-direction:column;grid-column:2;grid-row:1;overflow:hidden;min-height:0}
  #dockTabs{display:flex;grid-column:2;grid-row:2;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--panel)}
- #dockTabs button{padding:7px 16px;color:var(--mut);font-size:13px;font-weight:600}
+ #dockTabs button{padding:7px 16px;color:var(--mut);font-size:calc(13px*var(--fz,1));font-weight:600}
  #dockTabs button.on{color:var(--tx);box-shadow:inset 0 -2px 0 var(--cy)}
  #vTrade,#vHist,#vInfo,#vNews{grid-column:2;grid-row:3;min-height:0}
  main.big{grid-template-rows:minmax(0,1fr) auto 60%}
@@ -144,7 +144,7 @@ table.tb{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numer
  #vInfo{columns:330px;column-gap:0}#vInfo .card{break-inside:avoid;margin-top:4px}#vInfo h3{break-after:avoid}
  #side{display:block;grid-column:3;grid-row:1/4;border-left:1px solid var(--line);background:var(--panel);overflow-y:auto}
  #ticket,#acctBox{padding:2px 12px 10px}
- #acctBox .kv{padding:3px 0;font-size:13px;font-variant-numeric:tabular-nums}
+ #acctBox .kv{padding:3px 0;font-size:calc(13px*var(--fz,1));font-variant-numeric:tabular-nums}
  #shade{align-items:center}#sheet{max-width:470px;border-radius:12px;border:1px solid var(--line)}
  .row:active{background:none}.row{cursor:pointer}.row:hover{background:var(--panel2)}
  ::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:var(--line);border-radius:5px}
@@ -153,8 +153,8 @@ table.tb{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numer
 html,body{overflow:hidden;height:100%;width:100%;max-width:100vw;background:var(--bg)}
 #app{position:fixed;top:0;left:0;right:0;height:var(--apph,100dvh)}
 #shade{bottom:auto;height:var(--apph,100dvh)}
-@media(max-width:360px){header{gap:6px;padding:7px 8px}#hSym{font-size:14px;padding:3px 6px}#hPx{font-size:13px;gap:8px}#bell,#gear{font-size:16px;padding:2px}#qbar .b{font-size:13px}#qbar .b small{font-size:12px}#tools button{padding:5px 7px;font-size:12px}}
-input,select,textarea{font-size:16px!important}
+@media(max-width:360px){#stat{display:none}header{gap:6px;padding:7px 8px}#hSym{font-size:calc(14px*var(--fz,1));padding:3px 6px}#hPx{font-size:calc(13px*var(--fz,1));gap:8px}#bell,#gear{font-size:calc(16px*var(--fz,1));padding:2px}#qbar .b{font-size:calc(13px*var(--fz,1))}#qbar .b small{font-size:calc(12px*var(--fz,1))}#tools button{padding:5px 7px;font-size:calc(12px*var(--fz,1))}}
+input,select,textarea{font-size:max(16px,calc(15px*var(--fz,1)))!important}
 input.sw{appearance:none;-webkit-appearance:none;width:46px;height:28px;border-radius:14px;background:#2a3557;position:relative;flex:none;cursor:pointer;transition:background .2s;margin:0;border:0}
 input.sw::before{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px #0006}
 input.sw:checked{background:linear-gradient(90deg,#0e9fb8,#6d47d9)}
@@ -162,27 +162,57 @@ input.sw:checked::before{transform:translateX(18px)}
 #ctabsRow{display:flex;align-items:flex-end;background:var(--panel);flex:none}
 #ctabsRow #ctabs{flex:1;min-width:0}
 #tools{display:flex;gap:4px;padding:4px 6px;flex:none}
-#tools button{padding:5px 9px;border:1px solid var(--line);border-radius:7px;color:var(--mut);font-size:13px;font-weight:600;white-space:nowrap}
+#tools button{padding:5px 9px;border:1px solid var(--line);border-radius:7px;color:var(--mut);font-size:calc(13px*var(--fz,1));font-weight:600;white-space:nowrap}
 #tools button.on{color:var(--cy);border-color:var(--cy)}
-#dbar{position:absolute;left:0;right:0;margin:0 auto;width:max-content;top:36px;display:none;align-items:center;gap:8px;background:#141d38f2;border:1px solid var(--cy);border-radius:20px;padding:5px 6px 5px 14px;font-size:13px;z-index:3;white-space:nowrap;max-width:96%}
-#dbar button{padding:5px 11px;border-radius:14px;background:var(--panel2);border:1px solid var(--line);font-size:12.5px}
+#dbar{position:absolute;left:0;right:0;margin:0 auto;width:max-content;top:36px;display:none;align-items:center;gap:8px;background:#141d38f2;border:1px solid var(--cy);border-radius:20px;padding:5px 6px 5px 14px;font-size:calc(13px*var(--fz,1));z-index:3;white-space:nowrap;max-width:96%}
+#dbar button{padding:5px 11px;border-radius:14px;background:var(--panel2);border:1px solid var(--line);font-size:calc(12.5px*var(--fz,1))}
 #dbar button.del{background:var(--sell);border-color:var(--sell);color:#fff}
 .tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0 10px}
-.tgrid button{display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 4px;border-radius:10px;background:var(--panel2);border:1px solid var(--line);font-size:12.5px;color:var(--tx)}
+.tgrid button{display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 4px;border-radius:10px;background:var(--panel2);border:1px solid var(--line);font-size:calc(12.5px*var(--fz,1));color:var(--tx)}
 .tgrid button svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round}
 .tgrid button.on{border-color:var(--cy);color:var(--cy)}
-#bell{position:relative;font-size:18px;padding:2px 4px;flex:none}
-#bell b{position:absolute;top:-5px;right:-7px;background:var(--sell);color:#fff;font-size:10px;border-radius:9px;padding:0 4px;line-height:16px;min-width:16px;text-align:center}
+#bell{position:relative;font-size:calc(18px*var(--fz,1));padding:2px 4px;flex:none}
+#bell b{position:absolute;top:-5px;right:-7px;background:var(--sell);color:#fff;font-size:calc(10px*var(--fz,1));border-radius:9px;padding:0 4px;line-height:16px;min-width:16px;text-align:center}
 #alerts{position:fixed;left:0;right:0;margin:0 auto;top:calc(58px + env(safe-area-inset-top));z-index:25;display:flex;flex-direction:column;gap:6px;width:min(92%,420px);pointer-events:none}
-.al{pointer-events:auto;background:#101a36f7;border:1px solid var(--cy);box-shadow:0 6px 20px #0009;border-radius:10px;padding:9px 12px;font-size:13px;color:var(--tx)}
-.al b{display:block;font-size:13.5px;margin-bottom:2px}
+.al{pointer-events:auto;background:#101a36f7;border:1px solid var(--cy);box-shadow:0 6px 20px #0009;border-radius:10px;padding:9px 12px;font-size:calc(13px*var(--fz,1));color:var(--tx)}
+.al b{display:block;font-size:calc(13.5px*var(--fz,1));margin-bottom:2px}
 .ntrow{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--line)}
 .ntrow .g{flex:1;min-width:0}
 .ntrow input.pin{width:64px;padding:6px;border-radius:7px;border:1px solid var(--line);background:var(--bg);outline:0;text-align:center}
 #hSym{white-space:nowrap;flex:none}
 #hPx{min-width:0}
 @media(max-width:430px){#statTx{display:none}header{gap:8px;padding:8px 10px}#hPx{gap:10px}}
-.sub{font-size:12px;color:var(--mut);font-weight:600;margin:14px 0 2px}
+.sub{font-size:calc(12px*var(--fz,1));color:var(--mut);font-weight:600;margin:14px 0 2px}
+
+/* ---- 手機橫向：K線優先 ---- */
+#goLive{position:absolute;right:calc(70px*var(--fz,1));bottom:calc(26px*var(--fz,1));z-index:2;display:none;padding:5px 11px;border-radius:14px;background:#141d38e6;border:1px solid var(--cy);color:var(--cy);font-size:calc(12px*var(--fz,1));font-weight:600}
+@media (orientation:landscape) and (max-height:599px){
+ #app{display:grid;grid-template-columns:calc(54px + env(safe-area-inset-left)) minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr);padding-top:0;padding-right:env(safe-area-inset-right);max-width:none}
+ header{grid-column:1/3;padding:4px 12px 4px calc(12px + env(safe-area-inset-left));gap:14px}
+ #banner{grid-column:1/3;padding:2px 12px}
+ main{grid-column:2;grid-row:3}
+ nav{grid-column:1;grid-row:3;flex-direction:column;border-top:0;border-right:1px solid var(--line);padding:2px 0 env(safe-area-inset-bottom) env(safe-area-inset-left);overflow-y:auto}
+ nav button{padding:4px 0;font-size:calc(10px*var(--fz,1))}
+ nav button i{font-size:calc(17px*var(--fz,1))}
+ #brand{display:flex;flex-direction:column;line-height:1.1;padding-right:12px;border-right:1px solid var(--line);flex:none}
+ #brand b{font-size:calc(14px*var(--fz,1));letter-spacing:.22em;background:linear-gradient(90deg,var(--cy),var(--vi));-webkit-background-clip:text;background-clip:text;color:transparent}
+ #brand span{font-size:calc(10px*var(--fz,1));color:var(--mut);letter-spacing:.1em}
+ #hPx{flex:none}
+ #acctBar{display:flex;flex:1;min-width:0;justify-content:flex-end;gap:14px;font-size:calc(12px*var(--fz,1));font-variant-numeric:tabular-nums;overflow:hidden}
+ #acctBar>div{white-space:nowrap}
+ #acctBar small{display:block;color:var(--mut);font-size:calc(9.5px*var(--fz,1));line-height:1.1}
+ #statTx{display:none}
+ #vChart.on{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto}
+ #ctabsRow{grid-column:1;grid-row:1;border-bottom:1px solid var(--line);align-items:center}
+ #ctabs{padding:2px 4px 0}
+ #tfs{grid-column:2;grid-row:1;padding:3px 6px}
+ #cwrap{grid-column:1/3;grid-row:2}
+ #qbar{grid-column:1/3;grid-row:3;padding:4px 8px calc(4px + env(safe-area-inset-bottom)) 8px;gap:8px}
+ #qbar .b{display:flex;align-items:center;justify-content:center;gap:10px;padding:5px 4px}
+ #qbar .b small{display:inline}
+ #shade{align-items:center}#sheet{max-width:520px;max-height:92%;border-radius:12px}
+ #alerts{top:8px}
+}
 </style>
 </head>
 <body>
@@ -202,7 +232,7 @@ input.sw:checked::before{transform:translateX(18px)}
     <section class="view" id="vChart">
       <div id="ctabsRow"><div id="ctabs"></div><div id="tools"><button id="drawBtn">✎ 繪圖</button><button id="indBtn">ƒ 指標</button></div></div>
       <div id="tfs"></div>
-      <div id="cwrap"><canvas id="cv"></canvas><div id="dbar"></div></div>
+      <div id="cwrap"><canvas id="cv"></canvas><div id="dbar"></div><button id="goLive">⇥ 最新</button></div>
       <div id="qbar">
         <button class="b sellbg" id="qSell">賣出 SELL<small id="qBid">—</small></button>
         <div id="lotBox"><button id="lotM">−</button><input id="lotIn" inputmode="decimal" aria-label="手數"><button id="lotP">＋</button></div>
@@ -240,7 +270,7 @@ const DEMO_BASE={'USD/JPY':152.4,'EUR/USD':1.085,'GBP/USD':1.27,'AUD/USD':0.655,
 const KEY='fxp1';
 const DEF={v:1,key:'',interval:30,lev:100,bal:10000,pos:[],orders:[],hist:[],nextId:1,sym:'USD/JPY',tf:'15min',
   ic:{ma:[{on:true,n:20,t:'SMA'},{on:false,n:60,t:'SMA'},{on:false,n:120,t:'EMA'}],bb:{on:false,n:20,k:2},rsi:{on:false,n:14},macd:{on:false,f:12,s:26,g:9},kd:{on:false,n:9,k:3,d:3},sar:{on:false,st:0.02,mx:0.2},ichi:{on:false,a:9,b:26,c:52},atr:{on:false,n:14},cci:{on:false,n:20},wr:{on:false,n:14}},tabs:null,draw:{},showTr:true,magnet:true,
-  nt:{on:false,asked:false,bg:false,sound:true,sl:{on:true,pips:10},mv:{},ref:{},log:[],unread:0},tab:0,upRed:false,ui:{padT:null,padB:null},lots:0.1,lastSeen:{},credits:{day:'',n:0},px:{}};
+  nt:{on:false,asked:false,bg:false,sound:true,sl:{on:true,pips:10},mv:{},ref:{},log:[],unread:0},tab:0,upRed:false,fz:1.15,ui:{padT:null,padB:null},lots:0.1,lastSeen:{},credits:{day:'',n:0},px:{}};
 let S=load();
 function load(){let o=JSON.parse(JSON.stringify(DEF));try{const j=JSON.parse(localStorage.getItem(KEY));if(j&&j.v===1){const ic=o.ic;o=Object.assign(o,j);
     if(!j.ic){o.ic=ic;if(j.ind){ic.ma[0].on=!!j.ind.ma20;ic.ma[1].on=!!j.ind.ma60;ic.bb.on=!!j.ind.bb;ic.rsi.on=!!j.ind.rsi;ic.macd.on=!!j.ind.macd}}
@@ -483,6 +513,7 @@ function recomputeJ(){const d=C.data,c=d.map(b=>b.c),ic=S.ic;
   const k=ic.kd.on?kdCalc(d,ic.kd.n,ic.kd.k,ic.kd.d):null;J.k=k&&k.K;J.d=k&&k.D;
   J.sar=ic.sar.on?sarCalc(d,ic.sar.st,ic.sar.mx):null;J.ich=ic.ichi.on?ichiCalc(d,ic.ichi.a,ic.ichi.b,ic.ichi.c):null;
   J.atr=ic.atr.on?atrCalc(d,ic.atr.n):null;J.cci=ic.cci.on?cciCalc(d,ic.cci.n):null;J.wr=ic.wr.on?wrCalc(d,ic.wr.n):null;J.ok=1}
+const fz=()=>S.fz||1.15,FNT=n=>Math.round(n*fz())+'px -apple-system,"PingFang TC","Segoe UI",sans-serif';
 /* ================= 圖表（Canvas） ================= */
 const C={cv:$('#cv'),ctx:null,w:0,h:0,barW:7,off:0,cross:null,data:[],msg:''};
 C.ctx=C.cv.getContext('2d');let dpr=1;
@@ -490,10 +521,10 @@ function resize(){const r=C.cv.getBoundingClientRect();if(!r.width)return;dpr=wi
 function niceStep(x){const p=Math.pow(10,Math.floor(Math.log10(x))),f=x/p;return(f<1.5?1:f<3.5?2:f<7.5?5:10)*p}
 function draw(){
   const x=C.ctx,d=C.data,N=d.length,W=C.w,H=C.h;if(!W)return;
-  x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,W,H);x.font='11px -apple-system,"Segoe UI",sans-serif';x.textBaseline='middle';
+  x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,W,H);const F=fz();x.font=FNT(11);x.textBaseline='middle';
   const UP=S.upRed?'#ef5350':'#26a69a',DN=S.upRed?'#26a69a':'#ef5350';
   if(!N){x.fillStyle='#8b949e';x.textAlign='center';x.fillText(C.msg||'載入K線中…',W/2,H/2);return}
-  const sec=tfSec(S.tf),sym=S.sym,AX=62,TA=18,ic=S.ic,MAC=['#e3b341','#bc8cff','#f778ba'],subs=['rsi','macd','kd','atr','cci','wr'].filter(k=>ic[k].on),subH=Math.round((H-TA)*Math.min(0.2,0.5/Math.max(1,subs.length))),mainH=H-TA-subs.length*subH,pw=W-AX,PAD=4;
+  const sec=tfSec(S.tf),sym=S.sym,AX=Math.round(62*F),TA=Math.round(18*F),ic=S.ic,MAC=['#e3b341','#bc8cff','#f778ba'],subs=['rsi','macd','kd','atr','cci','wr'].filter(k=>ic[k].on),subH=Math.round((H-TA)*Math.min(0.2,0.5/Math.max(1,subs.length))),mainH=H-TA-subs.length*subH,pw=W-AX,PAD=4;
   const last=N-1-C.off+PAD,first=last-pw/C.barW,i0=Math.max(0,Math.floor(first)),i1=Math.min(N-1,Math.ceil(last));
   if(!J.ok||(ic.rsi.on&&!J.rsi)||(ic.macd.on&&!J.macd)||(ic.kd.on&&!J.k)||(ic.bb.on&&!J.bbU)||(ic.sar.on&&!J.sar)||(ic.ichi.on&&!J.ich)||(ic.atr.on&&!J.atr)||(ic.cci.on&&!J.cci)||(ic.wr.on&&!J.wr)||J.ma.length!==ic.ma.length)recomputeJ();
   const X=i=>pw-(last-i+0.5)*C.barW,IX=x0=>last+0.5-(pw-x0)/C.barW;
@@ -534,15 +565,18 @@ function draw(){
   if(S.showTr)drawTrades(x,{xOfT,Y,pw,sym});
   if(pend.length&&tool){x.fillStyle='#22d3ee';for(const q of pend){x.beginPath();x.arc(xOfT(q.t),Y(q.p),5,0,7);x.fill()}}
   x.restore();
-  for(const a of axL){const y=Math.round(Y(a.p))+.5;if(y<0||y>mainH)continue;x.fillStyle=a.c;x.fillRect(pw,y-8,AX,16);x.fillStyle='#070b18';x.textAlign='left';x.fillText(fP(sym,a.p),pw+5,y)}
+  for(const a of axL){const y=Math.round(Y(a.p))+.5;if(y<0||y>mainH)continue;x.fillStyle=a.c;x.fillRect(pw,y-8*F,AX,16*F);x.fillStyle='#070b18';x.textAlign='left';x.fillText(fP(sym,a.p),pw+5,y)}
   C.geo={pw,mainH,Y,P,IX,xOfT,tOfX,d,N};
   // 水平線（報價、持倉、掛單）
   const hl=(p,col,lb,dash,solid)=>{if(p==null)return;const y=Math.round(Y(p))+.5;if(y<0||y>mainH)return;x.strokeStyle=col;x.setLineDash(dash||[]);x.beginPath();x.moveTo(0,y);x.lineTo(pw,y);x.stroke();x.setLineDash([]);
-    if(lb){x.textAlign='left';x.fillStyle=col;x.fillText(lb,4,y-7)}
-    x.fillStyle=solid?col:'#070b18';x.fillRect(pw,y-8,AX,16);if(!solid){x.strokeStyle=col;x.strokeRect(pw+.5,y-7.5,AX-1,15)}x.fillStyle=solid?'#fff':col;x.textAlign='left';x.fillText(fP(sym,p),pw+5,y)};
+    if(lb){x.textAlign='left';x.fillStyle=col;x.fillText(lb,4,y-7*F)}
+    x.fillStyle=solid?col:'#070b18';x.fillRect(pw,y-8*F,AX,16*F);if(!solid){x.strokeStyle=col;x.strokeRect(pw+.5,y-8*F+.5,AX-1,16*F-1)}x.fillStyle=solid?'#fff':col;x.textAlign='left';x.fillText(fP(sym,p),pw+5,y)};
   for(const o of S.orders)if(o.sym===sym)hl(o.price,'#8b949e',o.type.toUpperCase()+' '+o.lots,[2,3]);
   for(const p of S.pos)if(p.sym===sym){const c=p.side==='buy'?'#58a6ff':'#ff7b72';hl(p.open,c,(p.side==='buy'?'BUY ':'SELL ')+p.lots,[6,3]);hl(p.sl,'#ef5350','SL',[3,3]);hl(p.tp,'#3fb950','TP',[3,3])}
-  if(C.off<pw/C.barW){hl(ask(sym),'#e0473f',null,[1,3]);hl(bid(sym),'#484f58',null,null,true)}
+  if(C.off<pw/C.barW){hl(ask(sym),'#e0473f',null,[1,3]);hl(bid(sym),'#484f58',null,null,true);
+    const bb=bid(sym);if(bb!=null&&sec<86400){const y=Math.round(Y(bb));if(y>8&&y<mainH-24*F){let r=Math.max(0,Math.round(d[N-1].t+sec-Date.now()/1000));if(r>sec)r=0;const hh=Math.floor(r/3600),mm=Math.floor(r%3600/60),ss=r%60,p0=n=>String(n).padStart(2,'0');
+      const t=(hh?hh+':':'')+p0(mm)+':'+p0(ss);x.fillStyle='#141d38';x.fillRect(pw,y+8*F,AX,16*F);x.fillStyle='#8491b4';x.textAlign='left';x.fillText(t,pw+5,y+15.5*F)}}}
+  const gl=$('#goLive');if(gl)gl.style.display=C.off>3?'block':'none';
   // 副圖
   const hv=C.cross?Math.max(0,Math.min(N-1,Math.round(IX(C.cross.x)))):N-1,fx1=v=>v!=null?v.toFixed(1):'';
   const SUB={rsi:{rng:[0,100],lines:[30,70],ser:()=>[[J.rsi,'#e3b341']],lb:()=>`RSI(${ic.rsi.n}) ${fx1(J.rsi[hv])}`},
@@ -562,18 +596,18 @@ function draw(){
       x.strokeStyle='#1e2a4c';x.setLineDash([2,3]);sp.lines.forEach(v=>{x.beginPath();x.moveTo(0,yf(v));x.lineTo(pw,yf(v));x.stroke()});x.setLineDash([]);
       for(const [a,c] of ser)line(a,c,yf);x.restore();lb=sp.lb();
       x.fillStyle='#8b949e';x.textAlign='left';sp.lines.forEach(v=>x.fillText(v,pw+5,yf(v)))}
-    x.fillStyle='#8b949e';x.textAlign='left';x.fillText(lb,4,top+9)});
+    x.fillStyle='#8b949e';x.textAlign='left';x.fillText(lb,4,top+9*F)});
   x.strokeStyle='#1e2a4c';x.beginPath();x.moveTo(pw+.5,0);x.lineTo(pw+.5,H-TA);x.moveTo(0,H-TA+.5);x.lineTo(W,H-TA+.5);x.stroke();
   // 十字線 + 資訊
   let ii=N-1;
   if(C.cross){const cx=C.cross.x,cy=C.cross.y;ii=Math.max(0,Math.min(N-1,Math.round(IX(cx))));const sx=Math.round(X(ii))+.5;
     x.strokeStyle='#6e7681';x.setLineDash([3,3]);x.beginPath();x.moveTo(sx,0);x.lineTo(sx,H-TA);if(cy<mainH){x.moveTo(0,cy);x.lineTo(pw,cy)}x.stroke();x.setLineDash([]);
-    if(cy<mainH){x.fillStyle='#30363d';x.fillRect(pw,cy-8,AX,16);x.fillStyle='#e6edf3';x.textAlign='left';x.fillText(fP(sym,P(cy)),pw+5,cy)}
+    if(cy<mainH){x.fillStyle='#30363d';x.fillRect(pw,cy-8*F,AX,16*F);x.fillStyle='#e6edf3';x.textAlign='left';x.fillText(fP(sym,P(cy)),pw+5,cy)}
     const dt=new Date(d[ii].t*1000),lb=sec>=86400?dt.getUTCFullYear()+'/'+p2(dt.getUTCMonth()+1)+'/'+p2(dt.getUTCDate()):fT(d[ii].t*1000);
     const tw=x.measureText(lb).width+10,tx=Math.max(tw/2,Math.min(pw-tw/2,sx));x.fillStyle='#30363d';x.fillRect(tx-tw/2,H-TA,tw,TA);x.fillStyle='#e6edf3';x.textAlign='center';x.fillText(lb,tx,H-TA/2)}
-  const b=d[ii];x.textAlign='left';x.fillStyle='#070b18cc';x.fillRect(0,0,pw,J.bbU||J.ich||J.sar||J.ma.some(Boolean)?32:17);
-  x.fillStyle=b.c>=b.o?UP:DN;x.fillText(`${tfName(S.tf)}  開${fP(sym,b.o)} 高${fP(sym,b.h)} 低${fP(sym,b.l)} 收${fP(sym,b.c)}`,4,9);
-  let tx=4;const lab=(t,c)=>{x.fillStyle=c;x.fillText(t,tx,24);tx+=x.measureText(t).width+8};
+  const b=d[ii];x.textAlign='left';x.fillStyle='#070b18cc';x.fillRect(0,0,pw,(J.bbU||J.ich||J.sar||J.ma.some(Boolean)?32:17)*F);
+  x.fillStyle=b.c>=b.o?UP:DN;x.fillText(`${tfName(S.tf)}  開${fP(sym,b.o)} 高${fP(sym,b.h)} 低${fP(sym,b.l)} 收${fP(sym,b.c)}`,4,9*F);
+  let tx=4;const lab=(t,c)=>{x.fillStyle=c;x.fillText(t,tx,24*F);tx+=x.measureText(t).width+8};
   J.ma.forEach((a,n)=>{if(a&&a[ii]!=null)lab((ic.ma[n].t==='EMA'?'EMA':'MA')+ic.ma[n].n+' '+fP(sym,a[ii]),MAC[n])});
   if(J.ich&&J.ich.T[ii]!=null)lab(`一目 轉換 ${fP(sym,J.ich.T[ii])} 基準 ${J.ich.K[ii]!=null?fP(sym,J.ich.K[ii]):'—'}`,'#58a6ff');
   if(J.sar&&J.sar[ii]!=null)lab('SAR '+fP(sym,J.sar[ii]),'#d2a8ff');
@@ -614,8 +648,8 @@ function drawShapes(x,g){
         x.fillStyle=c2;x.globalAlpha=.15;x.fillRect(xa,ya,w,h);x.globalAlpha=1;x.strokeStyle=c2;L(xa,ya,xa+w,ya);L(xa,ya+h,xa+w,ya+h);L(xa+w/2,p1.y,xa+w/2,p2.y);
         const t=`${up?'+':''}${(df/SYMS[sym].pip).toFixed(1)} 點  ${up?'+':''}${(df/dw.pts[0].p*100).toFixed(2)}%`,tw=x.measureText(t).width+12,ty=up?ya-12:ya+h+12;
         x.fillStyle=c2;x.fillRect(xa+w/2-tw/2,ty-9,tw,18);x.fillStyle='#fff';x.textAlign='center';x.fillText(t,xa+w/2,ty);box=[xa,ya,w,h];break}
-      case'text':{x.font='13px -apple-system,"Segoe UI",sans-serif';const t=dw.text||'',tw=x.measureText(t).width+10;x.fillStyle='#141d38e6';x.fillRect(p1.x,p1.y-10,tw,20);x.strokeStyle=col;x.strokeRect(p1.x+.5,p1.y-9.5,tw-1,19);
-        x.fillStyle=col;x.textAlign='left';x.fillText(t,p1.x+5,p1.y);x.font='11px -apple-system,"Segoe UI",sans-serif';box=[p1.x,p1.y-10,tw,20];break}
+      case'text':{x.font=FNT(13);const t=dw.text||'',tw=x.measureText(t).width+10;x.fillStyle='#141d38e6';x.fillRect(p1.x,p1.y-10,tw,20);x.strokeStyle=col;x.strokeRect(p1.x+.5,p1.y-9.5,tw-1,19);
+        x.fillStyle=col;x.textAlign='left';x.fillText(t,p1.x+5,p1.y);x.font=FNT(11);box=[p1.x,p1.y-10,tw,20];break}
     }
     if(on){x.fillStyle='#fff';for(const q of P0){x.beginPath();x.arc(q.x,q.y,4.5,0,7);x.fill()}}
     x.lineWidth=1;
@@ -662,7 +696,7 @@ function drawSheet(){
 (function gestures(){
   const cv=C.cv,pts=new Map();let drag=null,pinch=null,lp=null,crossMode=false,tap=null;
   const pos=e=>{const r=cv.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}};
-  const clampOff=()=>{const vis=(C.w-62)/C.barW;C.off=Math.max(-vis*0.5,Math.min(C.data.length-5,C.off))};
+  const clampOff=()=>{const vis=(C.w-62*fz())/C.barW;C.off=Math.max(-vis*0.5,Math.min(C.data.length-5,C.off))};
   cv.addEventListener('pointerdown',e=>{try{cv.setPointerCapture(e.pointerId)}catch(_){}const p=pos(e);pts.set(e.pointerId,p);
     if(pts.size===1){tap={x:p.x,y:p.y,t:Date.now(),id:e.pointerId};drag={x:p.x,off:C.off};if(e.pointerType!=='mouse')lp=setTimeout(()=>{crossMode=true;tap=null;C.cross=p;draw()},tool?600:350)}
     else if(pts.size===2){tap=null;clearTimeout(lp);crossMode=false;C.cross=null;const[a,b]=[...pts.values()];pinch={dist:Math.hypot(a.x-b.x,a.y-b.y)||1,barW:C.barW};drag=null}});
@@ -678,10 +712,12 @@ function drawSheet(){
   cv.addEventListener('wheel',e=>{e.preventDefault();C.barW=Math.max(2,Math.min(40,C.barW*(e.deltaY<0?1.12:0.89)));clampOff();draw()},{passive:false});
   cv.addEventListener('contextmenu',e=>e.preventDefault());
   new ResizeObserver(resize).observe($('#cwrap'));
+  $('#goLive').onclick=()=>{C.off=0;draw()};
+  setInterval(()=>{if(!document.hidden&&(view==='vChart'||desk())&&!C.cross)draw()},1000);
 })();
 
 /* ================= 介面 ================= */
-const mq=matchMedia('(min-width:1000px)'),desk=()=>mq.matches;
+const mq=matchMedia('(min-width:1000px) and (min-height:600px)'),desk=()=>mq.matches,lq=matchMedia('(orientation:landscape) and (max-height:599px)'),land=()=>lq.matches;
 let view='vChart',histN=-1;
 const TABS=[['vQuotes','報價','☰'],['vChart','圖表','📈'],['vTrade','交易','⇅'],['vHist','歷史','🕘'],['vNews','新聞','📰'],['vInfo','資訊','ℹ']];
 function go(v){if(desk()&&(v==='vChart'||v==='vQuotes'))v=(view==='vChart'||view==='vQuotes')?'vTrade':view;view=v;document.querySelectorAll('.view').forEach(e=>e.classList.toggle('on',e.id===v));
@@ -713,6 +749,7 @@ function renderLive(){
   else if(!marketOpen()){bn.style.display='block';bn.textContent='外匯市場休市中（週末）。可看圖、掛單，市價單要等開盤。'}
   else bn.style.display='none';
   if(desk()){$('#hPx').dataset.sym=S.sym;draw();rQuotes();rDock();rAcct();if(view==='vTrade')rTrade();else if(view==='vHist'&&histN!==S.hist.length)rHist();if(O.upd&&document.querySelector('#ticket #oInfo'))O.upd();return}
+  if(land())rAcct();
   if(view==='vChart')draw();else if(view!=='vInfo'&&view!=='vHist'&&view!=='vNews')render();
 }
 function render(){({vQuotes:rQuotes,vTrade:rTrade,vHist:rHist,vInfo:rInfo,vNews:rNews,vChart:draw})[view]()}
@@ -759,7 +796,7 @@ function rHistDesk(){
 function rTrade(){
   if(desk())return rTradeDesk();
   const a=acct(),cls=v=>v>=0?'up':'dn';
-  $('#vTrade').innerHTML=`<div class="card"><div class="kv" style="font-size:18px;font-weight:700"><span>浮動損益</span><span class="num ${cls(a.fl)}">${fM(a.fl)}</span></div>
+  $('#vTrade').innerHTML=`<div class="card"><div class="kv" style="font-size:calc(18px*var(--fz,1));font-weight:700"><span>浮動損益</span><span class="num ${cls(a.fl)}">${fM(a.fl)}</span></div>
   <div class="grid2 sm num" style="margin-top:8px"><div class="kv"><span>餘額</span><span>${fM(S.bal)}</span></div><div class="kv"><span>淨值</span><span>${fM(a.eq)}</span></div>
   <div class="kv"><span>已用保證金</span><span>${fM(a.mg)}</span></div><div class="kv"><span>可用保證金</span><span>${fM(a.free)}</span></div>
   <div class="kv"><span>保證金比例</span><span>${a.lvl==null?'—':a.lvl.toFixed(0)+'%'}</span></div><div class="kv"><span>槓桿</span><span>1:${S.lev}</span></div></div></div>
@@ -779,7 +816,7 @@ function rHist(){
   if(desk())return rHistDesk();
   const t=S.hist.filter(h=>h.sym),w=t.filter(h=>h.pnl>0),l=t.filter(h=>h.pnl<0),net=t.reduce((s,h)=>s+h.pnl,0),gw=w.reduce((s,h)=>s+h.pnl,0),gl=-l.reduce((s,h)=>s+h.pnl,0);
   const R={sl:'停損',tp:'停利',so:'強平',manual:'手動',off:'離線觸發'};
-  $('#vHist').innerHTML=`<div class="card"><div class="kv" style="font-size:18px;font-weight:700"><span>已實現損益</span><span class="num ${net>=0?'up':'dn'}">${fM(net)}</span></div>
+  $('#vHist').innerHTML=`<div class="card"><div class="kv" style="font-size:calc(18px*var(--fz,1));font-weight:700"><span>已實現損益</span><span class="num ${net>=0?'up':'dn'}">${fM(net)}</span></div>
   <div class="grid2 sm num" style="margin-top:8px"><div class="kv"><span>交易筆數</span><span>${t.length}</span></div><div class="kv"><span>勝率</span><span>${t.length?(w.length/t.length*100).toFixed(0)+'%':'—'}</span></div>
   <div class="kv"><span>平均獲利</span><span>${w.length?fM(gw/w.length):'—'}</span></div><div class="kv"><span>平均虧損</span><span>${l.length?fM(-gl/l.length):'—'}</span></div>
   <div class="kv"><span>獲利因子</span><span>${gl?(gw/gl).toFixed(2):'—'}</span></div><div class="kv"><span>餘額</span><span>${fM(S.bal)}</span></div></div></div>`
@@ -813,9 +850,10 @@ function rInfo(){
 $('#vInfo').onclick=async e=>{if(e.target.id==='loadD'){try{const bars=await getSeries(S.sym,'1day',30);cache[S.sym+'|1day']={bars,at:Date.now()};rInfo()}catch(err){toast(err.message)}}};
 
 /* ---------- 底部面板 ---------- */
-function sheet(html){$('#sheet').innerHTML=html;$('#shade').classList.add('on')}
+let sheetAt=0;
+function sheet(html){sheetAt=Date.now();$('#sheet').innerHTML=html;$('#shade').classList.add('on')}
 function closeSheet(){$('#shade').classList.remove('on');$('#sheet').innerHTML='';renderLive()}
-$('#shade').addEventListener('click',e=>{if(e.target.id==='shade'||e.target.dataset.x)closeSheet()});
+$('#shade').addEventListener('click',e=>{if(e.target.id==='shade'&&Date.now()-sheetAt<450)return;if(e.target.id==='shade'||e.target.dataset.x)closeSheet()});
 const head=t=>`<h2><span>${t}</span><button data-x="1">×</button></h2>`;
 function checkStops(sym,side,price,sl,tp){
   if(sl!=null&&sl<=0||tp!=null&&tp<=0)return'價格必須大於 0';
@@ -915,7 +953,7 @@ function ntSheet(){
    ${Object.keys(SYMS).map(s=>{const m=mvOf(s),sp=SYMS[s];return`<div class="ntrow"><div class="g"><b>${s}</b><div class="hint" style="margin:0" data-h="${s}">每移動 ${m.pips} 點（${(m.pips*sp.pip).toFixed(sp.d)}）通知一次</div></div><input class="pin" data-n="mv.${s}.pips" inputmode="decimal" value="${m.pips}"><span class="sm">點</span>${sw('mv.'+s+'.on',m.on)}</div>`}).join('')}
    <p class="hint">開啟價格變動通知的商品會加入自動更新，每個商品每次更新扣 1 點行情額度。</p>
    <label class="chk"><span>提示音</span>${sw('sound',n.sound)}</label>
-   <div class="sub">背景運作</div><p class="hint" style="font-size:13px">${bgTxt}</p>
+   <div class="sub">背景運作</div><p class="hint" style="font-size:calc(13px*var(--fz,1))">${bgTxt}</p>
    ${isIOS?'':`<button class="btn full" id="ntBg">${n.bg&&perm==='granted'?'改為只在畫面開著時通知':'允許背景運作與系統通知'}</button>`}
    <button class="btn full" id="ntTest" style="margin-top:8px">測試通知</button>
    <div class="sub">通知紀錄</div>${n.log.length?n.log.slice(0,20).map(l=>`<div class="ntrow"><div class="g"><b>${esc(l.title)}</b><div class="hint" style="margin:0">${esc(l.body)}</div></div><span class="mut sm">${fT(l.t)}</span></div>`).join('')+'<button class="btn full" id="ntClr" style="margin-top:8px">清除紀錄</button>':'<div class="empty">還沒有通知</div>'}`);
@@ -935,10 +973,10 @@ async function askPerm(){S.nt.bg=true;save();if('Notification' in window&&Notifi
 function bgAsk(){
   S.nt.asked=true;save();
   sheet(head('允許通知與背景運作？')+`<p style="margin:4px 0 8px">開啟後，這些情況會提醒你：</p>
-   <div class="hint" style="font-size:13px;line-height:1.7">・持倉價格接近停損<br>・各商品價格移動到你設定的點數<br>・停損、停利、強制平倉觸發，掛單成交</div>
-   ${isIOS?`<p class="hint" style="font-size:13px"><b>iPhone／iPad 的限制：</b>Apple 不允許網頁 App 在背景執行。App 開著時會用畫面提示加聲音通知你；切到其他 App 或鎖定螢幕後就收不到。停損、停利本身照常，下次打開時會用真實K線補判。</p>
+   <div class="hint" style="font-size:calc(13px*var(--fz,1));line-height:1.7">・持倉價格接近停損<br>・各商品價格移動到你設定的點數<br>・停損、停利、強制平倉觸發，掛單成交</div>
+   ${isIOS?`<p class="hint" style="font-size:calc(13px*var(--fz,1))"><b>iPhone／iPad 的限制：</b>Apple 不允許網頁 App 在背景執行。App 開著時會用畫面提示加聲音通知你；切到其他 App 或鎖定螢幕後就收不到。停損、停利本身照常，下次打開時會用真實K線補判。</p>
      <button class="btn brand full" id="bgOk" style="margin-top:6px">知道了</button>`
-   :`<p class="hint" style="font-size:13px">允許後，這個分頁切到背景時會繼續更新報價，並用系統通知提醒你；背景更新會持續消耗行情額度。也可以只在畫面開著時通知。</p>
+   :`<p class="hint" style="font-size:calc(13px*var(--fz,1))">允許後，這個分頁切到背景時會繼續更新報價，並用系統通知提醒你；背景更新會持續消耗行情額度。也可以只在畫面開著時通知。</p>
      <div class="two" style="margin-top:6px"><button class="btn" id="bgNo">只在畫面開著時</button><button class="btn brand" id="bgYes">允許背景運作</button></div>`}`);
   const ok=$('#bgOk');if(ok)ok.onclick=()=>ntSheet();
   const no=$('#bgNo');if(no)no.onclick=()=>{S.nt.bg=false;save();ntSheet()};
@@ -956,6 +994,7 @@ function setSheet(gapHelp){
   <h3 style="margin-left:0" id="sBak">備份</h3><div class="two"><button class="btn" id="sCopy">複製備份碼</button><button class="btn" id="sPasteBtn">貼上備份碼還原</button></div>
   <div id="sPasteBox" style="display:none"><textarea id="sPaste" rows="3" placeholder="在這裡長按 → 貼上備份碼" style="width:100%;margin-top:8px;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--tx)"></textarea><button class="btn brand full" id="sRestore" style="margin-top:6px">還原</button></div>
   <div class="two" style="margin-top:8px"><button class="btn" id="sExp">匯出備份檔</button><button class="btn" id="sImp">匯入備份檔</button></div><input type="file" id="sFile" accept="application/json,.json" hidden>
+  <h3 style="margin-left:0">字體大小</h3><div class="seg" id="sFz">${[[1,'小'],[1.15,'標準'],[1.3,'大'],[1.45,'特大']].map(o=>`<button data-v="${o[0]}" class="${(S.fz||1.15)===o[0]?'on':''}">${o[1]}</button>`).join('')}</div><p class="hint">只放大文字和數字，版面配置不變。</p>
   <h3 style="margin-left:0" id="sCal">畫面校正</h3><p class="hint">如果頂端的商品名稱被遮住，或最下排離螢幕底部太遠，用下面的按鈕調整，畫面會立刻變化。</p>
   <div class="ntrow"><div class="g">上方留白</div><button class="btn" data-pad="padT,-4">−</button><b class="num" id="padTv" style="min-width:64px;text-align:center"></b><button class="btn" data-pad="padT,4">＋</button></div>
   <div class="ntrow"><div class="g">下方留白</div><button class="btn" data-pad="padB,-4">−</button><b class="num" id="padBv" style="min-width:64px;text-align:center"></b><button class="btn" data-pad="padB,4">＋</button></div>
@@ -976,6 +1015,7 @@ function setSheet(gapHelp){
   $('#sImp').onclick=()=>$('#sFile').click();
   const padShow=()=>{const cs=getComputedStyle(document.querySelector('#app')),nb=getComputedStyle(document.querySelector('nav'));$('#padTv').textContent=Math.round(parseFloat(cs.paddingTop))+(S.ui.padT==null?'（自動）':'');$('#padBv').textContent=Math.round(parseFloat(nb.paddingBottom))+(S.ui.padB==null?'（自動）':'')};
   $('#sheet').querySelectorAll('[data-pad]').forEach(bt=>bt.onclick=()=>{const[k,d]=bt.dataset.pad.split(','),cur=k==='padT'?parseFloat(getComputedStyle(document.querySelector('#app')).paddingTop):parseFloat(getComputedStyle(document.querySelector('nav')).paddingBottom);S.ui[k]=Math.max(0,Math.min(160,Math.round(cur)+(+d)));save();fitApp();setTimeout(padShow,30)});
+  $('#sFz').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.fz=+b.dataset.v;save();applyFz();$('#sFz').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))};
   $('#padReset').onclick=()=>{S.ui={padT:null,padB:null};save();fitApp();setTimeout(padShow,30)};padShow();
   const dg=screenDiag();$('#sDiag').innerHTML=`螢幕 ${screen.width}×${screen.height}，網頁可用 ${dg.sw}×${dg.vh}，縮放 ${window.visualViewport?visualViewport.scale.toFixed(2):'—'}，內容寬 ${document.documentElement.scrollWidth}，頂部安全區 ${Math.round(dg.top)}，主畫面：${standalone()?'是':'否'}。`;
   const restore=txt=>{try{const j=JSON.parse(txt.trim());if(j.v!==1||!Array.isArray(j.pos))throw 0;localStorage.setItem(KEY,JSON.stringify(j));location.reload()}catch(_){$('#sErr').textContent='備份碼不正確，請確認有完整貼上'}};
@@ -996,6 +1036,7 @@ let insetProbe=null;
 function safeTop(){try{if(!insetProbe){insetProbe=document.createElement('div');insetProbe.style.cssText='position:fixed;top:0;left:0;width:0;height:env(safe-area-inset-top);visibility:hidden;pointer-events:none';document.body.appendChild(insetProbe)}return insetProbe.getBoundingClientRect().height}catch(_){return 0}}
 function screenDiag(){const land=innerWidth>innerHeight,sh=window.screen?(land?Math.min(screen.width,screen.height):Math.max(screen.width,screen.height)):0,top=safeTop();
   return{sw:innerWidth,sh,vh:innerHeight,top,bug:standalone()&&top>0&&sh>innerHeight&&Math.abs(sh-innerHeight-top)<=6}}
+function applyFz(){document.documentElement.style.setProperty('--fz',S.fz||1.15);requestAnimationFrame(()=>{resize();renderLive()})}
 function applyPad(){const r=document.documentElement.style,ui=S.ui||(S.ui={padT:null,padB:null}),dg=screenDiag(),gap=standalone()?dg.sh-dg.vh:0;
   if(ui.padT!=null)r.setProperty('--padTop',ui.padT+'px');else r.removeProperty('--padTop');
   // iPhone 主畫面 App 底部若已被系統留白（gap），導覽列就不再重複加 home 鍵的安全距離
@@ -1004,7 +1045,7 @@ function fitApp(){const a=document.activeElement;if(a&&a.matches&&a.matches('inp
   const h=Math.max(window.innerHeight||0,document.documentElement.clientHeight||0);
   const cur=document.documentElement.style.getPropertyValue('--apph');if(cur!==h+'px')document.documentElement.style.setProperty('--apph',h+'px');
   applyPad();requestAnimationFrame(resize)}
-fitApp();window.addEventListener('resize',fitApp);window.addEventListener('pageshow',()=>setTimeout(fitApp,50));
+document.documentElement.style.setProperty('--fz',S.fz||1.15);fitApp();window.addEventListener('resize',fitApp);window.addEventListener('pageshow',()=>setTimeout(fitApp,50));
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(fitApp,100)});
 const resetScroll=()=>{if(window.scrollX||window.scrollY||document.documentElement.scrollTop||document.body.scrollTop){window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0}};
 document.addEventListener('focusout',e=>{if(e.target&&e.target.matches&&e.target.matches('input,select,textarea'))setTimeout(()=>{const a=document.activeElement;if(!a||!a.matches('input,select,textarea')){resetScroll();fitApp();resize()}},120)});
@@ -1018,7 +1059,7 @@ window.__fx={get S(){return S},px,C,I,setPx,openPos,closePos,checkBar,acct,pnl,m
 (async function init(){
   if(demo()){for(const s in SYMS)if(!px[s])px[s]={mid:DEMO_BASE[s],t:Date.now()}}
   const layout=()=>{O={};$('#ticket').innerHTML='';if($('#shade').classList.contains('on'))closeSheet();if(desk())orderSheet('buy',$('#ticket'));go(desk()?'vTrade':'vChart');renderLive()};
-  mq.addEventListener('change',layout);
+  mq.addEventListener('change',layout);lq.addEventListener('change',()=>{renderLive();setTimeout(()=>{fitApp();resize()},80)});
   renderTabs();renderTfs();layout();rBell();
   if(!demo())setStatus('wait','連線中…');
   await loadChart();
