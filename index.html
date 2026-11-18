@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="theme-color" content="#070b18">
 <title>HAIYI｜駭異科技.FX</title>
 <style>
@@ -943,7 +943,7 @@ function bgAsk(){
   const no=$('#bgNo');if(no)no.onclick=()=>{S.nt.bg=false;save();ntSheet()};
   const yes=$('#bgYes');if(yes)yes.onclick=async()=>{await askPerm();ntSheet()};
 }
-function setSheet(){
+function setSheet(gapHelp){
   sheet(head('設定')+`<label class="f"><span>Twelve Data API 金鑰（留空＝示範模式）</span><input id="sKey" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="貼上金鑰"></label>
   <p class="hint">到 <a href="https://twelvedata.com/" target="_blank" rel="noopener">twelvedata.com</a> 免費註冊後，在後台的 API Keys 頁面複製。金鑰只存在這台裝置的瀏覽器裡。</p>
   <div class="two"><label class="f"><span>報價更新間隔</span><select id="sInt">${[10,15,20,30,60].map(v=>`<option value="${v}" ${v===S.interval?'selected':''}>${v} 秒</option>`).join('')}</select></label>
@@ -952,7 +952,10 @@ function setSheet(){
   <button class="btn brand full" id="sSave">儲存</button>
   <h3 style="margin-left:0">帳戶</h3><div class="two"><label class="f"><span>金額（美元）</span><input id="sAmt" inputmode="decimal" value="10000"></label><div style="display:flex;align-items:flex-end;padding-bottom:8px"><button class="btn full" id="sDep">入金</button></div></div>
   <button class="btn red full" id="sReset">重設帳戶（清空持倉與紀錄，餘額設為上方金額）</button><div class="err" id="sErr"></div>
-  <h3 style="margin-left:0">備份</h3><div class="two"><button class="btn" id="sExp">匯出備份</button><button class="btn" id="sImp">匯入備份</button></div><input type="file" id="sFile" accept="application/json,.json" hidden>
+  <h3 style="margin-left:0" id="sBak">備份</h3><div class="two"><button class="btn" id="sCopy">複製備份碼</button><button class="btn" id="sPasteBtn">貼上備份碼還原</button></div>
+  <div id="sPasteBox" style="display:none"><textarea id="sPaste" rows="3" placeholder="在這裡長按 → 貼上備份碼" style="width:100%;margin-top:8px;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--tx)"></textarea><button class="btn brand full" id="sRestore" style="margin-top:6px">還原</button></div>
+  <div class="two" style="margin-top:8px"><button class="btn" id="sExp">匯出備份檔</button><button class="btn" id="sImp">匯入備份檔</button></div><input type="file" id="sFile" accept="application/json,.json" hidden>
+  <h3 style="margin-left:0">畫面診斷</h3><p class="hint" id="sDiag"></p>
   <p class="hint">資料存在這台裝置的瀏覽器。換手機或清除瀏覽資料前，請先匯出備份。</p>`);
   $('#sKey').value=S.key;
   const quota=()=>{const iv=+$('#sInt').value,n=neededSyms().length,eff=Math.max(iv,Math.ceil(n*60/7)),perH=Math.round(3600/eff*n),used=S.credits.day===new Date().toISOString().slice(0,10)?S.credits.n:0;
@@ -966,6 +969,12 @@ function setSheet(){
     S.bal=r2(a);S.pos=[];S.orders=[];S.hist=[{note:'帳戶重設',amt:a,ct:Date.now()}];save();schedule();toast('帳戶已重設');closeSheet()};
   $('#sExp').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:'application/json'}));a.download='fx-practice-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click()};
   $('#sImp').onclick=()=>$('#sFile').click();
+  const dg=screenDiag();$('#sDiag').innerHTML=`螢幕 ${dg.sw}×${dg.sh}，網頁可用 ${dg.sw}×${dg.vh}，頂部安全區 ${Math.round(dg.top)}，主畫面模式：${standalone()?'是':'否'}。`+(dg.bug?`<br><b style="color:var(--warn)">偵測到 iPhone 主畫面 App 的底部空白問題。</b>修正步驟：<br>1. 按上面的「複製備份碼」，貼到「備忘錄」保存。<br>2. 長按桌面上的這個 App 圖示 → 移除 → 從主畫面移除。<br>3. 用 Safari 打開 miler-du.github.io/FX → 分享 →「加入主畫面」。<br>4. 打開新的圖示 → ⚙ →「貼上備份碼還原」。`:'<br>畫面尺寸正常。');
+  const restore=txt=>{try{const j=JSON.parse(txt.trim());if(j.v!==1||!Array.isArray(j.pos))throw 0;localStorage.setItem(KEY,JSON.stringify(j));location.reload()}catch(_){$('#sErr').textContent='備份碼不正確，請確認有完整貼上'}};
+  $('#sCopy').onclick=async()=>{const t=JSON.stringify(S);try{await navigator.clipboard.writeText(t);toast('備份碼已複製，請貼到備忘錄保存',3500)}catch(_){$('#sPasteBox').style.display='block';$('#sPaste').value=t;$('#sPaste').select();toast('無法自動複製，請在下方框內長按 → 全選 → 拷貝',4000)}};
+  $('#sPasteBtn').onclick=()=>{$('#sPasteBox').style.display='block';$('#sPaste').value='';$('#sPaste').focus()};
+  $('#sRestore').onclick=()=>restore($('#sPaste').value);
+  if(gapHelp)setTimeout(()=>{const e=$('#sDiag');if(e)e.scrollIntoView({block:'center'})},100);
   $('#sFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const j=JSON.parse(rd.result);if(j.v!==1||!Array.isArray(j.pos))throw 0;localStorage.setItem(KEY,JSON.stringify(j));location.reload()}catch(_){$('#sErr').textContent='這不是有效的備份檔'}};rd.readAsText(f)};
 }
 $('#gear').onclick=setSheet;$('#bell').onclick=ntSheet;$('#indBtn').onclick=indSheet;$('#drawBtn').onclick=drawSheet;$('#hSym').onclick=()=>go('vQuotes');
@@ -977,12 +986,14 @@ $('#lotM').onclick=()=>setLots(S.lots-(S.lots>1?0.1:0.01));$('#lotP').onclick=()
 const standalone=()=>!!(navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches));
 let insetProbe=null;
 function safeTop(){try{if(!insetProbe){insetProbe=document.createElement('div');insetProbe.style.cssText='position:fixed;top:0;left:0;width:0;height:env(safe-area-inset-top);visibility:hidden;pointer-events:none';document.body.appendChild(insetProbe)}return insetProbe.getBoundingClientRect().height}catch(_){return 0}}
+function screenDiag(){const land=innerWidth>innerHeight,sh=window.screen?(land?Math.min(screen.width,screen.height):Math.max(screen.width,screen.height)):0,top=safeTop();
+  return{sw:innerWidth,sh,vh:innerHeight,top,bug:standalone()&&top>0&&sh>innerHeight&&Math.abs(sh-innerHeight-top)<=6}}
+let gapWarned=false;
 function fitApp(){const a=document.activeElement;if(a&&a.matches&&a.matches('input,select,textarea'))return;
-  let h=Math.max(window.innerHeight||0,document.documentElement.clientHeight||0);
-  // iOS 主畫面 App（透明狀態列）會把可用高度少算一個狀態列；只在「少的剛好等於狀態列」時才補回
-  if(standalone()&&window.screen&&screen.height){const land=innerWidth>innerHeight,sh=land?Math.min(screen.width,screen.height):Math.max(screen.width,screen.height),top=safeTop();
-    if(top>0&&sh>h&&Math.abs(sh-h-top)<=6)h=sh}
-  const cur=document.documentElement.style.getPropertyValue('--apph');if(cur!==h+'px'){document.documentElement.style.setProperty('--apph',h+'px');requestAnimationFrame(resize)}}
+  const h=Math.max(window.innerHeight||0,document.documentElement.clientHeight||0);
+  const cur=document.documentElement.style.getPropertyValue('--apph');if(cur!==h+'px'){document.documentElement.style.setProperty('--apph',h+'px');requestAnimationFrame(resize)}
+  if(!gapWarned&&screenDiag().bug){gapWarned=true;setTimeout(()=>{const bn=$('#banner');bn.style.display='block';bn.dataset.lock='1';
+    bn.innerHTML='底部空白需要<b>重新加入主畫面</b>一次才會修正（資料可先備份）。<u id="gapHow">點這裡看步驟</u>';const g=$('#gapHow');if(g)g.onclick=()=>setSheet(true)},800)}}
 fitApp();window.addEventListener('resize',fitApp);window.addEventListener('pageshow',()=>setTimeout(fitApp,50));
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(fitApp,100)});
 const resetScroll=()=>{if(window.scrollX||window.scrollY||document.documentElement.scrollTop||document.body.scrollTop){window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0}};
