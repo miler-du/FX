@@ -254,6 +254,40 @@ nav button.on::after{inset:4px 6px;background:linear-gradient(180deg,#10203f,#0c
 nav button.on svg.ic .nd{fill:var(--cy);filter:drop-shadow(0 0 3px var(--cy))}
 nav button.on span{background:linear-gradient(90deg,var(--cy),var(--vi));-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:600}
 #dbar .alb{display:inline-flex;align-items:center;gap:4px;color:var(--cy);border-color:#22d3ee66}#dbar .alb svg.ic{width:1.05em;height:1.05em}#dbar .alb.on{background:linear-gradient(135deg,#22d3ee33,#8b5cf633)}
+
+/* ---- 橫向專注圖表：右緣工具抽屜＋週期圓盤 ---- */
+#tbar{display:contents}#tbHead,.tbSub,.tbHint,#tbShade,#edgeH,#hub,#dial{display:none}
+@media (orientation:landscape) and (max-height:599px){
+ #banner{display:none!important}
+ #vChart.on{display:block;overflow:hidden}
+ #cwrap{position:absolute;inset:0}
+ #tbar{display:flex;flex-direction:column;gap:10px;position:absolute;top:0;right:0;bottom:0;width:min(330px,62vw);z-index:22;padding:10px 12px calc(10px + env(safe-area-inset-bottom)) 14px;background:#0c1326f2;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-left:1px solid;border-image:linear-gradient(180deg,var(--cy),var(--vi) 60%,var(--line)) 1;box-shadow:-10px 0 28px #000a;transform:translateX(104%);transition:transform .22s ease;overflow-y:auto;touch-action:pan-y}
+ html.tbOpen #tbar{transform:none}
+ html.tbOpen #tbShade{display:block;position:absolute;inset:0;z-index:21;background:#0003}
+ #tbHead{display:flex;align-items:center;justify-content:space-between;font-size:calc(11px*var(--fz,1));letter-spacing:.2em;color:var(--mut)}
+ #tbHead span::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cy);box-shadow:0 0 6px var(--cy);margin-right:8px;vertical-align:middle}
+ #tbClose{font-size:calc(22px*var(--fz,1));line-height:1;padding:0 6px;color:var(--mut)}
+ .tbSub{display:block;font-size:calc(11px*var(--fz,1));color:var(--mut);letter-spacing:.1em;margin-bottom:-4px}
+ .tbHint{display:block;margin:0;font-size:calc(11px*var(--fz,1));color:var(--mut)}
+ #ctabsRow{grid-column:auto;grid-row:auto;display:flex;flex-direction:column;align-items:stretch;gap:8px;border:0;background:none}
+ #ctabs{display:flex;flex-wrap:wrap;gap:6px;padding:0}
+ #ctabs button{padding:6px 9px;border:1px solid var(--line);border-radius:6px}
+ #tools{display:flex;gap:8px}#tools button{flex:1;padding:8px 0;border:1px solid var(--line);border-radius:6px}#tools .tx{display:inline}
+ #tfs{grid-column:auto;grid-row:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:0;border:0;overflow:visible}
+ #tfs button{padding:9px 0;border:1px solid var(--line);border-radius:6px;font-weight:600}
+ #tfs button.on{color:var(--tx);border-color:transparent;background:linear-gradient(#10203f,#10203f) padding-box,linear-gradient(135deg,var(--cy),var(--vi)) border-box;border:1px solid transparent;box-shadow:0 0 10px #22d3ee33}
+ #qbar{position:absolute;left:8px;bottom:calc(24px*var(--fz,1));z-index:6;grid-column:auto;grid-row:auto;padding:4px;gap:4px;border:1px solid var(--line);border-radius:10px;background:#0c1326d9;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);align-items:center}
+ #hub{display:inline-flex;align-items:center;justify-content:center;height:30px;min-width:calc(44px*var(--fz,1));padding:0 8px;border-radius:7px;font-weight:700;font-size:calc(12px*var(--fz,1));color:var(--cy);background:linear-gradient(#10203f,#10203f) padding-box,linear-gradient(135deg,var(--cy),var(--vi)) border-box;border:1px solid transparent}
+ #edgeH{display:flex;align-items:center;justify-content:center;position:absolute;right:0;top:50%;transform:translateY(-50%);width:16px;height:64px;z-index:6;border-radius:8px 0 0 8px;background:linear-gradient(180deg,#22d3ee40,#8b5cf640);color:var(--tx);font-size:14px;border:1px solid #22d3ee55;border-right:0}
+ html.tbOpen #edgeH{display:none}
+ #dial:not([hidden]){display:block;position:absolute;inset:0;z-index:20}
+ #dial .ring{position:absolute;width:196px;height:196px;margin:-98px 0 0 -98px;border-radius:50%;background:radial-gradient(circle,#0c1326f5 0 55%,#0c1326e6 56%);border:1px solid transparent;background-clip:padding-box;box-shadow:0 0 0 1px #22d3ee55,0 0 24px #22d3ee33,inset 0 0 18px #8b5cf622;animation:dIn .16s ease-out}
+ @keyframes dIn{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+ #dial .ring::before{content:"";position:absolute;inset:44px;border-radius:50%;border:1px dashed #22d3ee55}
+ #dial .ring button{position:absolute;width:44px;height:30px;margin:-15px 0 0 -22px;border-radius:7px;font-weight:700;font-size:calc(12px*var(--fz,1));color:var(--mut);background:#141d38;border:1px solid var(--line)}
+ #dial .ring button.on{color:var(--tx);background:linear-gradient(#10203f,#10203f) padding-box,linear-gradient(135deg,var(--cy),var(--vi)) border-box;border:1px solid transparent;box-shadow:0 0 10px #22d3ee55}
+ #dial .ring .ctr{width:58px;height:58px;margin:-29px 0 0 -29px;left:50%;top:50%;border-radius:50%;color:var(--cy);font-size:calc(11px*var(--fz,1));background:#070b18;border:1px solid #22d3ee66;line-height:1.15}
+}
 </style>
 </head>
 <body>
@@ -272,10 +306,12 @@ nav button.on span{background:linear-gradient(90deg,var(--cy),var(--vi));-webkit
   <main>
     <section class="view" id="vQuotes"></section>
     <section class="view" id="vChart">
+      <div id="tbar"><div id="tbHead"><span>工具 TOOLS</span><button id="tbClose" aria-label="收起工具">›</button></div>
       <div id="ctabsRow"><div id="ctabs"></div><div id="tools"><button id="drawBtn">✎<span class="tx"> 繪圖</span></button><button id="indBtn">ƒ<span class="tx"> 指標</span></button></div></div>
-      <div id="tfs"></div>
-      <div id="cwrap"><canvas id="cv"></canvas><div id="dbar"></div><button id="goLive">⇥ 最新</button></div>
-      <div id="qbar">
+      <div class="tbSub">時間週期</div><div id="tfs"></div><p class="tbHint">往右滑或點圖表即可收起；在圖表上點兩下可叫出週期圓盤。</p></div>
+      <div id="tbShade"></div>
+      <div id="cwrap"><canvas id="cv"></canvas><div id="dbar"></div><button id="goLive">⇥ 最新</button><button id="edgeH" aria-label="開啟工具">‹</button><div id="dial" hidden></div></div>
+      <div id="qbar"><button id="hub" aria-label="時間週期圓盤"></button>
         <button class="b sellbg" id="qSell">賣出<span class="lbl"> SELL</span><small id="qBid">—</small></button>
         <div id="lotBox"><button id="lotM">−</button><input id="lotIn" inputmode="decimal" aria-label="手數"><button id="lotP">＋</button></div>
         <button class="b buybg" id="qBuy">買入<span class="lbl"> BUY</span><small id="qAsk">—</small></button>
@@ -734,7 +770,9 @@ function updDbar(){const b=$('#dbar');$('#drawBtn').classList.toggle('on',!!tool
   else b.style.display='none'}
 $('#dbar').onclick=e=>{const bt=e.target.closest('button'),a=bt&&bt.dataset.a;if(!a)return;if(a==='alert'){const d0=drawsOf(S.sym).find(z=>z.id===sel);if(d0){const lp=d0.pts[0].p,m=px[S.sym]?px[S.sym].mid:null;d0.al=!d0.al;if(d0.al){d0.dir=m!=null&&m>lp?'down':'up';toast(`已設警報：價格${d0.dir==='up'?'漲到':'跌到'} ${fP(S.sym,lp)} 時通知你${S.nt.on?'':'（通知總開關目前關閉，請到右上角鈴鐺開啟）'}`,3500)}else toast('已取消警報');save()}updDbar();draw();return}if(a==='cancel'){tool=null;pend=[]}else if(a==='del'){const L=drawsOf(S.sym),i=L.findIndex(z=>z.id===sel);if(i>=0)L.splice(i,1);sel=null;save();toast('已刪除')}else sel=null;updDbar();draw()};
 function setTool(k){tool=k;pend=[];sel=null;updDbar();draw()}
+let _lt=null;
 function onTap(px0,py0){
+  if(land()&&!tool){const now=Date.now();if(_lt&&now-_lt.t<320&&Math.hypot(px0-_lt.x,py0-_lt.y)<40){_lt=null;return openDial(px0,py0)}_lt={t:now,x:px0,y:py0}}
   const G=C.geo;if(!G||!G.N||py0>G.mainH||px0>G.pw)return;
   if(tool){let pt={t:G.tOfX(px0),p:G.P(py0)};
     if(S.magnet){const i=Math.max(0,Math.min(G.N-1,Math.round(G.IX(px0)))),bar=G.d[i];let best=null,bd=22;for(const v of[bar.o,bar.h,bar.l,bar.c]){const dd=Math.abs(G.Y(v)-py0);if(dd<bd){bd=dd;best=v}}if(best!=null)pt={t:bar.t,p:best}}
@@ -803,7 +841,7 @@ $('#ctabs').onclick=e=>{const c=e.target.closest('[data-c]');
   const b=e.target.closest('button');if(!b)return;
   if(b.id==='tabAdd'){S.tabs.push({sym:S.sym,tf:S.tf});showTab(S.tabs.length-1);return toast('已新增分頁：從報價清單選商品、上方選週期')}
   if(+b.dataset.i!==S.tab)showTab(+b.dataset.i)};
-function renderTfs(){$('#tfs').innerHTML=TFS.map(t=>`<button data-tf="${t[0]}" class="${t[0]===S.tf?'on':''}">${t[1]}</button>`).join('')}
+function renderTfs(){$('#tfs').innerHTML=TFS.map(t=>`<button data-tf="${t[0]}" class="${t[0]===S.tf?'on':''}">${t[1]}</button>`).join('');const h=$('#hub');if(h)h.textContent=tfName(S.tf)}
 $('#tfs').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='indBtn')return indSheet();S.tf=b.dataset.tf;S.tabs[S.tab].tf=S.tf;C.off=0;save();renderTfs();renderTabs();loadChart()};
 function setSym(sym){tool=null;pend=[];sel=null;updDbar();S.sym=sym;S.tabs[S.tab]={sym,tf:S.tf};renderTabs();C.off=0;if(view==='vNews')setTimeout(rNews,0);else newsKey='';['#oPrice','#oSL','#oTP'].forEach(i=>{const e=document.querySelector('#ticket '+i);if(e)e.value=''});save();loadChart();schedule();if(!demo()&&!px[sym])tick();renderLive()}
 function renderLive(){
@@ -1123,6 +1161,26 @@ function setSheet(gapHelp){
 $('#gear').onclick=setSheet;$('#bell').onclick=ntSheet;$('#indBtn').onclick=indSheet;$('#drawBtn').onclick=drawSheet;$('#hSym').onclick=()=>go('vQuotes');
 const qTap=(id,side)=>()=>{const b=$(id);if(land()&&!b.classList.contains('peek')){document.querySelectorAll('#qbar .b').forEach(x=>x.classList.remove('peek'));b.classList.add('peek');clearTimeout(b._t);b._t=setTimeout(()=>b.classList.remove('peek'),4000);return}
   b.classList.remove('peek');orderSheet(side)};
+
+/* ---- 橫向：工具抽屜（右緣左滑）＋週期圓盤（點兩下） ---- */
+const tbOpen=v=>{document.documentElement.classList.toggle('tbOpen',v);if(v)closeDial()};
+$('#tbClose').onclick=()=>tbOpen(false);$('#tbShade').onclick=()=>tbOpen(false);$('#edgeH').onclick=()=>tbOpen(true);
+{let sw=null;const cw=$('#cwrap');
+ cw.addEventListener('pointerdown',e=>{if(!land())return;const r=cw.getBoundingClientRect();if(e.clientX>r.right-28&&e.target.id!=='edgeH'){sw={x:e.clientX,y:e.clientY};e.stopPropagation()}},true);
+ addEventListener('pointermove',e=>{if(sw&&sw.x-e.clientX>30&&Math.abs(e.clientY-sw.y)<60){sw=null;tbOpen(true)}});
+ addEventListener('pointerup',()=>{sw=null});
+ let cl=null;const tb=$('#tbar');
+ tb.addEventListener('pointerdown',e=>{cl={x:e.clientX,y:e.clientY}});
+ tb.addEventListener('pointerup',e=>{if(cl&&e.clientX-cl.x>50&&Math.abs(e.clientY-cl.y)<60)tbOpen(false);cl=null});
+ tb.addEventListener('click',e=>{if(land()&&e.target.closest('#tfs button,#ctabs button:not(#tabAdd),#tools button'))setTimeout(()=>tbOpen(false),120)},true);
+}
+function closeDial(){const d=$('#dial');d.hidden=true;d.innerHTML=''}
+function openDial(x0,y0){const d=$('#dial'),w=$('#cwrap').clientWidth,h=$('#cwrap').clientHeight,R=72,cx=Math.max(100,Math.min(w-100,x0)),cy=Math.max(100,Math.min(h-100,y0));
+  d.innerHTML=`<div class="ring" style="left:${cx}px;top:${cy}px">${TFS.map((t,i)=>{const a=-Math.PI/2+i*2*Math.PI/TFS.length;return`<button data-tf="${t[0]}" class="${t[0]===S.tf?'on':''}" style="left:${98+R*Math.cos(a)}px;top:${98+R*Math.sin(a)}px">${t[1]}</button>`}).join('')}<button class="ctr" data-x="1">${tfName(S.tf)}<br><small>關閉</small></button></div>`;
+  d.hidden=false}
+$('#dial').onclick=e=>{const b=e.target.closest('button');if(b&&b.dataset.tf&&b.dataset.tf!==S.tf){S.tf=b.dataset.tf;S.tabs[S.tab].tf=S.tf;C.off=0;save();renderTfs();renderTabs();loadChart()}closeDial()};
+$('#hub').onclick=()=>{const c=$('#cwrap');openDial(c.clientWidth/2,c.clientHeight/2)};
+lq.addEventListener('change',()=>{tbOpen(false);closeDial()});
 $('#qSell').onclick=qTap('#qSell','sell');$('#qBuy').onclick=qTap('#qBuy','buy');
 const lotIn=$('#lotIn');lotIn.value=S.lots;
 const setLots=v=>{S.lots=Math.max(0.01,Math.min(100,r2(v)));lotIn.value=S.lots;save()};
