@@ -188,6 +188,13 @@ input.sw:checked::before{transform:translateX(18px)}
 .sub{font-size:calc(12px*var(--fz,1));color:var(--mut);font-weight:600;margin:14px 0 2px}
 
 /* ---- 手機橫向：K線優先 ---- */
+body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea,select{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+#cv,#cwrap{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:none}
+.tpRow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:-2px 0 6px;font-size:calc(12px*var(--fz,1));color:var(--mut)}
+.tpRow button{padding:5px 10px;border-radius:14px;border:1px solid var(--line);background:var(--panel2);font-size:calc(12px*var(--fz,1));color:var(--tx)}
+.tpRow button.on{border-color:var(--cy);color:var(--cy);font-weight:600}
+.tpRow .live{color:var(--cy)}
 #menuBtn{display:none;font-size:calc(20px*var(--fz,1));padding:2px 6px;flex:none}
 #navShade{display:none;position:fixed;inset:0;background:#0008;z-index:29}
 #goLive{position:absolute;right:calc(70px*var(--fz,1));bottom:calc(26px*var(--fz,1));z-index:2;display:none;padding:5px 11px;border-radius:14px;background:#141d38e6;border:1px solid var(--cy);color:var(--cy);font-size:calc(12px*var(--fz,1));font-weight:600}
@@ -217,7 +224,9 @@ input.sw:checked::before{transform:translateX(18px)}
  #tfs button{padding:4px 6px}#tfs .sp{display:none}
  #qbar{grid-column:3;grid-row:1;padding:3px 6px;gap:4px;border-top:0;border-bottom:1px solid var(--line);align-items:center}
  #qbar .b{flex:none;display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;font-size:calc(12px*var(--fz,1))}
- #qbar .b small{display:inline;font-size:calc(12px*var(--fz,1))}
+ #qbar .b small{display:none;font-size:calc(11px*var(--fz,1));opacity:.9}
+ #qbar .b.peek small{display:inline}
+ #qbar .b{min-width:calc(64px*var(--fz,1));justify-content:center}
  #qbar .lbl{display:none}
  #lotBox{height:30px}#lotBox button{width:22px}#lotBox input{width:40px}
  #ctabs #tabAdd{padding:5px 8px}
@@ -385,6 +394,7 @@ const mvOf=s=>S.nt.mv[s]||(S.nt.mv[s]={on:false,pips:MVDEF[s]||20});
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const isIOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 let actx=null;
+document.addEventListener('contextmenu',e=>{if(!e.target.closest('input,textarea'))e.preventDefault()});
 document.addEventListener('pointerdown',()=>{try{if(!actx){const A=window.AudioContext||window.webkitAudioContext;if(A)actx=new A()}if(actx&&actx.state==='suspended')actx.resume()}catch(_){}},true);
 function beep(){if(!actx||!S.nt.sound)return;try{const t=actx.currentTime;[0,0.22].forEach(d=>{const o=actx.createOscillator(),g=actx.createGain();o.frequency.value=d?1175:880;g.gain.setValueAtTime(0.0001,t+d);g.gain.exponentialRampToValueAtTime(0.25,t+d+0.02);g.gain.exponentialRampToValueAtTime(0.0001,t+d+0.18);o.connect(g);g.connect(actx.destination);o.start(t+d);o.stop(t+d+0.2)})}catch(_){}}
 function notify(title,body,tag){
@@ -778,6 +788,7 @@ function renderLive(){
   else bn.style.display='none';
   if(desk()){$('#hPx').dataset.sym=S.sym;draw();rQuotes();rDock();rAcct();if(view==='vTrade')rTrade();else if(view==='vHist'&&histN!==S.hist.length)rHist();if(O.upd&&document.querySelector('#ticket #oInfo'))O.upd();return}
   if(land())rAcct();
+  if(O.upd&&$('#shade').classList.contains('on')&&document.querySelector('#sheet #oInfo'))O.upd();
   if(view==='vChart')draw();else if(view!=='vInfo'&&view!=='vHist'&&view!=='vNews')render();
 }
 function render(){({vQuotes:rQuotes,vTrade:rTrade,vHist:rHist,vInfo:rInfo,vNews:rNews,vChart:draw})[view]()}
@@ -890,28 +901,37 @@ function checkStops(sym,side,price,sl,tp){
   return null;
 }
 let O={};
+const tpFor=(sym,side,price,m)=>{const d=m*costOf(sym).sp*SYMS[sym].pip;return side==='buy'?price+d:price-d};
 function orderSheet(side,el){
-  O={side,kind:'market'};let sym=S.sym;const modal=!el;
+  O={side,kind:'market',tpMode:(S.tpM??10)>0?'auto':'off',tpM:S.tpM??10};let sym=S.sym;const modal=!el;
   const html=`<div class="seg" id="oSide"><button data-v="sell" class="s">賣出 SELL</button><button data-v="buy" class="b">買入 BUY</button></div>
   <div class="seg" id="oKind"><button data-v="market">市價</button><button data-v="limit">限價 Limit</button><button data-v="stop">停損單 Stop</button></div>
   <div class="two"><label class="f"><span>手數（0.01～100）</span><input id="oLots" inputmode="decimal" value="${S.lots}"></label><label class="f" id="oPriceW"><span>掛單價格</span><input id="oPrice" inputmode="decimal"></label></div>
   <div class="two"><label class="f"><span>停損 SL（選填）</span><input id="oSL" inputmode="decimal" placeholder="不設定"></label><label class="f"><span>停利 TP（選填）</span><input id="oTP" inputmode="decimal" placeholder="不設定"></label></div>
+  <div class="tpRow" id="tpRow"><span>建議停利：</span>${[10,20,30].map(m=>`<button data-m="${m}">點差×${m}</button>`).join('')}<button data-m="0">不設</button><span class="live" id="tpLive"></span></div>
   <div class="hint num" id="oInfo"></div><div class="err" id="oErr"></div><button class="btn full" id="oGo"></button>`;if(modal)sheet(head('新訂單　'+sym)+html);else el.innerHTML=html;
   const upd=()=>{if(!$('#oInfo'))return;sym=S.sym;document.querySelectorAll('#oSide button').forEach(b=>b.classList.toggle('on',b.dataset.v===O.side));document.querySelectorAll('#oKind button').forEach(b=>b.classList.toggle('on',b.dataset.v===O.kind));
     $('#oPriceW').style.visibility=O.kind==='market'?'hidden':'visible';
-    const cur=O.side==='buy'?ask(sym):bid(sym),lots=num($('#oLots').value)||0,pr=O.kind==='market'?cur:(num($('#oPrice').value)||cur),sl=num($('#oSL').value),tp=num($('#oTP').value),k=q2usd(sym),pv=k==null?null:lots*SYMS[sym].contract*SYMS[sym].pip*k,m=pr?marginFor(sym,lots,pr):null;
+    const cur0=O.side==='buy'?ask(sym):bid(sym),pr0=O.kind==='market'?cur0:(num($('#oPrice').value)||cur0);
+    if(O.tpMode==='auto'&&pr0!=null){const v=tpFor(sym,O.side,pr0,O.tpM);if(document.activeElement!==$('#oTP'))$('#oTP').value=fP(sym,v)}
+    document.querySelectorAll('#tpRow button').forEach(b=>b.classList.toggle('on',(O.tpMode==='auto'&&+b.dataset.m===O.tpM)||(O.tpMode==='off'&&b.dataset.m==='0')));
+    $('#tpLive').textContent=O.tpMode==='auto'?'● 跟隨市價中':O.tpMode==='manual'?'自訂':'';
+    const cur=cur0,lots=num($('#oLots').value)||0,pr=pr0,sl=num($('#oSL').value),tp=num($('#oTP').value),k=q2usd(sym),pv=k==null?null:lots*SYMS[sym].contract*SYMS[sym].pip*k,m=pr?marginFor(sym,lots,pr):null;
     const cc=costOf(sym);let t=`現價 ${fP(sym,cur)}　所需保證金 ${m==null?'—':fM(m)}　每點 ${pv==null?'—':fM(pv)}`;
     if(pv!=null)t+=`<br>開倉成本：點差 ${cc.sp} 點 ≈ <span class="dn">${fM(-cc.sp*pv)}</span>${cc.cm?`＋手續費 <span class="dn">${fM(-cc.cm*lots)}</span>`:''}　隔夜利息每晚 ${fM((O.side==='buy'?cc.swL:cc.swS)*lots)}`;
     if(pv!=null&&pr){if(sl)t+=`<br>停損距離 ${(Math.abs(pr-sl)/SYMS[sym].pip).toFixed(1)} 點 ≈ <span class="dn">${fM(-Math.abs(pr-sl)/SYMS[sym].pip*pv)}</span>`;if(tp)t+=`<br>停利距離 ${(Math.abs(tp-pr)/SYMS[sym].pip).toFixed(1)} 點 ≈ <span class="up">${fM(Math.abs(tp-pr)/SYMS[sym].pip*pv)}</span>`}
     $('#oInfo').innerHTML=t;const g=$('#oGo');g.className='btn full '+(O.side==='buy'?'pri':'red');g.textContent=(O.kind==='market'?'以市價':'掛單：')+(O.side==='buy'?'買入':'賣出')+(O.kind==='market'?'':' '+O.kind.toUpperCase())};
-  $('#oSide').onclick=e=>{const b=e.target.closest('button');if(b){O.side=b.dataset.v;upd()}};
+  $('#oSide').onclick=e=>{const b=e.target.closest('button');if(b){O.side=b.dataset.v;if(O.tpMode==='manual'){O.tpMode='off';$('#oTP').value=''}upd()}};
+  $('#tpRow').onclick=e=>{const b=e.target.closest('button');if(!b)return;const m=+b.dataset.m;S.tpM=m;save();O.tpM=m;O.tpMode=m>0?'auto':'off';if(!m)$('#oTP').value='';upd()};
+  $('#oTP').addEventListener('input',()=>{O.tpMode=$('#oTP').value.trim()?'manual':'off'});
   $('#oKind').onclick=e=>{const b=e.target.closest('button');if(b){O.kind=b.dataset.v;if(O.kind!=='market'&&!$('#oPrice').value)$('#oPrice').value=fP(sym,O.side==='buy'?ask(sym):bid(sym));upd()}};
   (el||$('#sheet')).oninput=upd;O.upd=upd;upd();
-  $('#oGo').onclick=async()=>{const err=m=>{$('#oErr').textContent=m},lots=r2(num($('#oLots').value)||0),sl=num($('#oSL').value),tp=num($('#oTP').value);
+  $('#oGo').onclick=async()=>{const err=m=>{$('#oErr').textContent=m},lots=r2(num($('#oLots').value)||0),sl=num($('#oSL').value);let tp=num($('#oTP').value);
     if(!(lots>=0.01&&lots<=100))return err('手數需在 0.01 到 100 之間');if(lots>(S.maxLots||5))return err(`超過你設定的單筆上限 ${S.maxLots||5} 手（可在 ⚙ 設定修改）`);S.lots=lots;$('#lotIn').value=lots;
     if(O.kind==='market'){
       if(!demo()){if(!marketOpen())return err('市場休市中，無法以市價成交（可以改用掛單）');$('#oGo').disabled=true;try{await fetchPrices(neededSyms())}catch(e){$('#oGo').disabled=false;return err(e.message)}$('#oGo').disabled=false}
       const price=O.side==='buy'?ask(sym):bid(sym);if(price==null)return err('尚無報價，請稍候');
+      if(O.tpMode==='auto')tp=tpFor(sym,O.side,price,O.tpM);
       const e=checkStops(sym,O.side,price,sl,tp)||openPos(sym,O.side,lots,price,sl,tp,Date.now());if(e)return err(e);
       toast(`成交：${sym} ${O.side==='buy'?'買入':'賣出'} ${lots} @ ${fP(sym,price)}`);
     }else{
@@ -920,11 +940,12 @@ function orderSheet(side,el){
       if(O.side==='buy'&&O.kind==='stop'&&price<=a)return err('Buy Stop 的價格必須高於現價 '+fP(sym,a));
       if(O.side==='sell'&&O.kind==='limit'&&price<=b)return err('Sell Limit 的價格必須高於現價 '+fP(sym,b));
       if(O.side==='sell'&&O.kind==='stop'&&price>=b)return err('Sell Stop 的價格必須低於現價 '+fP(sym,b));
+      if(O.tpMode==='auto')tp=tpFor(sym,O.side,price,O.tpM);
       const e=checkStops(sym,O.side,price,sl,tp);if(e)return err(e);
       S.orders.push({id:S.nextId++,sym,type:O.side+' '+O.kind,lots,price,sl:sl||null,tp:tp||null,t:Date.now()});S.lastSeen[sym]=Date.now();
       toast('掛單已建立');
     }
-    save();schedule();err('');if(modal)closeSheet();else{$('#oSL').value='';$('#oTP').value='';if(O.kind!=='market')$('#oPrice').value='';renderLive()}};
+    save();schedule();err('');if(modal)closeSheet();else{$('#oSL').value='';if(O.tpMode!=='auto')$('#oTP').value='';if(O.kind!=='market')$('#oPrice').value='';renderLive()}};
 }
 function posSheet(id){
   const p=S.pos.find(x=>x.id===id);if(!p)return;const c=closePx(p),v=pnl(p,c);
@@ -1073,7 +1094,9 @@ function setSheet(gapHelp){
   $('#sFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const j=JSON.parse(rd.result);if(j.v!==1||!Array.isArray(j.pos))throw 0;localStorage.setItem(KEY,JSON.stringify(j));location.reload()}catch(_){$('#sErr').textContent='這不是有效的備份檔'}};rd.readAsText(f)};
 }
 $('#gear').onclick=setSheet;$('#bell').onclick=ntSheet;$('#indBtn').onclick=indSheet;$('#drawBtn').onclick=drawSheet;$('#hSym').onclick=()=>go('vQuotes');
-$('#qSell').onclick=()=>orderSheet('sell');$('#qBuy').onclick=()=>orderSheet('buy');
+const qTap=(id,side)=>()=>{const b=$(id);if(land()&&!b.classList.contains('peek')){document.querySelectorAll('#qbar .b').forEach(x=>x.classList.remove('peek'));b.classList.add('peek');clearTimeout(b._t);b._t=setTimeout(()=>b.classList.remove('peek'),4000);return}
+  b.classList.remove('peek');orderSheet(side)};
+$('#qSell').onclick=qTap('#qSell','sell');$('#qBuy').onclick=qTap('#qBuy','buy');
 const lotIn=$('#lotIn');lotIn.value=S.lots;
 const setLots=v=>{S.lots=Math.max(0.01,Math.min(100,r2(v)));lotIn.value=S.lots;save()};
 $('#lotM').onclick=()=>setLots(S.lots-(S.lots>1?0.1:0.01));$('#lotP').onclick=()=>setLots(S.lots+(S.lots>=1?0.1:0.01));lotIn.onchange=()=>setLots(num(lotIn.value)||0.01);
