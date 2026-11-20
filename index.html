@@ -255,6 +255,22 @@ svg.ic{display:block;width:1.25em;height:1.25em;overflow:visible}
 svg.ic .nd{transition:fill .18s,filter .18s}
 #langBtn{position:relative;display:inline-flex;align-items:center;justify-content:center;line-height:1;color:var(--mut);padding:2px 4px;flex:none;font-size:calc(18px*var(--fz,1))}#langBtn svg.ic{width:1.3em;height:1.3em}#langBtn:active{color:var(--tx)}
 #langBtn i{position:absolute;right:-3px;bottom:-1px;font-style:normal;font-size:calc(8.5px*var(--fz,1));font-weight:700;letter-spacing:.02em;color:var(--cy);background:var(--panel);border-radius:3px;padding:0 2px;line-height:1.25}
+#sheet.stSheet{background:var(--bg)}
+.stWrap{padding-top:2px}.stCard{display:block;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:0 0 18px}
+.stGrpT{color:var(--mut);font-size:calc(13px*var(--fz,1));margin:0 6px 8px;font-weight:600}
+.stRow{display:flex;align-items:center;gap:12px;width:100%;padding:13px 14px;text-align:left;border:0;border-bottom:1px solid var(--line);background:none;color:var(--tx);font-size:calc(15.5px*var(--fz,1))}
+.stCard>.stRow:last-child{border-bottom:0}.stRow:active{background:var(--panel2)}.stRow i{display:inline-flex;color:var(--mut)}.stRow i svg.ic{width:calc(22px*var(--fz,1));height:calc(22px*var(--fz,1))}
+.stRow .g{flex:1;min-width:0}.stRow .g small{display:block;color:var(--mut);font-size:calc(12px*var(--fz,1))}.stRow .v{color:var(--mut);font-size:calc(14px*var(--fz,1));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:45%}
+.chev{color:var(--mut);font-size:calc(20px*var(--fz,1));font-weight:400;line-height:1}
+.stProfile{display:flex;align-items:center;gap:14px;width:100%;padding:14px;text-align:left;color:var(--tx)}.stProfile .av{width:calc(46px*var(--fz,1));height:calc(46px*var(--fz,1));border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:calc(18px*var(--fz,1));background:linear-gradient(135deg,#22d3ee,#8b5cf6);color:#fff;flex:none}
+.stProfile .g{flex:1;min-width:0}.stProfile .g b{display:block;font-size:calc(17px*var(--fz,1))}.stProfile .g small{display:block;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stHead{position:relative}.stHead .stBack{font-size:calc(28px*var(--fz,1))!important;line-height:1;padding:0 10px 2px 0!important;color:var(--cy)!important}.stHead span{flex:1}
+.stBal{padding:14px;text-align:center}.stBal small{display:block;color:var(--mut)}.stBal b{font-size:calc(24px*var(--fz,1))}
+.stNote{margin-top:18px;padding-top:12px;border-top:1px dashed var(--line)}.stNote p{color:var(--mut);font-size:calc(12.5px*var(--fz,1));line-height:1.6;margin:8px 2px 0}
+.pinIn{width:100%;font-size:calc(26px*var(--fz,1));letter-spacing:.5em;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--tx);margin:6px 0}
+.linkBtn{display:block;margin:14px auto 0;color:var(--cy);font-size:calc(14px*var(--fz,1));background:none;border:0;text-decoration:underline}
+.sw{position:relative;display:inline-block;width:46px;height:28px;flex:none}.sw input{opacity:0;width:0;height:0}.sw i{position:absolute;inset:0;border-radius:14px;background:var(--line);transition:.2s}.sw i:after{content:'';position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.2s}
+.sw input:checked+i{background:linear-gradient(135deg,#22d3ee,#8b5cf6)}.sw input:checked+i:after{transform:translateX(18px)}.sw input:disabled+i{opacity:.4}
 html[lang=en] #qSell .lbl,html[lang=en] #qBuy .lbl{display:none}
 .lgList{display:grid;gap:8px;margin:4px 0 8px}.lgList button{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;border:1px solid var(--line);border-radius:10px;background:var(--bg);font-size:calc(16px*var(--fz,1));font-weight:600}
 .lgList button small{color:var(--mut);font-weight:500}.lgList button.on{border-color:var(--cy);background:linear-gradient(135deg,#22d3ee1f,#8b5cf61f);box-shadow:0 0 0 1px #22d3ee55 inset}.lgList button.on small{color:var(--cy)}
@@ -400,7 +416,7 @@ const I18N={
 '雲端同步（綁定 Google）':['Cloud sync (Google)','クラウド同期（Google 連携）','클라우드 동기화 (Google 연동)'],'立即同步':['Sync now','今すぐ同期','지금 동기화'],'連線並同步':['Connect & sync','接続して同期','연결 후 동기화'],'解除綁定':['Unlink','連携解除','연동 해제'],
 '使用 Google 帳號登入並同步':['Sign in with Google to sync','Google でログインして同期','Google 로그인 후 동기화'],
 '交易成本設定':['Trading costs','取引コスト設定','거래 비용 설정'],'字體大小':['Font size','文字サイズ','글자 크기'],'畫面校正':['Screen calibration','画面調整','화면 보정'],'單筆最大手數':['Max lots per order','1注文の最大ロット','주문당 최대 랏'],
-'標準':['Standard','標準','표준'],'大':['Large','大','크게'],'特大':['Extra large','特大','아주 크게'],'小':['Small','小','작게']
+'標準':['Standard','標準','표준'],'大':['Large','大','크게'],'特大':['Extra large','特大','아주 크게'],'小':['Small','小','작게'],'交易帳戶':['Trading account','取引口座','거래 계좌'],'備份與還原':['Backup & restore','バックアップと復元','백업 및 복원'],'行情與交易':['Market & trading','相場と取引','시세 및 거래'],'行情金鑰':['Market data key','相場データキー','시세 API 키'],'報價更新與槓桿':['Quotes & leverage','更新間隔とレバレッジ','시세 갱신 및 레버리지'],'交易成本':['Trading costs','取引コスト','거래 비용'],'應用程式':['App','アプリ','앱'],'字體與畫面':['Text & display','文字と画面','글자 및 화면'],'安全性':['Security','セキュリティ','보안'],'設定金鑰密碼':['Set key passcode','キーのパスコードを設定','키 비밀번호 설정'],'變更金鑰密碼':['Change key passcode','キーのパスコードを変更','키 비밀번호 변경'],'忘記金鑰密碼':['Forgot key passcode','キーのパスコードを忘れた','키 비밀번호 분실'],'刪除密碼':['Remove passcode','パスコードを削除','비밀번호 삭제'],'輸入金鑰密碼':['Enter key passcode','キーのパスコードを入力','키 비밀번호 입력'],'未綁定':['Not linked','未連携','미연동'],'已綁定':['Linked','連携済み','연동됨'],'尚未登入':['Not signed in','未ログイン','로그인 안 됨'],'個人':['Personal','個人','개인']
 };
 
 /* ================= 語言（繁中／English／日本語／한국어）：交易術語用專業對照表，其餘文字與新聞即時機器翻譯 ================= */
@@ -467,7 +483,7 @@ const TFS=[['1min','M1',60],['5min','M5',300],['15min','M15',900],['30min','M30'
 const tfSec=tf=>TFS.find(t=>t[0]===tf)[2], tfName=tf=>TFS.find(t=>t[0]===tf)[1];
 const DEMO_BASE={'USD/JPY':152.4,'EUR/USD':1.085,'GBP/USD':1.27,'AUD/USD':0.655,'USD/CHF':0.885,'USD/CAD':1.37,'EUR/JPY':165.3,'XAU/USD':2650};
 const KEY='fxp1';
-const DEF={v:1,lang:'',key:'',interval:30,lev:100,bal:10000,pos:[],orders:[],hist:[],nextId:1,sym:'USD/JPY',tf:'15min',
+const DEF={v:1,lang:'',sec:null,key:'',interval:30,lev:100,bal:10000,pos:[],orders:[],hist:[],nextId:1,sym:'USD/JPY',tf:'15min',
   ic:{ma:[{on:true,n:20,t:'SMA'},{on:false,n:60,t:'SMA'},{on:false,n:120,t:'EMA'}],bb:{on:false,n:20,k:2},rsi:{on:false,n:14},macd:{on:false,f:12,s:26,g:9},kd:{on:false,n:9,k:3,d:3},sar:{on:false,st:0.02,mx:0.2},ichi:{on:false,a:9,b:26,c:52},atr:{on:false,n:14},cci:{on:false,n:20},wr:{on:false,n:14}},tabs:null,draw:{},showTr:true,magnet:true,
   nt:{on:false,asked:false,bg:false,sound:true,sl:{on:true,pips:10},mv:{},ref:{},log:[],unread:0},tab:0,upRed:false,fz:1.15,cost:{},maxLots:5,cloud:null,gcid:'',ui:{padT:null,padB:null},lots:0.1,lastSeen:{},credits:{day:'',n:0},px:{}};
 let S=load();
@@ -1162,8 +1178,8 @@ $('#vInfo').onclick=async e=>{if(e.target.id==='loadD'){try{const bars=await get
 
 /* ---------- 底部面板 ---------- */
 let sheetAt=0;
-function sheet(html){sheetAt=Date.now();$('#sheet').innerHTML=html;$('#shade').classList.add('on')}
-function closeSheet(){$('#shade').classList.remove('on');$('#sheet').innerHTML='';renderLive()}
+function sheet(html){sheetAt=Date.now();if(!/class="stHead"|stWrap/.test(html)){$('#sheet').classList.remove('stSheet')}$('#sheet').innerHTML=html;$('#shade').classList.add('on')}
+function closeSheet(){$('#shade').classList.remove('on');$('#sheet').innerHTML='';$('#sheet').classList.remove('stSheet');$('#sheet').onclick=null;renderLive()}
 $('#shade').addEventListener('click',e=>{if(e.target.id==='shade'&&Date.now()-sheetAt<450)return;if(e.target.id==='shade'||e.target.dataset.x)closeSheet()});
 const head=t=>`<h2><span>${t}</span><button data-x="1">×</button></h2>`;
 function checkStops(sym,side,price,sl,tp){
@@ -1313,61 +1329,154 @@ function costSheet(){
   $('#sheet').onchange=e=>{const t=e.target;if(!t.dataset.s)return;const v=num(t.value);if(v==null)return;S.cost=S.cost||{};S.cost[t.dataset.s]=Object.assign(S.cost[t.dataset.s]||{},{[t.dataset.k]:v});save();renderLive()};
   $('#cReset').onclick=()=>{S.cost={};save();costSheet()};
 }
-function setSheet(gapHelp){
-  sheet(head('設定')+`<label class="f"><span>Twelve Data API 金鑰（留空＝示範模式）</span><input id="sKey" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="貼上金鑰"></label>
-  <p class="hint">到 <a href="https://twelvedata.com/" target="_blank" rel="noopener">twelvedata.com</a> 免費註冊後，在後台的 API Keys 頁面複製。金鑰只存在這台裝置的瀏覽器裡。</p>
-  <div class="two"><label class="f"><span>報價更新間隔</span><select id="sInt">${[10,15,20,30,60].map(v=>`<option value="${v}" ${v===S.interval?'selected':''}>${v} 秒</option>`).join('')}</select></label>
-  <label class="f"><span>槓桿（新倉適用）</span><select id="sLev">${[10,30,50,100,200,500].map(v=>`<option value="${v}" ${v===S.lev?'selected':''}>1:${v}</option>`).join('')}</select></label></div>
-  <p class="hint" id="sQuota"></p>
-  <button class="btn brand full" id="sSave">儲存</button>
-  <h3 style="margin-left:0">帳戶</h3><p class="hint">目前餘額 <b class="num">${fM(S.bal)}</b></p><label class="f"><span>金額（美元）</span><input id="sAmt" inputmode="decimal" value="1000"></label>
-  <div class="two" style="margin-bottom:8px"><button class="btn" id="sDep">＋ 入金</button><button class="btn" id="sWd">− 出金</button></div>
-  <div class="two"><label class="f"><span>單筆最大手數（防止按錯）</span><input id="sMax" inputmode="decimal" value="${S.maxLots||5}"></label><div></div></div>
-  <button class="btn full" id="sCost" style="margin:4px 0 10px">交易成本設定（參考群益期貨）</button>
-  <button class="btn red full" id="sReset">重設帳戶（清空持倉與紀錄，餘額設為上方金額）</button><div class="err" id="sErr"></div>
-  <h3 style="margin-left:0" id="sCloud">雲端同步（綁定 Google）</h3><div id="cloudBox"></div>
-  <h3 style="margin-left:0" id="sBak">備份</h3><div class="two"><button class="btn" id="sCopy">複製備份碼</button><button class="btn" id="sPasteBtn">貼上備份碼還原</button></div>
-  <div id="sPasteBox" style="display:none"><textarea id="sPaste" rows="3" placeholder="在這裡長按 → 貼上備份碼" style="width:100%;margin-top:8px;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--tx)"></textarea><button class="btn brand full" id="sRestore" style="margin-top:6px">還原</button></div>
-  <div class="two" style="margin-top:8px"><button class="btn" id="sExp">匯出備份檔</button><button class="btn" id="sImp">匯入備份檔</button></div><input type="file" id="sFile" accept="application/json,.json" hidden>
-  <h3 style="margin-left:0">字體大小</h3><div class="seg" id="sFz">${[[1,'小'],[1.15,'標準'],[1.3,'大'],[1.45,'特大']].map(o=>`<button data-v="${o[0]}" class="${(S.fz||1.15)===o[0]?'on':''}">${o[1]}</button>`).join('')}</div><p class="hint">只放大文字和數字，版面配置不變。</p>
-  <h3 style="margin-left:0" id="sCal">畫面校正</h3><p class="hint">如果頂端的商品名稱被遮住，或最下排離螢幕底部太遠，用下面的按鈕調整，畫面會立刻變化。</p>
-  <div class="ntrow"><div class="g">上方留白</div><button class="btn" data-pad="padT,-4">−</button><b class="num" id="padTv" style="min-width:64px;text-align:center"></b><button class="btn" data-pad="padT,4">＋</button></div>
-  <div class="ntrow"><div class="g">下方留白</div><button class="btn" data-pad="padB,-4">−</button><b class="num" id="padBv" style="min-width:64px;text-align:center"></b><button class="btn" data-pad="padB,4">＋</button></div>
-  <button class="btn full" id="padReset" style="margin-top:8px">恢復自動</button>
-  <p class="hint" id="sDiag"></p>
-  <p class="hint">資料存在這台裝置的瀏覽器。換手機或清除瀏覽資料前，請先匯出備份。</p>`);
+/* ================= 設定（分組清單＋子頁面，參考 Claude App） ================= */
+const ST_IC={key:'<rect x="3.5" y="10" width="11" height="9" rx="2"/><path d="M6 10V7.5a3 3 0 0 1 6 0V10"/><path d="M17 12.5h3.5M18.8 12.5v3"/><circle class="nd" cx="9" cy="14.5" r="1.3" fill="currentColor" stroke="none"/>',
+ feed:'<path d="M3.5 17.5 8 12l3.5 3 5-6.5 4 4"/><path d="M3.5 20.5h17"/><circle class="nd" cx="16.5" cy="8.5" r="1.4" fill="currentColor" stroke="none"/>',
+ wallet:'<rect x="3.5" y="6" width="17" height="13" rx="2.5"/><path d="M3.5 9.5h17"/><path d="M15 14h2.5"/><circle class="nd" cx="7" cy="14" r="1.3" fill="currentColor" stroke="none"/>',
+ backup:'<path d="M12 4v10"/><path d="M8.5 10.5 12 14l3.5-3.5"/><path d="M4.5 15v3.5a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V15"/><circle class="nd" cx="12" cy="4" r="1.3" fill="currentColor" stroke="none"/>',
+ text:'<path d="M4 18 8.5 6h1L14 18"/><path d="M5.6 14h6.8"/><path d="M15.5 18l2.5-6.5 2.5 6.5"/><circle class="nd" cx="18" cy="9" r="1.2" fill="currentColor" stroke="none"/>',
+ screen:'<rect x="6.5" y="3" width="11" height="18" rx="2.5"/><path d="M10 6h4"/><path d="M3 9v6M21 9v6"/><circle class="nd" cx="12" cy="17.5" r="1.2" fill="currentColor" stroke="none"/>',
+ shield:'<path d="M12 3.5 19 6v5.5c0 4.3-2.9 7.7-7 9-4.1-1.3-7-4.7-7-9V6z"/><path d="m9 12 2.2 2.2L15.5 10"/>',
+ info:'<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/><circle class="nd" cx="12" cy="7.8" r="1.3" fill="currentColor" stroke="none"/>',
+ cost:'<circle cx="12" cy="12" r="8.5"/><path d="M14.5 9.2c-.5-.9-1.5-1.4-2.6-1.4-1.5 0-2.6.8-2.6 2s1.1 1.7 2.7 2.1 2.8.9 2.8 2.2-1.2 2.1-2.8 2.1c-1.2 0-2.3-.6-2.8-1.6"/><path d="M12 6.5v1.3M12 16.2v1.3"/>'};
+Object.assign(IC,ST_IC);
+const subHead=t=>`<h2 class="stHead"><button class="stBack" data-back="1" aria-label="返回">‹</button><span>${t}</span><button data-x="1">×</button></h2>`;
+let stUnlocked=false;
+function stRow(id,icon,label,val,extra){return`<button class="stRow" data-go="${id}"${extra||''}><i>${ico(icon)}</i><span class="g">${label}</span>${val!=null?`<span class="v">${val}</span>`:''}<b class="chev">›</b></button>`}
+function setSheet(page){if(typeof page!=='string')page='home';
+  const P={home:stHome,key:stKey,feed:stFeed,acct:stAcct,cloud:stCloud,backup:stBackup,display:stDisplay,security:stSecurity};
+  (P[page]||stHome)();const sh=$('#sheet');sh.scrollTop=0;sh.classList.add('stSheet');
+  sh.onclick=e=>{const g=e.target.closest('[data-go]');if(g){e.stopPropagation();stGo(g.dataset.go);return}if(e.target.closest('[data-back]')){e.stopPropagation();setSheet('home')}}}
+function stGo(id){if(id==='lang')return langSheet();if(id==='notify')return ntSheet();if(id==='cost')return costSheet();
+  if(id==='key'&&S.sec&&S.sec.h&&!stUnlocked)return unlockSheet(()=>{stUnlocked=true;setSheet('key')});setSheet(id)}
+function stHome(){stUnlocked=false;const c=S.cloud&&S.cloud.email,L=(LANGS.find(x=>x[0]===LG())||LANGS[0])[1];
+  const lock=S.sec&&S.sec.h?(S.sec.bio?'🔒 Face ID':'🔒 已上鎖'):(S.key?'已設定':'示範模式');
+  sheet(head('設定')+`<div class="stWrap">
+   <button class="stCard stProfile" data-go="cloud"><span class="av">${c?esc(c[0].toUpperCase()):'H'}</span><span class="g"><b>${c?'個人':'尚未登入'}</b><small>${c?esc(c)+' · 練習帳戶':'登入 Google 帳號，在手機和電腦同步'}</small></span><b class="chev">›</b></button>
+   <div class="stGrpT">帳戶</div><div class="stCard">
+    ${stRow('acct','wallet','交易帳戶',fM(S.bal))}${stRow('cloud','cloud','雲端同步',c?(cloudState==='ok'?'已同步':'已綁定'):'未綁定')}${stRow('backup','backup','備份與還原')}</div>
+   <div class="stGrpT">行情與交易</div><div class="stCard">
+    ${stRow('key','key','行情金鑰',lock)}${stRow('feed','feed','報價更新與槓桿',`${S.interval} 秒・1:${S.lev}`)}${stRow('cost','cost','交易成本','群益期貨')}</div>
+   <div class="stGrpT">應用程式</div><div class="stCard">
+    ${stRow('lang','globe','語言',L)}${stRow('notify','bell','通知',S.nt.on?'開啟':'關閉')}${stRow('display','text','字體與畫面',{1:'小',1.15:'標準',1.3:'大',1.45:'特大'}[S.fz||1.15])}</div>
+   <div class="stGrpT">安全性</div><div class="stCard">${stRow('security','shield','安全性',S.sec&&S.sec.h?'金鑰已加鎖':'未設定')}</div>
+   <p class="hint" style="text-align:center">HAIYI 駭異科技.FX・練習用模擬交易，不涉及真實資金</p></div>`)}
+/* ---- 行情金鑰（可上鎖） ---- */
+function stKey(){const locked=S.sec&&S.sec.h;
+  sheet(subHead('行情金鑰')+`<label class="f"><span>Twelve Data API 金鑰（留空＝示範模式）</span><input id="sKey" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="貼上金鑰"></label>
+   <p class="hint">到 <a href="https://twelvedata.com/" target="_blank" rel="noopener">twelvedata.com</a> 免費註冊後，在後台的 API Keys 頁面複製。</p>
+   <button class="btn brand full" id="sKeySave">儲存</button>
+   ${locked?`<div class="stNote"><button class="btn full" id="sPinDel">刪除密碼</button><p><b>備註</b>：刪除密碼後，進入這個畫面就不再需要密碼或 Face ID。需要先輸入原本的密碼確認。之後若要重新加鎖，請到「設定 › 安全性 › 設定金鑰密碼」。</p></div>`:''}`);
   $('#sKey').value=S.key;
-  const quota=()=>{const iv=+$('#sInt').value,n=neededSyms().length,eff=Math.max(iv,Math.ceil(n*60/7)),perH=Math.round(3600/eff*n),used=S.credits.day===new Date().toISOString().slice(0,10)?S.credits.n:0;
-    $('#sQuota').innerHTML=`會影響。每次更新、每個商品扣 1 點；免費額度是每分鐘 8 點、每天 800 點。<br>目前需要更新 <b>${n}</b> 個商品，選 ${iv} 秒${eff>iv?`（商品較多，實際會放慢到 ${eff} 秒）`:''}＝每小時約 <b>${perH}</b> 點，800 點約可連續看盤 <b>${(800/perH).toFixed(1)}</b> 小時。<br>今日已用 ${used} 點，剩 ${Math.max(0,800-used)} 點。視窗切到背景或休市時會自動暫停，不扣點。`};
-  $('#sInt').onchange=quota;quota();
-  $('#sSave').onclick=async()=>{const was=demo();S.key=$('#sKey').value.trim();S.interval=+$('#sInt').value;S.lev=+$('#sLev').value;
+  $('#sKeySave').onclick=async()=>{const was=demo(),nk=$('#sKey').value.trim(),changed=nk!==S.key;S.key=nk;
     if(was!==demo()){for(const k in px)delete px[k];for(const k in cache)delete cache[k];C.data=[];S.lastSeen={};if(S.pos.length||S.orders.length){S.pos=[];S.orders=[];toast('行情來源已切換，原本的持倉與掛單已清除（餘額與紀錄保留）',4500)}if(demo())for(const s in SYMS)px[s]={mid:DEMO_BASE[s],t:Date.now()}}
-    save();closeSheet();await loadChart(true);await tick();schedule()};
+    save();if(changed){loadChart(true).then(()=>tick()).then(schedule)}
+    if(S.key&&!(S.sec&&S.sec.h))askLock();else{toast('金鑰已儲存');setSheet('home')}};
+  if(locked)$('#sPinDel').onclick=()=>pinAsk('輸入原本的密碼','驗證通過後即可刪除密碼',async pin=>{if(!await pinCheck(pin))return false;
+    sheet(subHead('刪除密碼')+`<p>密碼正確。確定要刪除金鑰密碼嗎？${S.sec.bio?'Face ID 解鎖也會一併關閉。':''}</p><button class="btn red full" id="pdOk">確定刪除</button><button class="btn full" id="pdNo" style="margin-top:8px">取消</button>`);
+    $('#pdOk').onclick=()=>{S.sec=null;save();toast('已刪除金鑰密碼');setSheet('home')};$('#pdNo').onclick=()=>setSheet('key');return true})}
+function askLock(){sheet(head('要為金鑰設定密碼嗎？')+`<p>API 金鑰是你的私人資料。設定密碼後，之後打開「行情金鑰」需要先輸入密碼${bioName()?'或使用 '+bioName():''}。</p>
+  <button class="btn brand full" id="alYes">設定密碼</button><button class="btn full" id="alNo" style="margin-top:8px">以後再說</button><p class="hint">之後也可以到「設定 › 安全性」設定。</p>`);
+  $('#alYes').onclick=()=>pinSetup();$('#alNo').onclick=()=>{toast('金鑰已儲存');setSheet('home')}}
+/* ---- 密碼（PBKDF2 雜湊，只存在這台裝置）＋ Face ID（WebAuthn 平台驗證器） ---- */
+const b64=b=>btoa(String.fromCharCode(...new Uint8Array(b))),unb64=t=>Uint8Array.from(atob(t),c=>c.charCodeAt(0)),rnd=n=>crypto.getRandomValues(new Uint8Array(n));
+async function pinHash(pin,salt){const k=await crypto.subtle.importKey('raw',new TextEncoder().encode(pin),'PBKDF2',false,['deriveBits']);
+  return b64(await crypto.subtle.deriveBits({name:'PBKDF2',salt:unb64(salt),iterations:150000,hash:'SHA-256'},k,256))}
+let pinFails=0,pinWait=0;
+async function pinCheck(pin){if(Date.now()<pinWait){toast(`錯誤次數過多，請 ${Math.ceil((pinWait-Date.now())/1000)} 秒後再試`);return false}
+  const ok=S.sec&&await pinHash(pin,S.sec.salt)===S.sec.h;if(ok)pinFails=0;else if(++pinFails>=5){pinFails=0;pinWait=Date.now()+30e3}return ok}
+const bioName=()=>window.PublicKeyCredential?(isIOS?'Face ID':'裝置生物辨識'):'';
+async function bioAvail(){try{return!!(window.PublicKeyCredential&&await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable())}catch(_){return false}}
+async function bioRegister(){const c=await navigator.credentials.create({publicKey:{challenge:rnd(32),rp:{name:'HAIYI FX'},user:{id:rnd(16),name:'haiyi-fx-key',displayName:'HAIYI FX 行情金鑰'},
+  pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'discouraged'},timeout:60000}});return b64(c.rawId)}
+async function bioVerify(){try{const a=await navigator.credentials.get({publicKey:{challenge:rnd(32),allowCredentials:[{type:'public-key',id:unb64(S.sec.bio),transports:['internal']}],userVerification:'required',timeout:60000}});return!!a}catch(_){return false}}
+function pinAsk(title,note,onPin,bio){
+  sheet(head(title)+`<p class="hint">${note}</p><input id="pinIn" class="pinIn" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="off" placeholder="••••••">
+   <div class="err" id="pinErr"></div><button class="btn brand full" id="pinOk">確定</button>${bio?`<button class="btn full" id="pinBio" style="margin-top:8px">使用 ${bioName()}</button>`:''}`);
+  const go=async()=>{const v=$('#pinIn').value.trim();if(!/^\d{4,8}$/.test(v)){$('#pinErr').textContent='請輸入 4～8 位數字';return}$('#pinOk').disabled=true;
+    const r=await onPin(v);if(r===false&&$('#pinErr')){$('#pinOk').disabled=false;$('#pinErr').textContent=Date.now()<pinWait?'錯誤次數過多，請 30 秒後再試':'密碼不正確';$('#pinIn').value='';$('#pinIn').focus()}};
+  $('#pinOk').onclick=go;$('#pinIn').onkeydown=e=>{if(e.key==='Enter')go()};setTimeout(()=>{const i=$('#pinIn');if(i)i.focus()},120);
+  if(bio)$('#pinBio').onclick=async()=>{if(await bioVerify())bio();else $('#pinErr').textContent=bioName()+' 驗證未通過，請輸入密碼'}}
+function unlockSheet(done){const bio=S.sec.bio?done:null;
+  if(bio)bioVerify().then(ok=>{if(ok)done();else show()});else show();
+  function show(){pinAsk('輸入金鑰密碼','行情金鑰已加鎖。',async pin=>{if(!await pinCheck(pin))return false;done();return true},bio);
+    $('#sheet').insertAdjacentHTML('beforeend','<button class="linkBtn" id="pinForgot">忘記金鑰密碼？</button>');$('#pinForgot').onclick=forgotSheet}}
+function pinSetup(mode){let first='';
+  const step1=()=>pinAsk(mode==='reset'?'設定新的金鑰密碼':'設定金鑰密碼','請輸入 4～8 位數字。密碼只存在這台裝置，不會上傳。',async v=>{first=v;step2();return true});
+  const step2=()=>pinAsk('再輸入一次確認','',async v=>{if(v!==first){toast('兩次輸入不一樣，請重新設定');step1();return true}
+    const salt=b64(rnd(16));S.sec={h:await pinHash(v,salt),salt,bio:null,at:Date.now()};save();
+    if(await bioAvail()){sheet(head('也要用 '+bioName()+' 解鎖嗎？')+`<p>開啟後，打開「行情金鑰」可以直接用 ${bioName()} 驗證，密碼仍可作為備用。</p><button class="btn brand full" id="bYes">使用 ${bioName()}</button><button class="btn full" id="bNo" style="margin-top:8px">只用密碼</button>`);
+      $('#bYes').onclick=async()=>{try{S.sec.bio=await bioRegister();save();toast('已設定密碼與 '+bioName())}catch(_){toast(bioName()+' 設定未完成，先只用密碼')}setSheet('home')};
+      $('#bNo').onclick=()=>{toast('已設定金鑰密碼');setSheet('home')}}
+    else{toast('已設定金鑰密碼');setSheet('home')}return true});
+  step1()}
+function forgotSheet(){const c=S.cloud&&S.cloud.email;
+  sheet(head('忘記金鑰密碼')+(c?`<p>用綁定的 Google 帳號（${esc(c)}）驗證身分，通過後可以設定新密碼，金鑰會保留。</p><button class="btn brand full" id="fgG">用 Google 帳號驗證</button>`:
+     `<p class="hint">這台裝置還沒綁定 Google 帳號，無法用信箱驗證身分。</p>`)
+   +`<div class="stNote"><button class="btn full" id="fgClr">清除金鑰與密碼</button><p><b>備註</b>：金鑰本身可以隨時登入 twelvedata.com（用你註冊的電子信箱）重新複製，所以也可以直接清除舊金鑰和密碼，再貼上金鑰重新設定。持倉與紀錄不受影響。</p></div>`);
+  if(c)$('#fgG').onclick=()=>{sessionStorage.setItem('pinReset','1');if(tokOK())cloudConnect();else gLogin()};
+  let armed=false;$('#fgClr').onclick=()=>{if(!armed){armed=true;$('#fgClr').textContent='再按一次確認清除';$('#fgClr').className='btn red full';return}
+    S.sec=null;const was=demo();S.key='';save();toast('已清除金鑰與密碼，請重新貼上金鑰');if(!was){for(const k in px)delete px[k];for(const k in cache)delete cache[k];C.data=[];for(const s in SYMS)px[s]={mid:DEMO_BASE[s],t:Date.now()};loadChart(true)}setSheet('key')}}
+function pinResetByGoogle(email){if(S.cloud&&email===S.cloud.email){toast('Google 驗證通過');pinSetup('reset')}else toast('Google 帳號與綁定的帳號不符，無法重設',4000)}
+/* ---- 安全性 ---- */
+function stSecurity(){const on=S.sec&&S.sec.h;
+  sheet(subHead('安全性')+`<div class="stCard">${on?`<button class="stRow" id="scChg"><span class="g">變更金鑰密碼</span><b class="chev">›</b></button>`:`<button class="stRow" id="scSet"><span class="g">設定金鑰密碼</span><b class="chev">›</b></button>`}
+   ${on?`<div class="stRow"><span class="g">使用 ${bioName()||'Face ID'} 解鎖<small>${bioName()?'':'這個瀏覽器不支援'}</small></span><label class="sw"><input type="checkbox" id="scBio" ${S.sec.bio?'checked':''} ${bioName()?'':'disabled'}><i></i></label></div>`:''}
+   <button class="stRow" id="scForgot"><span class="g">忘記金鑰密碼</span><b class="chev">›</b></button></div>
+   <p class="hint">金鑰密碼用來保護「行情金鑰」畫面。密碼經過加密雜湊後只存在這台裝置，不會同步到雲端，每台裝置可以各自設定。</p>`);
+  if($('#scSet'))$('#scSet').onclick=()=>pinSetup();
+  if($('#scChg'))$('#scChg').onclick=()=>pinAsk('輸入原本的密碼','',async v=>{if(!await pinCheck(v))return false;pinSetup('reset');return true});
+  $('#scForgot').onclick=forgotSheet;
+  if($('#scBio'))$('#scBio').onchange=async e=>{const want=e.target.checked;e.target.checked=!want;
+    if(want){try{S.sec.bio=await bioRegister();save();toast('已開啟 '+bioName())}catch(_){toast(bioName()+' 設定未完成')}}else{S.sec.bio=null;save();toast('已關閉 '+bioName())}stSecurity()}}
+/* ---- 報價更新與槓桿 ---- */
+function stFeed(){sheet(subHead('報價更新與槓桿')+`<div class="two"><label class="f"><span>報價更新間隔</span><select id="sInt">${[10,15,20,30,60].map(v=>`<option value="${v}" ${v===S.interval?'selected':''}>${v} 秒</option>`).join('')}</select></label>
+  <label class="f"><span>槓桿（新倉適用）</span><select id="sLev">${[10,30,50,100,200,500].map(v=>`<option value="${v}" ${v===S.lev?'selected':''}>1:${v}</option>`).join('')}</select></label></div>
+  <p class="hint" id="sQuota"></p><button class="btn brand full" id="sSave">儲存</button>`);
+  const quota=()=>{const iv=+$('#sInt').value,n=neededSyms().length,eff=Math.max(iv,Math.ceil(n*60/7)),perH=Math.round(3600/eff*n),used=S.credits.day===new Date().toISOString().slice(0,10)?S.credits.n:0;
+    $('#sQuota').innerHTML=`每次更新、每個商品扣 1 點；免費額度是每分鐘 8 點、每天 800 點。<br>目前需要更新 <b>${n}</b> 個商品，選 ${iv} 秒${eff>iv?`（商品較多，實際會放慢到 ${eff} 秒）`:''}＝每小時約 <b>${perH}</b> 點，800 點約可連續看盤 <b>${(800/perH).toFixed(1)}</b> 小時。<br>今日已用 ${used} 點，剩 ${Math.max(0,800-used)} 點。視窗切到背景或休市時會自動暫停，不扣點。`};
+  $('#sInt').onchange=quota;quota();
+  $('#sSave').onclick=()=>{S.interval=+$('#sInt').value;S.lev=+$('#sLev').value;save();schedule();toast('已儲存');setSheet('home')}}
+/* ---- 交易帳戶 ---- */
+function stAcct(){sheet(subHead('交易帳戶')+`<div class="stCard stBal"><small>目前餘額</small><b class="num">${fM(S.bal)}</b></div>
+  <label class="f"><span>金額（美元）</span><input id="sAmt" inputmode="decimal" value="1000"></label>
+  <div class="two" style="margin-bottom:8px"><button class="btn" id="sDep">＋ 入金</button><button class="btn" id="sWd">− 出金</button></div>
+  <label class="f"><span>單筆最大手數（防止按錯）</span><input id="sMax" inputmode="decimal" value="${S.maxLots||5}"></label>
+  <div class="stNote"><button class="btn red full" id="sReset">重設帳戶</button><p><b>備註</b>：重設會清空所有持倉、掛單與交易紀錄，餘額改為上方金額，無法復原。</p></div><div class="err" id="sErr"></div>`);
   const money=(sign,btn,label)=>{let armed=false;return()=>{const a=num($('#sAmt').value);if(!a)return $('#sErr').textContent='請輸入金額';const amt=Math.abs(a)*sign;
       if(sign<0&&Math.abs(amt)>S.bal)return $('#sErr').textContent='出金金額不能超過餘額 '+fM(S.bal);
       if(!armed){armed=true;$(btn).textContent=`確認${label} ${fM(Math.abs(amt))}？再按一次`;$(btn).className='btn '+(sign>0?'pri':'red');setTimeout(()=>{armed=false;const e=$(btn);if(e){e.textContent=(sign>0?'＋ 入金':'− 出金');e.className='btn'}},4000);return}
-      S.bal=r2(S.bal+amt);S.hist.unshift({note:label,amt,ct:Date.now()});save();toast(`已${label} ${fM(Math.abs(amt))}，餘額 ${fM(S.bal)}`,3500);closeSheet()}};
+      S.bal=r2(S.bal+amt);S.hist.unshift({note:label,amt,ct:Date.now()});save();toast(`已${label} ${fM(Math.abs(amt))}，餘額 ${fM(S.bal)}`,3500);stAcct()}};
   $('#sDep').onclick=money(1,'#sDep','入金');$('#sWd').onclick=money(-1,'#sWd','出金');
   $('#sMax').onchange=()=>{const v=num($('#sMax').value);if(v&&v>=0.01){S.maxLots=Math.min(100,v);save();toast('單筆上限已設為 '+S.maxLots+' 手')}};
-  $('#sCost').onclick=costSheet;
   let armed=false;$('#sReset').onclick=()=>{const a=num($('#sAmt').value);if(!a||a<=0)return $('#sErr').textContent='請輸入金額';if(!armed){armed=true;$('#sReset').textContent='再按一次確認重設（無法復原）';return}
-    S.bal=r2(a);S.pos=[];S.orders=[];S.hist=[{note:'帳戶重設',amt:a,ct:Date.now()}];save();schedule();toast('帳戶已重設');closeSheet()};
+    S.bal=r2(a);S.pos=[];S.orders=[];S.hist=[{note:'帳戶重設',amt:a,ct:Date.now()}];save();schedule();toast('帳戶已重設');closeSheet()}}
+/* ---- 雲端同步 ---- */
+function stCloud(){sheet(subHead('雲端同步')+`<h3 style="margin-left:0" id="sCloud">綁定 Google</h3><div id="cloudBox"></div>`);rCloudBox()}
+/* ---- 備份與還原 ---- */
+function stBackup(){sheet(subHead('備份與還原')+`<div class="two"><button class="btn" id="sCopy">複製備份碼</button><button class="btn" id="sPasteBtn">貼上備份碼還原</button></div>
+  <div id="sPasteBox" style="display:none"><textarea id="sPaste" rows="3" placeholder="在這裡長按 → 貼上備份碼" style="width:100%;margin-top:8px;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--tx)"></textarea><button class="btn brand full" id="sRestore" style="margin-top:6px">還原</button></div>
+  <div class="two" style="margin-top:8px"><button class="btn" id="sExp">匯出備份檔</button><button class="btn" id="sImp">匯入備份檔</button></div><input type="file" id="sFile" accept="application/json,.json" hidden><div class="err" id="sErr"></div>
+  <p class="hint">資料存在這台裝置的瀏覽器。換手機或清除瀏覽資料前，請先匯出備份，或開啟雲端同步。</p>`);
   $('#sExp').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:'application/json'}));a.download='fx-practice-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click()};
   $('#sImp').onclick=()=>$('#sFile').click();
-  rCloudBox();
-  const padShow=()=>{const cs=getComputedStyle(document.querySelector('#app')),nb=getComputedStyle(document.querySelector('nav'));$('#padTv').textContent=Math.round(parseFloat(cs.paddingTop))+(S.ui.padT==null?'（自動）':'');$('#padBv').textContent=Math.round(parseFloat(nb.paddingBottom))+(S.ui.padB==null?'（自動）':'')};
-  $('#sheet').querySelectorAll('[data-pad]').forEach(bt=>bt.onclick=()=>{const[k,d]=bt.dataset.pad.split(','),cur=k==='padT'?parseFloat(getComputedStyle(document.querySelector('#app')).paddingTop):parseFloat(getComputedStyle(document.querySelector('nav')).paddingBottom);S.ui[k]=Math.max(0,Math.min(160,Math.round(cur)+(+d)));save();fitApp();setTimeout(padShow,30)});
-  $('#sFz').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.fz=+b.dataset.v;save();applyFz();$('#sFz').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))};
-  $('#padReset').onclick=()=>{S.ui={padT:null,padB:null};save();fitApp();setTimeout(padShow,30)};padShow();
-  const dg=screenDiag();$('#sDiag').innerHTML=`螢幕 ${screen.width}×${screen.height}，網頁可用 ${dg.sw}×${dg.vh}，縮放 ${window.visualViewport?visualViewport.scale.toFixed(2):'—'}，內容寬 ${document.documentElement.scrollWidth}，頂部安全區 ${Math.round(dg.top)}，主畫面：${standalone()?'是':'否'}。`;
   const restore=txt=>{try{const j=JSON.parse(txt.trim());if(j.v!==1||!Array.isArray(j.pos))throw 0;loadAll(j)}catch(_){$('#sErr').textContent='備份碼不正確，請確認有完整貼上'}};
   $('#sCopy').onclick=async()=>{const t=JSON.stringify(S);try{await navigator.clipboard.writeText(t);toast('備份碼已複製，請貼到備忘錄保存',3500)}catch(_){$('#sPasteBox').style.display='block';$('#sPaste').value=t;$('#sPaste').select();toast('無法自動複製，請在下方框內長按 → 全選 → 拷貝',4000)}};
   $('#sPasteBtn').onclick=()=>{$('#sPasteBox').style.display='block';$('#sPaste').value='';$('#sPaste').focus()};
   $('#sRestore').onclick=()=>restore($('#sPaste').value);
-  if(gapHelp)setTimeout(()=>{const e=$('#sCal');if(e)e.scrollIntoView({block:'center'})},100);
-  $('#sFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const j=JSON.parse(rd.result);if(j.v!==1||!Array.isArray(j.pos))throw 0;loadAll(j)}catch(_){$('#sErr').textContent='這不是有效的備份檔'}};rd.readAsText(f)};
-}
-$('#gear').onclick=setSheet;$('#langBtn').onclick=langSheet;$('#bell').onclick=ntSheet;$('#indBtn').onclick=indSheet;$('#drawBtn').onclick=drawSheet;$('#hSym').onclick=()=>go('vQuotes');
+  $('#sFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const j=JSON.parse(rd.result);if(j.v!==1||!Array.isArray(j.pos))throw 0;loadAll(j)}catch(_){$('#sErr').textContent='這不是有效的備份檔'}};rd.readAsText(f)}}
+/* ---- 字體與畫面 ---- */
+function stDisplay(){sheet(subHead('字體與畫面')+`<h3 style="margin-left:0">字體大小</h3><div class="seg" id="sFz">${[[1,'小'],[1.15,'標準'],[1.3,'大'],[1.45,'特大']].map(o=>`<button data-v="${o[0]}" class="${(S.fz||1.15)===o[0]?'on':''}">${o[1]}</button>`).join('')}</div><p class="hint">只放大文字和數字，版面配置不變。</p>
+  <h3 style="margin-left:0" id="sCal">畫面校正</h3><p class="hint">如果頂端的商品名稱被遮住，或最下排離螢幕底部太遠，用下面的按鈕調整，畫面會立刻變化。</p>
+  <div class="ntrow"><div class="g">上方留白</div><button class="btn" data-pad="padT,-4">−</button><b class="num" id="padTv" style="min-width:64px;text-align:center"></b><button class="btn" data-pad="padT,4">＋</button></div>
+  <div class="ntrow"><div class="g">下方留白</div><button class="btn" data-pad="padB,-4">−</button><b class="num" id="padBv" style="min-width:64px;text-align:center"></b><button class="btn" data-pad="padB,4">＋</button></div>
+  <button class="btn full" id="padReset" style="margin-top:8px">恢復自動</button><p class="hint" id="sDiag"></p>`);
+  const padShow=()=>{const cs=getComputedStyle(document.querySelector('#app')),nb=getComputedStyle(document.querySelector('nav'));$('#padTv').textContent=Math.round(parseFloat(cs.paddingTop))+(S.ui.padT==null?'（自動）':'');$('#padBv').textContent=Math.round(parseFloat(nb.paddingBottom))+(S.ui.padB==null?'（自動）':'')};
+  $('#sheet').querySelectorAll('[data-pad]').forEach(bt=>bt.onclick=()=>{const[k,d]=bt.dataset.pad.split(','),cur=k==='padT'?parseFloat(getComputedStyle(document.querySelector('#app')).paddingTop):parseFloat(getComputedStyle(document.querySelector('nav')).paddingBottom);S.ui[k]=Math.max(0,Math.min(160,Math.round(cur)+(+d)));save();fitApp();setTimeout(padShow,30)});
+  $('#sFz').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.fz=+b.dataset.v;save();applyFz();$('#sFz').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))};
+  $('#padReset').onclick=()=>{S.ui={padT:null,padB:null};save();fitApp();setTimeout(padShow,30)};padShow();
+  const dg=screenDiag();$('#sDiag').innerHTML=`螢幕 ${screen.width}×${screen.height}，網頁可用 ${dg.sw}×${dg.vh}，縮放 ${window.visualViewport?visualViewport.scale.toFixed(2):'—'}，內容寬 ${document.documentElement.scrollWidth}，頂部安全區 ${Math.round(dg.top)}，主畫面：${standalone()?'是':'否'}。`}
+$('#gear').onclick=()=>setSheet('home');$('#langBtn').onclick=langSheet;$('#bell').onclick=ntSheet;$('#indBtn').onclick=indSheet;$('#drawBtn').onclick=drawSheet;$('#hSym').onclick=()=>go('vQuotes');
 const qTap=(id,side)=>()=>{const b=$(id);if(land()&&!b.classList.contains('peek')){document.querySelectorAll('#qbar .b').forEach(x=>x.classList.remove('peek'));b.classList.add('peek');clearTimeout(b._t);b._t=setTimeout(()=>b.classList.remove('peek'),4000);return}
   b.classList.remove('peek');orderSheet(side)};
 
@@ -1455,7 +1564,7 @@ async function dPut(id,obj){const body=JSON.stringify(obj);
   const bd='haiyi'+Date.now(),mp=`--${bd}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify({name:DFILE,parents:['appDataFolder']})}\r\n--${bd}\r\nContent-Type: application/json\r\n\r\n${body}\r\n--${bd}--`;
   return(await gFetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id',{method:'POST',headers:{'Content-Type':'multipart/related; boundary='+bd},body:mp})).json()}
 // 同步內容：交易資料與設定；畫面校正、字體大小屬於各裝置自己的偏好，不同步
-const LOCAL_ONLY=['px','cloud','ui','fz','credits','lang'];
+const LOCAL_ONLY=['px','cloud','ui','fz','credits','lang','sec'];
 function snapData(){const o=JSON.parse(JSON.stringify(S));LOCAL_ONLY.forEach(k=>delete o[k]);return o}
 function snapHash(o){const t=JSON.stringify(o,(k,v)=>['roll','lastSeen','ref','unread'].includes(k)?undefined:v);let h=0;for(let i=0;i<t.length;i++)h=(h*31+t.charCodeAt(i))|0;return h+':'+t.length}
 function summary(d){return`餘額 ${fM(d.bal||0)}・持倉 ${(d.pos||[]).length} 筆・紀錄 ${(d.hist||[]).filter(h=>h.sym).length} 筆`}
@@ -1467,6 +1576,7 @@ function cloudPull(remote){const keep={ui:S.ui,fz:S.fz,credits:S.credits,cloud:O
 async function cloudConnect(){
   try{setCloud('wait','連線雲端中…');
     const email=(await (await gFetch('https://www.googleapis.com/oauth2/v3/userinfo')).json()).email||'';
+    if(sessionStorage.getItem('pinReset')){sessionStorage.removeItem('pinReset');setCloud('ok','已連線');pinResetByGoogle(email);return}
     const f=await dFind(),same=S.cloud&&S.cloud.email===email&&S.cloud.auto;
     if(!f){S.cloud={email,fileId:null,at:0,auto:true};await cloudPush();toast('已綁定 '+email+'，這台的資料已上傳雲端',4000);return}
     const remote=await dGet(f.id);S.cloud=Object.assign(S.cloud&&S.cloud.email===email?S.cloud:{at:0,auto:false},{email,fileId:f.id});save();
