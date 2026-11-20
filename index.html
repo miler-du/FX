@@ -253,6 +253,15 @@ input,textarea,select{-webkit-user-select:text;user-select:text;-webkit-touch-ca
 /* ---- 駭異科技 Circuit Line 圖示與選取狀態 ---- */
 svg.ic{display:block;width:1.25em;height:1.25em;overflow:visible}
 svg.ic .nd{transition:fill .18s,filter .18s}
+#langBtn{position:relative;display:inline-flex;align-items:center;justify-content:center;line-height:1;color:var(--mut);padding:2px 4px;flex:none;font-size:calc(18px*var(--fz,1))}#langBtn svg.ic{width:1.3em;height:1.3em}#langBtn:active{color:var(--tx)}
+#langBtn i{position:absolute;right:-3px;bottom:-1px;font-style:normal;font-size:calc(8.5px*var(--fz,1));font-weight:700;letter-spacing:.02em;color:var(--cy);background:var(--panel);border-radius:3px;padding:0 2px;line-height:1.25}
+html[lang=en] #qSell .lbl,html[lang=en] #qBuy .lbl{display:none}
+.lgList{display:grid;gap:8px;margin:4px 0 8px}.lgList button{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;border:1px solid var(--line);border-radius:10px;background:var(--bg);font-size:calc(16px*var(--fz,1));font-weight:600}
+.lgList button small{color:var(--mut);font-weight:500}.lgList button.on{border-color:var(--cy);background:linear-gradient(135deg,#22d3ee1f,#8b5cf61f);box-shadow:0 0 0 1px #22d3ee55 inset}.lgList button.on small{color:var(--cy)}
+.ibtn{display:inline-flex;align-items:center;justify-content:center;width:calc(36px*var(--fz,1));height:calc(32px*var(--fz,1));padding:0!important;border:1px solid var(--line);border-radius:8px;background:var(--panel2);color:var(--mut);font-size:calc(16px*var(--fz,1))}
+.ibtn svg.ic{width:1.15em;height:1.15em}.ibtn:active{color:var(--tx)}.ibtn.spin svg{animation:spin .9s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.seg button{white-space:nowrap}.nwTools .seg{min-width:0;flex:0 1 auto}.nwTools .seg button{padding:6px 12px}
+.nwSrc{display:inline-block;font-size:calc(10.5px*var(--fz,1));padding:0 5px;border-radius:4px;border:1px solid var(--line);margin-right:6px;color:var(--cy)}
 #cloudBtn{display:inline-flex;align-items:center;justify-content:center;line-height:1}#cloudBtn[hidden]{display:none}#cloudBtn svg.ic{width:1.3em;height:1.3em}#cloudBtn.ok svg.ic .nd{fill:var(--cy);filter:drop-shadow(0 0 3px var(--cy))}
 #bell,#gear{display:inline-flex;align-items:center;justify-content:center;color:var(--mut);line-height:1}
 #menuBtn{color:var(--mut);line-height:1}
@@ -310,11 +319,12 @@ nav button.on span{background:linear-gradient(90deg,var(--cy),var(--vi));-webkit
 <div id="app">
   <header>
     <button id="menuBtn" aria-label="選單"></button>
-    <div id="brand"><b>HAIYI</b><span>駭異科技.FX</span></div>
+    <div id="brand" data-noi18n><b>HAIYI</b><span>駭異科技.FX</span></div>
     <button id="hSym"></button>
     <div id="hPx"><div><small>賣出 Bid</small><span id="hBid" class="num">—</span></div><div><small>買入 Ask</small><span id="hAsk" class="num">—</span></div></div>
     <div id="acctBar"></div>
     <div id="stat"><span id="statTx"></span><span id="dot"></span></div>
+    <button id="langBtn" aria-label="語言"><i id="langTag"></i></button>
     <button id="cloudBtn" aria-label="雲端同步" hidden><i id="cloudDot"></i></button>
     <button id="bell" aria-label="通知"><b id="bellN" hidden></b></button>
     <button id="gear" aria-label="設定"></button>
@@ -350,9 +360,98 @@ nav button.on span{background:linear-gradient(90deg,var(--cy),var(--vi));-webkit
 <script>
 'use strict';
 /* ================= 圖示（駭異科技 Circuit Line，GPT 設計・Claude 校正） ================= */
-const IC={"cloud": "<path d=\"M7.5 18.5h9.5a4 4 0 0 0 .5-7.97A5.5 5.5 0 0 0 7 10a4.25 4.25 0 0 0 .5 8.5z\"/><path d=\"M10 14.5h4\"/><circle class=\"nd\" cx=\"15.5\" cy=\"14.5\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\"/>","quotes": "<path d=\"M5 6.5h8\"/><path d=\"M5 11.5h8\"/><path d=\"M5 16.5h8\"/><path d=\"M18 3.5v7\"/><path d=\"M15.5 6 18 3.5 20.5 6\"/><path d=\"M18 13.5v7\"/><path d=\"M15.5 18 18 20.5 20.5 18\"/><circle class=\"nd\" cx=\"4.5\" cy=\"20\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "chart": "<path d=\"M6 4.5v3.5M6 14v5\"/><rect x=\"4.5\" y=\"8\" width=\"3\" height=\"6\" rx=\"0.6\"/><path d=\"M12 3v3M12 13.5v4\"/><rect x=\"10.5\" y=\"6\" width=\"3\" height=\"7.5\" rx=\"0.6\"/><path d=\"M18 6.5v3.5M18 15v3\"/><rect x=\"16.5\" y=\"10\" width=\"3\" height=\"5\" rx=\"0.6\"/><circle class=\"nd\" cx=\"12\" cy=\"19.5\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "trade": "<path d=\"M4 7h14\"/><path d=\"M15 4l3 3-3 3\"/><path d=\"M20 17H6\"/><path d=\"M9 14l-3 3 3 3\"/><circle class=\"nd\" cx=\"12\" cy=\"12\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "history": "<path d=\"M4 11a8 8 0 1 1 2.4 5.7\"/><path d=\"M4 6v5h5\"/><path d=\"M12 8v4l3 2\"/><circle class=\"nd\" cx=\"5.5\" cy=\"18\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "news": "<path d=\"M5 5.5h12.5A1.5 1.5 0 0 1 19 7v10.5A1.5 1.5 0 0 1 17.5 19H7a2 2 0 0 1-2-2V5.5Z\"/><path d=\"M5 8.5H3.75A.75.75 0 0 0 3 9.25V17a2 2 0 0 0 2 2\"/><rect x=\"7.5\" y=\"8\" width=\"4\" height=\"4\" rx=\"0.6\"/><path d=\"M13.5 8.5H16.5\"/><path d=\"M13.5 11.5H16.5\"/><path d=\"M7.5 15H16.5\"/><path d=\"M7.5 17.5H14.5\"/><circle class=\"nd\" cx=\"19\" cy=\"4.5\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "info": "<path d=\"M8 3.5h8l4.5 4.5v8L16 20.5H8L3.5 16V8L8 3.5Z\"/><path d=\"M12 11v5\"/><path d=\"M12 8h.01\"/><circle class=\"nd\" cx=\"20.5\" cy=\"16\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "bell": "<path d=\"M6.5 9a5.5 5.5 0 1 1 11 0c0 2 .5 3.8 1.8 5.5H4.7C6 12.8 6.5 11 6.5 9Z\"/><path d=\"M10 18.5a2 2 0 0 0 4 0\"/><path d=\"M12 3.5v-1\"/><circle class=\"nd\" cx=\"18.5\" cy=\"6\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "gear": "<path d=\"M12 3.5v2\"/><path d=\"M12 18.5v2\"/><path d=\"M20.5 12h-2\"/><path d=\"M5.5 12h-2\"/><path d=\"M18.01 5.99l-1.41 1.41\"/><path d=\"M7.4 16.6l-1.41 1.41\"/><path d=\"M18.01 18.01l-1.41-1.41\"/><path d=\"M7.4 7.4 5.99 5.99\"/><circle cx=\"12\" cy=\"12\" r=\"4.5\"/><circle cx=\"12\" cy=\"12\" r=\"1.75\"/><circle class=\"nd\" cx=\"18.5\" cy=\"5.5\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "menu": "<path d=\"M6 7h12\"/><path d=\"M6 12h12\"/><path d=\"M6 17h12\"/><circle class=\"nd\" cx=\"4.5\" cy=\"17\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>"};
+const IC={"globe": "<circle cx=\"12\" cy=\"12\" r=\"8.5\"/><path d=\"M3.5 12h17\"/><path d=\"M12 3.5c2.5 2.4 3.7 5.2 3.7 8.5s-1.2 6.1-3.7 8.5c-2.5-2.4-3.7-5.2-3.7-8.5s1.2-6.1 3.7-8.5z\"/><circle class=\"nd\" cx=\"18.7\" cy=\"6.3\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>","refresh": "<path d=\"M19.5 12a7.5 7.5 0 1 1-2.3-5.4\"/><path d=\"M19.6 4v3.8h-3.8\"/><circle class=\"nd\" cx=\"12\" cy=\"12\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>","cloud": "<path d=\"M7.5 18.5h9.5a4 4 0 0 0 .5-7.97A5.5 5.5 0 0 0 7 10a4.25 4.25 0 0 0 .5 8.5z\"/><path d=\"M10 14.5h4\"/><circle class=\"nd\" cx=\"15.5\" cy=\"14.5\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\"/>","quotes": "<path d=\"M5 6.5h8\"/><path d=\"M5 11.5h8\"/><path d=\"M5 16.5h8\"/><path d=\"M18 3.5v7\"/><path d=\"M15.5 6 18 3.5 20.5 6\"/><path d=\"M18 13.5v7\"/><path d=\"M15.5 18 18 20.5 20.5 18\"/><circle class=\"nd\" cx=\"4.5\" cy=\"20\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "chart": "<path d=\"M6 4.5v3.5M6 14v5\"/><rect x=\"4.5\" y=\"8\" width=\"3\" height=\"6\" rx=\"0.6\"/><path d=\"M12 3v3M12 13.5v4\"/><rect x=\"10.5\" y=\"6\" width=\"3\" height=\"7.5\" rx=\"0.6\"/><path d=\"M18 6.5v3.5M18 15v3\"/><rect x=\"16.5\" y=\"10\" width=\"3\" height=\"5\" rx=\"0.6\"/><circle class=\"nd\" cx=\"12\" cy=\"19.5\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "trade": "<path d=\"M4 7h14\"/><path d=\"M15 4l3 3-3 3\"/><path d=\"M20 17H6\"/><path d=\"M9 14l-3 3 3 3\"/><circle class=\"nd\" cx=\"12\" cy=\"12\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "history": "<path d=\"M4 11a8 8 0 1 1 2.4 5.7\"/><path d=\"M4 6v5h5\"/><path d=\"M12 8v4l3 2\"/><circle class=\"nd\" cx=\"5.5\" cy=\"18\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "news": "<path d=\"M5 5.5h12.5A1.5 1.5 0 0 1 19 7v10.5A1.5 1.5 0 0 1 17.5 19H7a2 2 0 0 1-2-2V5.5Z\"/><path d=\"M5 8.5H3.75A.75.75 0 0 0 3 9.25V17a2 2 0 0 0 2 2\"/><rect x=\"7.5\" y=\"8\" width=\"4\" height=\"4\" rx=\"0.6\"/><path d=\"M13.5 8.5H16.5\"/><path d=\"M13.5 11.5H16.5\"/><path d=\"M7.5 15H16.5\"/><path d=\"M7.5 17.5H14.5\"/><circle class=\"nd\" cx=\"19\" cy=\"4.5\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "info": "<path d=\"M8 3.5h8l4.5 4.5v8L16 20.5H8L3.5 16V8L8 3.5Z\"/><path d=\"M12 11v5\"/><path d=\"M12 8h.01\"/><circle class=\"nd\" cx=\"20.5\" cy=\"16\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "bell": "<path d=\"M6.5 9a5.5 5.5 0 1 1 11 0c0 2 .5 3.8 1.8 5.5H4.7C6 12.8 6.5 11 6.5 9Z\"/><path d=\"M10 18.5a2 2 0 0 0 4 0\"/><path d=\"M12 3.5v-1\"/><circle class=\"nd\" cx=\"18.5\" cy=\"6\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "gear": "<path d=\"M12 3.5v2\"/><path d=\"M12 18.5v2\"/><path d=\"M20.5 12h-2\"/><path d=\"M5.5 12h-2\"/><path d=\"M18.01 5.99l-1.41 1.41\"/><path d=\"M7.4 16.6l-1.41 1.41\"/><path d=\"M18.01 18.01l-1.41-1.41\"/><path d=\"M7.4 7.4 5.99 5.99\"/><circle cx=\"12\" cy=\"12\" r=\"4.5\"/><circle cx=\"12\" cy=\"12\" r=\"1.75\"/><circle class=\"nd\" cx=\"18.5\" cy=\"5.5\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "menu": "<path d=\"M6 7h12\"/><path d=\"M6 12h12\"/><path d=\"M6 17h12\"/><circle class=\"nd\" cx=\"4.5\" cy=\"17\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>"};
 const ico=k=>`<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[k]}</svg>`;
-for(const[id,k]of[['menuBtn','menu'],['cloudBtn','cloud'],['bell','bell'],['gear','gear']]){const e=document.getElementById(id);if(e)e.insertAdjacentHTML('afterbegin',ico(k))}
+for(const[id,k]of[['menuBtn','menu'],['langBtn','globe'],['cloudBtn','cloud'],['bell','bell'],['gear','gear']]){const e=document.getElementById(id);if(e)e.insertAdjacentHTML('afterbegin',ico(k))}
+const I18N={
+'報價':['Quotes','気配値','시세'],'圖表':['Chart','チャート','차트'],'交易':['Trade','取引','거래'],'歷史':['History','履歴','내역'],'新聞':['News','ニュース','뉴스'],'資訊':['Info','情報','정보'],
+'設定':['Settings','設定','설정'],'通知':['Alerts','通知','알림'],'語言':['Language','言語','언어'],'選單':['Menu','メニュー','메뉴'],'雲端同步':['Cloud sync','クラウド同期','클라우드 동기화'],
+'賣出':['Sell','売り','매도'],'買入':['Buy','買い','매수'],'賣出 SELL':['SELL','売り SELL','매도 SELL'],'買入 BUY':['BUY','買い BUY','매수 BUY'],'賣出 Bid':['Bid','売値 Bid','매도 Bid'],'買入 Ask':['Ask','買値 Ask','매수 Ask'],
+'買':['Buy','買','매수'],'賣':['Sell','売','매도'],'買 BUY':['BUY','買 BUY','매수 BUY'],'賣 SELL':['SELL','売 SELL','매도 SELL'],
+'餘額':['Balance','残高','잔고'],'淨值':['Equity','有効証拠金','자산'],'已用保證金':['Margin','必要証拠金','사용 증거금'],'可用保證金':['Free margin','余剰証拠金','가용 증거금'],
+'保證金比例':['Margin level','証拠金維持率','증거금 비율'],'浮動損益':['Floating P/L','評価損益','평가손익'],'槓桿':['Leverage','レバレッジ','레버리지'],'帳戶':['Account','口座','계좌'],
+'手數':['Lots','ロット','랏'],'手':['lots','ロット','랏'],'點':['pips','pips','pips'],'點差':['Spread','スプレッド','스프레드'],'現價':['Price','現在値','현재가'],
+'停損':['Stop Loss','損切り','손절'],'停利':['Take Profit','利確','익절'],'不設定':['None','設定なし','설정 안 함'],'不設':['None','なし','없음'],
+'市價':['Market','成行','시장가'],'掛單':['Pending','予約注文','대기 주문'],'掛單中':['Pending','注文中','대기 중'],'限價 Limit':['Limit','指値 Limit','지정가 Limit'],'停損單 Stop':['Stop','逆指値 Stop','스톱 Stop'],
+'以市價買入':['Buy at market','成行で買い','시장가 매수'],'以市價賣出':['Sell at market','成行で売り','시장가 매도'],
+'持倉':['Positions','ポジション','포지션'],'平倉':['Close','決済','청산'],'全部平倉':['Close all','全決済','전체 청산'],'已平倉':['Closed','決済済み','청산됨'],'修改':['Modify','変更','수정'],
+'取消':['Cancel','キャンセル','취소'],'完成':['Done','完了','완료'],'確定':['OK','OK','확인'],'刪除':['Delete','削除','삭제'],'清除':['Clear','クリア','지우기'],'加入':['Add','追加','추가'],'關閉':['Close','閉じる','닫기'],
+'更新':['Refresh','更新','새로고침'],'重試':['Retry','再試行','다시 시도'],'儲存':['Save','保存','저장'],'備份':['Backup','バックアップ','백업'],
+'損益':['P/L','損益','손익'],'手續費':['Commission','手数料','수수료'],'隔夜利息':['Swap','スワップ','스왑'],'庫存費':['Swap','スワップ','스왑'],'利息':['Swap','スワップ','스왑'],
+'單號':['Ticket','チケット','주문번호'],'商品':['Symbol','銘柄','종목'],'方向':['Type','売買','구분'],'進場價':['Open price','約定価格','진입가'],'價格':['Price','価格','가격'],'時間':['Time','時間','시간'],
+'開倉時間':['Open time','約定時間','진입 시간'],'已實現損益':['Realized P/L','確定損益','실현 손익'],'交易筆數':['Trades','取引回数','거래 수'],'勝率':['Win rate','勝率','승률'],
+'平均獲利':['Avg. win','平均利益','평균 이익'],'平均虧損':['Avg. loss','平均損失','평균 손실'],'獲利因子':['Profit factor','プロフィットファクター','수익 팩터'],'還沒有成交紀錄':['No trades yet','取引履歴はまだありません','아직 거래 내역이 없습니다'],
+'入金':['Deposit','入金','입금'],'出金':['Withdraw','出金','출금'],'帳戶重設':['Account reset','口座リセット','계좌 초기화'],'手動':['Manual','手動','수동'],
+'指標':['Indicators','インジケーター','지표'],'繪圖':['Draw','描画','그리기'],'繪圖工具':['Drawing tools','描画ツール','그리기 도구'],'週期':['Timeframe','時間足','주기'],'時間週期':['Timeframe','時間足','주기'],'最新':['Latest','最新','최신'],
+'工具':['Tools','ツール','도구'],'收起工具':['Hide tools','ツールを隠す','도구 숨기기'],'開啟工具':['Show tools','ツールを表示','도구 열기'],'時間週期圓盤':['Timeframe dial','時間足ダイヤル','주기 다이얼'],'下單':['Order','注文','주문'],
+'水平線':['Horizontal line','水平線','수평선'],'水平射線':['Horizontal ray','水平レイ','수평 레이'],'垂直線':['Vertical line','垂直線','수직선'],'趨勢線':['Trend line','トレンドライン','추세선'],'射線':['Ray','レイ','레이'],
+'延長線':['Extended line','延長線','연장선'],'矩形':['Rectangle','四角形','사각형'],'斐波那契回撤':['Fibonacci retracement','フィボナッチ・リトレースメント','피보나치 되돌림'],'價格範圍':['Price range','値幅','가격 범위'],'文字':['Text','テキスト','텍스트'],
+'十字線':['Crosshair','十字線','십자선'],'格線':['Grid','グリッド','격자'],'警報':['Alert','アラート','알림'],'價格警報':['Price alert','価格アラート','가격 알림'],'取消警報':['Remove alert','アラート解除','알림 해제'],
+'示範':['Demo','デモ','데모'],'即時':['Live','リアルタイム','실시간'],'休市中':['Market closed','市場休場中','휴장 중'],'離線':['Offline','オフライン','오프라인'],
+'新聞與財經日曆':['News & Calendar','ニュースと経済指標','뉴스 및 경제 캘린더'],'中文新聞':['News','ニュース','뉴스'],'財經日曆':['Calendar','経済指標カレンダー','경제 캘린더'],
+'外匯／黃金':['FX / Gold','為替・金','외환/금'],'全部財經':['All finance','全ての経済ニュース','전체 경제'],'高影響':['High','高','높음'],'中以上':['Medium+','中以上','중간 이상'],'全部':['All','すべて','전체'],
+'載入新聞中…':['Loading news…','ニュースを読み込み中…','뉴스 불러오는 중…'],'載入財經日曆中…':['Loading calendar…','経済指標を読み込み中…','캘린더 불러오는 중…'],'載入K線中…':['Loading chart…','チャートを読み込み中…','차트 불러오는 중…'],
+'公布':['Actual','結果','실제'],'預測':['Forecast','予想','예상'],'前值':['Previous','前回','이전'],'全天':['All day','終日','종일'],
+'高':['H','高','상'],'中':['M','中','중'],'低':['L','低','하'],'假':['Hol','休','휴'],
+'美國':['US','米国','미국'],'歐元區':['Eurozone','ユーロ圏','유로존'],'英國':['UK','英国','영국'],'日本':['Japan','日本','일본'],'澳洲':['Australia','豪州','호주'],'加拿大':['Canada','カナダ','캐나다'],'瑞士':['Switzerland','スイス','스위스'],'紐西蘭':['New Zealand','NZ','뉴질랜드'],'中國':['China','中国','중국'],'全球':['Global','世界','글로벌'],
+'美元/日圓':['US Dollar / Japanese Yen','米ドル/円','미국 달러/일본 엔'],'歐元/美元':['Euro / US Dollar','ユーロ/米ドル','유로/미국 달러'],'英鎊/美元':['British Pound / US Dollar','英ポンド/米ドル','영국 파운드/미국 달러'],
+'澳幣/美元':['Australian Dollar / US Dollar','豪ドル/米ドル','호주 달러/미국 달러'],'美元/瑞郎':['US Dollar / Swiss Franc','米ドル/スイスフラン','미국 달러/스위스 프랑'],'美元/加幣':['US Dollar / Canadian Dollar','米ドル/カナダドル','미국 달러/캐나다 달러'],
+'歐元/日圓':['Euro / Japanese Yen','ユーロ/円','유로/일본 엔'],'黃金/美元':['Gold / US Dollar','金/米ドル','금/미국 달러'],'圖表中':['On chart','表示中','차트 표시 중'],
+'雲端同步（綁定 Google）':['Cloud sync (Google)','クラウド同期（Google 連携）','클라우드 동기화 (Google 연동)'],'立即同步':['Sync now','今すぐ同期','지금 동기화'],'連線並同步':['Connect & sync','接続して同期','연결 후 동기화'],'解除綁定':['Unlink','連携解除','연동 해제'],
+'使用 Google 帳號登入並同步':['Sign in with Google to sync','Google でログインして同期','Google 로그인 후 동기화'],
+'交易成本設定':['Trading costs','取引コスト設定','거래 비용 설정'],'字體大小':['Font size','文字サイズ','글자 크기'],'畫面校正':['Screen calibration','画面調整','화면 보정'],'單筆最大手數':['Max lots per order','1注文の最大ロット','주문당 최대 랏'],
+'標準':['Standard','標準','표준'],'大':['Large','大','크게'],'特大':['Extra large','特大','아주 크게'],'小':['Small','小','작게']
+};
+
+/* ================= 語言（繁中／English／日本語／한국어）：交易術語用專業對照表，其餘文字與新聞即時機器翻譯 ================= */
+const LANGS=[['zh-TW','繁體中文','繁'],['en','English','EN'],['ja','日本語','日'],['ko','한국어','한']];
+const LI={en:0,ja:1,ko:2};
+function LG(){const v=(typeof S!=='undefined'&&S&&S.lang)||'';if(v)return v;const n=(navigator.language||'').toLowerCase();return n.startsWith('ja')?'ja':n.startsWith('ko')?'ko':n.startsWith('en')?'en':'zh-TW'}
+const HAN=/[㐀-鿿]/;
+let TRC={};try{TRC=JSON.parse(localStorage.getItem('fxp_tr'))||{}}catch(_){TRC={}}
+let trcT=0;function trcSave(){clearTimeout(trcT);trcT=setTimeout(()=>{try{const m=TRC[LG()];if(m&&Object.keys(m).length>6000)TRC[LG()]={};localStorage.setItem('fxp_tr',JSON.stringify(TRC))}catch(_){try{TRC={};localStorage.removeItem('fxp_tr')}catch(__){}}},800)}
+function lookup(k){const L=LG();if(L==='zh-TW')return k;const d=I18N[k];if(d)return d[LI[L]];const m=TRC[L];return m&&m[k]!=null?m[k]:null}
+const OHLC=()=>({en:['O','H','L','C'],ja:['始','高','安','終'],ko:['시','고','저','종']})[LG()]||['開','高','低','收'];
+const i18nQ=new Set(),i18nFail=new Set(),i18nDone=new WeakMap(),i18nPend=new Set();let i18nT=0,i18nBusy=false,canvasMiss=false;
+const NUMRE=/([-+−]?[$¥€£]?\d[\d.,:%]*(?:\s*[\/~～]\s*\d[\d.,:%]*)?)/;
+const punct=t=>LG()==='ja'?t:t.replace(/：/g,': ').replace(/（/g,' (').replace(/）/g,') ').replace(/，/g,', ').replace(/、/g,', ').replace(/。/g,'. ').replace(/；/g,'; ').replace(/！/g,'! ').replace(/？/g,'? ').replace(/「|」/g,'"').replace(/ {2,}/g,' ');
+function want(k){if(!k||!HAN.test(k)||i18nFail.has(k))return;i18nQ.add(k);clearTimeout(i18nT);i18nT=setTimeout(i18nFlush,120)}
+// 翻譯一行文字：整句查表→整句快取→（含數字時）切開數字逐段翻譯；缺的字串排入機器翻譯，回傳 null
+function trLine(v,whole){const m=v.match(/^(\s*)([\s\S]*?)(\s*)$/),core=m[2];let t=lookup(core);if(t!=null)return m[1]+t+m[3];
+  if(whole||core.length>=22||!/\d/.test(core)){want(core);return null}
+  let miss=false;const out=core.split(NUMRE).map(x=>{if(!HAN.test(x))return punct(x);const mm=x.match(/^(\s*)([\s\S]*?)(\s*)$/),y=lookup(mm[2]);if(y==null){want(mm[2]);miss=true;return x}return mm[1]+y+mm[3]});
+  return miss?null:m[1]+out.join('')+m[3]}
+function T(s0){if(LG()==='zh-TW'||!HAN.test(s0))return s0;const r=trLine(s0);if(r==null){canvasMiss=true;return s0}return r}
+const skip=el=>!el||(el.closest&&el.closest('[data-noi18n],script,style,textarea,input,select'));
+function i18nText(n){const v=n.nodeValue;if(!v||!HAN.test(v)||i18nDone.get(n)===v)return;if(skip(n.parentNode))return;
+  const r=trLine(v,!!(n.parentNode.closest&&n.parentNode.closest('[data-mtw]')));if(r==null){i18nPend.add(n);return}i18nDone.set(n,r);if(r!==v)n.nodeValue=r}
+const ATTR=['placeholder','title','aria-label'];
+const attrDone=new WeakMap();
+function i18nAttr(el){const dn=attrDone.get(el)||{};for(const a of ATTR){const v=el.getAttribute(a);if(!v||!HAN.test(v)||dn[a]===v)continue;const r=trLine(v);if(r==null){i18nPend.add(el);continue}dn[a]=r;attrDone.set(el,dn);if(r!==v)el.setAttribute(a,r)}}
+function i18nWalk(root){if(root.nodeType===3){i18nText(root);return}if(root.nodeType!==1||skip(root))return;
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode())i18nText(n);
+  if(root.matches&&root.matches('[placeholder],[title],[aria-label]'))i18nAttr(root);root.querySelectorAll&&root.querySelectorAll('[placeholder],[title],[aria-label]').forEach(e=>{if(!skip(e))i18nAttr(e)})}
+async function mtFetch(keys,tl){
+  try{const r=await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl='+tl+'&dt=t&q='+encodeURIComponent(keys.join('\n')));
+    if(r.ok){const j=await r.json(),out=(j[0]||[]).map(x=>x&&x[0]||'').join('').split('\n').map(x=>x.trim());if(out.length===keys.length)return out}}catch(_){}
+  const res=[];for(const k of keys){let v=null;
+    try{const r=await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl='+tl+'&dt=t&q='+encodeURIComponent(k));if(r.ok){const j=await r.json();v=(j[0]||[]).map(x=>x&&x[0]||'').join('').trim()||null}}catch(_){}
+    if(v==null)try{const r=await fetch('https://api.mymemory.translated.net/get?langpair=zh-TW|'+tl+'&q='+encodeURIComponent(k.slice(0,480)));if(r.ok){const j=await r.json();v=j.responseData&&j.responseData.translatedText||null}}catch(_){}
+    res.push(v)}return res}
+async function i18nFlush(){if(i18nBusy||!i18nQ.size)return;i18nBusy=true;const L=LG(),tl={en:'en',ja:'ja',ko:'ko'}[L];
+  try{while(i18nQ.size){const keys=[];let len=0;for(const k of i18nQ){if(keys.length&&len+k.length>1400)break;keys.push(k);len+=k.length+1;if(keys.length>=60)break}
+      keys.forEach(k=>i18nQ.delete(k));const out=await mtFetch(keys,tl);TRC[L]=TRC[L]||{};
+      keys.forEach((k,i)=>{const v=out[i];if(v)TRC[L][k]=L==='ja'?v:v.replace(/^"(.*)"$/,'$1');else i18nFail.add(k)});trcSave();
+      const pend=[...i18nPend];i18nPend.clear();pend.forEach(n=>{if(!n.isConnected)return;n.nodeType===3?i18nText(n):i18nAttr(n)});
+      if(canvasMiss){canvasMiss=false;try{if(view==='vChart'||desk())draw()}catch(_){}}}}
+  finally{i18nBusy=false;if(i18nQ.size)i18nFlush()}}
+function i18nInit(){const L=LG();document.documentElement.lang=L;const tg=$('#langTag');if(tg)tg.textContent=(LANGS.find(x=>x[0]===L)||LANGS[0])[2];if(L==='zh-TW')return;
+  i18nWalk(document.body);new MutationObserver(ms=>{for(const m of ms){if(m.type==='characterData')i18nText(m.target);else if(m.type==='attributes'){if(!skip(m.target))i18nAttr(m.target)}else m.addedNodes.forEach(i18nWalk)}})
+   .observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:ATTR})}
+function langSheet(){const L=LG();
+  sheet(`<div data-noi18n>${head('語言 Language')}<div class="lgList">${LANGS.map(x=>`<button data-lg="${x[0]}" class="${x[0]===L?'on':''}"><span>${x[1]}</span><small>${x[0]===L?'✓ ':''}${{'zh-TW':'介面與新聞','en':'Interface & news','ja':'画面とニュース','ko':'화면 및 뉴스'}[x[0]]}</small></button>`).join('')}</div>
+   <p class="hint">${{'zh-TW':'交易術語使用專業對照翻譯；新聞標題、內容與其他文字會即時機器翻譯，翻過的會記住，下次更快。','en':'Trading terms use a professional glossary. News headlines and other text are machine-translated in real time and cached.','ja':'取引用語は専門用語集で翻訳します。ニュースの見出しやその他の文章はリアルタイムで機械翻訳され、保存されます。','ko':'거래 용어는 전문 용어집으로 번역됩니다. 뉴스 제목과 기타 문장은 실시간 기계 번역되며 저장됩니다.'}[L]}</p></div>`);
+  $('#sheet').querySelectorAll('[data-lg]').forEach(b=>b.onclick=()=>{if(b.dataset.lg===LG())return closeSheet();S.lang=b.dataset.lg;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(_){}location.reload()})}
 /* ================= 基本設定 ================= */
 const SYMS={
  'USD/JPY':{d:3,pip:0.01,spread:1.4,contract:100000,name:'美元/日圓'},
@@ -368,7 +467,7 @@ const TFS=[['1min','M1',60],['5min','M5',300],['15min','M15',900],['30min','M30'
 const tfSec=tf=>TFS.find(t=>t[0]===tf)[2], tfName=tf=>TFS.find(t=>t[0]===tf)[1];
 const DEMO_BASE={'USD/JPY':152.4,'EUR/USD':1.085,'GBP/USD':1.27,'AUD/USD':0.655,'USD/CHF':0.885,'USD/CAD':1.37,'EUR/JPY':165.3,'XAU/USD':2650};
 const KEY='fxp1';
-const DEF={v:1,key:'',interval:30,lev:100,bal:10000,pos:[],orders:[],hist:[],nextId:1,sym:'USD/JPY',tf:'15min',
+const DEF={v:1,lang:'',key:'',interval:30,lev:100,bal:10000,pos:[],orders:[],hist:[],nextId:1,sym:'USD/JPY',tf:'15min',
   ic:{ma:[{on:true,n:20,t:'SMA'},{on:false,n:60,t:'SMA'},{on:false,n:120,t:'EMA'}],bb:{on:false,n:20,k:2},rsi:{on:false,n:14},macd:{on:false,f:12,s:26,g:9},kd:{on:false,n:9,k:3,d:3},sar:{on:false,st:0.02,mx:0.2},ichi:{on:false,a:9,b:26,c:52},atr:{on:false,n:14},cci:{on:false,n:20},wr:{on:false,n:14}},tabs:null,draw:{},showTr:true,magnet:true,
   nt:{on:false,asked:false,bg:false,sound:true,sl:{on:true,pips:10},mv:{},ref:{},log:[],unread:0},tab:0,upRed:false,fz:1.15,cost:{},maxLots:5,cloud:null,gcid:'',ui:{padT:null,padB:null},lots:0.1,lastSeen:{},credits:{day:'',n:0},px:{}};
 let S=load();
@@ -640,7 +739,7 @@ function draw(){
   const x=C.ctx,d=C.data,N=d.length,W=C.w,H=C.h;if(!W)return;
   x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,W,H);const F=fz();x.font=FNT(11);x.textBaseline='middle';
   const UP=S.upRed?'#ef5350':'#26a69a',DN=S.upRed?'#26a69a':'#ef5350';
-  if(!N){x.fillStyle='#8b949e';x.textAlign='center';x.fillText(C.msg||'載入K線中…',W/2,H/2);return}
+  if(!N){x.fillStyle='#8b949e';x.textAlign='center';x.fillText(T(C.msg||'載入K線中…'),W/2,H/2);return}
   const sec=tfSec(S.tf),sym=S.sym,AX=Math.round(62*F),TA=Math.round(18*F),ic=S.ic,MAC=['#e3b341','#bc8cff','#f778ba'],subs=['rsi','macd','kd','atr','cci','wr'].filter(k=>ic[k].on),subH=Math.round((H-TA)*Math.min(0.2,0.5/Math.max(1,subs.length))),mainH=H-TA-subs.length*subH,pw=W-AX,PAD=4;
   const last=N-1-C.off+PAD,first=last-pw/C.barW,i0=Math.max(0,Math.floor(first)),i1=Math.min(N-1,Math.ceil(last));
   if(!J.ok||(ic.rsi.on&&!J.rsi)||(ic.macd.on&&!J.macd)||(ic.kd.on&&!J.k)||(ic.bb.on&&!J.bbU)||(ic.sar.on&&!J.sar)||(ic.ichi.on&&!J.ich)||(ic.atr.on&&!J.atr)||(ic.cci.on&&!J.cci)||(ic.wr.on&&!J.wr)||J.ma.length!==ic.ma.length)recomputeJ();
@@ -724,7 +823,7 @@ function draw(){
     const dt=new Date(d[ii].t*1000),lb=sec>=86400?dt.getUTCFullYear()+'/'+p2(dt.getUTCMonth()+1)+'/'+p2(dt.getUTCDate()):fT(d[ii].t*1000);
     const tw=x.measureText(lb).width+10,tx=Math.max(tw/2,Math.min(pw-tw/2,sx));x.fillStyle='#30363d';x.fillRect(tx-tw/2,H-TA,tw,TA);x.fillStyle='#e6edf3';x.textAlign='center';x.fillText(lb,tx,H-TA/2)}
   const b=d[ii];x.textAlign='left';x.fillStyle='#070b18cc';x.fillRect(0,0,pw,(J.bbU||J.ich||J.sar||J.ma.some(Boolean)?32:17)*F);
-  x.fillStyle=b.c>=b.o?UP:DN;{const L=[`${tfName(S.tf)}  開${fP(sym,b.o)} 高${fP(sym,b.h)} 低${fP(sym,b.l)} 收${fP(sym,b.c)}`,`開${fP(sym,b.o)} 高${fP(sym,b.h)} 低${fP(sym,b.l)} 收${fP(sym,b.c)}`,`高${fP(sym,b.h)} 低${fP(sym,b.l)} 收${fP(sym,b.c)}`];x.fillText(L.find(t=>x.measureText(t).width<=pw-10)||L[2],4,9*F)}
+  x.fillStyle=b.c>=b.o?UP:DN;{const OH=OHLC();const L=[`${tfName(S.tf)}  ${OH[0]}${fP(sym,b.o)} ${OH[1]}${fP(sym,b.h)} ${OH[2]}${fP(sym,b.l)} ${OH[3]}${fP(sym,b.c)}`,`${OH[0]}${fP(sym,b.o)} ${OH[1]}${fP(sym,b.h)} ${OH[2]}${fP(sym,b.l)} ${OH[3]}${fP(sym,b.c)}`,`${OH[1]}${fP(sym,b.h)} ${OH[2]}${fP(sym,b.l)} ${OH[3]}${fP(sym,b.c)}`];x.fillText(L.find(t=>x.measureText(t).width<=pw-10)||L[2],4,9*F)}
   let tx=4;const lab=(t,c)=>{x.fillStyle=c;x.fillText(t,tx,24*F);tx+=x.measureText(t).width+8};
   J.ma.forEach((a,n)=>{if(a&&a[ii]!=null)lab((ic.ma[n].t==='EMA'?'EMA':'MA')+ic.ma[n].n+' '+fP(sym,a[ii]),MAC[n])});
   if(J.ich&&J.ich.T[ii]!=null)lab(`一目 轉換 ${fP(sym,J.ich.T[ii])} 基準 ${J.ich.K[ii]!=null?fP(sym,J.ich.K[ii]):'—'}`,'#58a6ff');
@@ -750,8 +849,8 @@ function drawShapes(x,g){
     const far=(p,q,k)=>{const dx=q.x-p.x,dy=q.y-p.y,l=Math.hypot(dx,dy)||1;return{x:p.x+dx/l*k,y:p.y+dy/l*k}};
     const[p1,p2]=P0;
     switch(dw.type){
-      case'hline':L(0,p1.y,pw,p1.y);axL.push({p:dw.pts[0].p,c:col});if(dw.al){x.save();x.fillStyle='#22d3ee';x.textAlign='left';x.fillText('◆ 警報 '+(dw.dir==='up'?'↑':'↓'),6,p1.y-8*fz());x.restore()}break;
-      case'hray':L(p1.x,p1.y,pw,p1.y);axL.push({p:dw.pts[0].p,c:col});if(dw.al){x.save();x.fillStyle='#22d3ee';x.textAlign='left';x.fillText('◆ 警報 '+(dw.dir==='up'?'↑':'↓'),p1.x+6,p1.y-8*fz());x.restore()}break;
+      case'hline':L(0,p1.y,pw,p1.y);axL.push({p:dw.pts[0].p,c:col});if(dw.al){x.save();x.fillStyle='#22d3ee';x.textAlign='left';x.fillText('◆ '+T('警報')+' '+(dw.dir==='up'?'↑':'↓'),6,p1.y-8*fz());x.restore()}break;
+      case'hray':L(p1.x,p1.y,pw,p1.y);axL.push({p:dw.pts[0].p,c:col});if(dw.al){x.save();x.fillStyle='#22d3ee';x.textAlign='left';x.fillText('◆ '+T('警報')+' '+(dw.dir==='up'?'↑':'↓'),p1.x+6,p1.y-8*fz());x.restore()}break;
       case'vline':L(p1.x,0,p1.x,mainH);break;
       case'trend':L(p1.x,p1.y,p2.x,p2.y);break;
       case'ray':{const f=far(p1,p2,6000);L(p1.x,p1.y,f.x,f.y);break}
@@ -878,31 +977,37 @@ function render(){({vQuotes:rQuotes,vTrade:rTrade,vHist:rHist,vInfo:rInfo,vNews:
 /* ---------- 新聞與財經日曆（TradingView 官方嵌入元件） ---------- */
 let newsMode='market',newsKey='';
 const tvSym=s=>s==='XAU/USD'?'OANDA:XAUUSD':'FX:'+s.replace('/','');
-function tvWidget(el,name,cfg){
+function tvWidget(el,name,cfg){cfg=Object.assign({locale:{'zh-TW':'zh_TW',en:'en',ja:'ja',ko:'kr'}[LG()]||'zh_TW'},cfg);
   el.innerHTML='<div class="tradingview-widget-container" style="height:100%;width:100%"><div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div></div>';
   const sc=document.createElement('script');sc.type='text/javascript';sc.async=true;sc.src='https://s3.tradingview.com/external-embedding/embed-widget-'+name+'.js';
-  sc.innerHTML=JSON.stringify(Object.assign({width:'100%',height:'100%',colorTheme:'dark',isTransparent:true,locale:'zh_TW'},cfg));el.firstChild.appendChild(sc);
+  sc.innerHTML=JSON.stringify(Object.assign({width:'100%',height:'100%',colorTheme:'dark',isTransparent:true},cfg));el.firstChild.appendChild(sc);
 }
 /* ---------- 中文新聞（Yahoo奇摩股市 國際財經）＋ 繁中財經日曆（Forex Factory 資料＋術語對照） ---------- */
 let newsTab='news',newsAll=false,calImp='mid',newsKey2='';
 const NEWS_FEEDS=['https://tw.stock.yahoo.com/rss?category=intl-markets','https://tw.stock.yahoo.com/rss?category=news'];
 const CAL_URL='https://nfs.faireconomy.media/ff_calendar_thisweek.json';
 const FX_KW=['匯','美元','美金','日圓','日元','歐元','英鎊','澳幣','澳元','加幣','瑞郎','人民幣','黃金','金價','聯準會','Fed','央行','利率','降息','升息','通膨','CPI','非農','就業','殖利率','美債','日銀','歐銀','關稅','美指','外資'];
-async function fetchText(url){
-  const ways=[u=>u,u=>'https://api.allorigins.win/raw?url='+encodeURIComponent(u),u=>'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(u),u=>'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(u)];
-  let last;for(const w of ways){try{const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),9000);const r=await fetch(w(url),{signal:ctl.signal});clearTimeout(tm);if(r.ok){const t=await r.text();if(t&&t.length>80)return t}}catch(e){last=e}}
-  throw new Error('連不上資料來源')}
-function parseFeed(t){
-  if(t.trim()[0]==='{'){const j=JSON.parse(t);return(j.items||[]).map(i=>({title:i.title,link:i.link,date:Date.parse(i.pubDate.replace(' ','T')+'Z')||Date.now(),desc:(i.description||'').replace(/<[^>]+>/g,'').trim(),src:(i.author||'')}))}
-  const x=new DOMParser().parseFromString(t,'text/xml');return[...x.querySelectorAll('item')].map(i=>{const g=n=>{const e=i.getElementsByTagName(n)[0];return e?e.textContent.trim():''};
-    return{title:g('title'),link:g('link'),date:Date.parse(g('pubDate'))||Date.now(),desc:g('description').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim(),src:g('source')||g('dc:creator')}})}
-function cacheGet(k,ms){try{const j=JSON.parse(localStorage.getItem(k));if(j&&Date.now()-j.at<ms)return j}catch(_){}return null}
-function cacheSet(k,data){try{localStorage.setItem(k,JSON.stringify({at:Date.now(),data}))}catch(_){}}
-async function loadNews(force){const c=!force&&cacheGet('fxp_news',10*60e3);if(c)return c;
-  const all=[];let ok=0;for(const u of NEWS_FEEDS){try{all.push(...parseFeed(await fetchText(u)));ok++}catch(_){}}
-  if(!ok)throw new Error('連不上新聞來源');const seen=new Set(),items=all.filter(i=>i.title&&!seen.has(i.title)&&seen.add(i.title)).sort((a,b)=>b.date-a.date).slice(0,60);
-  cacheSet('fxp_news',items);return{at:Date.now(),data:items}}
-async function loadCal(force){const c=!force&&cacheGet('fxp_cal',30*60e3);if(c)return c;const j=JSON.parse(await fetchText(CAL_URL));cacheSet('fxp_cal',j);return{at:Date.now(),data:j}}
+async function fetchText(url,ok){const enc=encodeURIComponent,ways=[u=>u,u=>'https://api.allorigins.win/raw?url='+enc(u),u=>'https://api.codetabs.com/v1/proxy?quest='+enc(u),u=>'https://corsproxy.io/?url='+enc(u)];
+  let done=false;const ctls=[];
+  try{return await Promise.any(ways.map((w,i)=>new Promise((res,rej)=>setTimeout(async()=>{if(done)return rej(0);const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),10000);ctls.push(ctl);
+    try{const r=await fetch(w(url),{signal:ctl.signal});const t=r.ok?await r.text():'';clearTimeout(tm);if(t&&ok(t)){done=true;res(t)}else rej(0)}catch(e){clearTimeout(tm);rej(e)}},i*350))))}
+  catch(_){throw new Error('連不上資料來源')}finally{done=true;setTimeout(()=>ctls.forEach(c=>{try{c.abort()}catch(_){}}),0)}}
+const isRss=t=>/<item[\s>]/.test(t),isJson=t=>{try{JSON.parse(t);return true}catch(_){return false}};
+function parseFeed(t){const x=new DOMParser().parseFromString(t,'text/xml');return[...x.querySelectorAll('item')].map(i=>{const g=n=>{const e=i.getElementsByTagName(n)[0];return e?e.textContent.trim():''},sc=g('source');
+    return{title:g('title'),link:g('link'),date:Date.parse(g('pubDate'))||Date.now(),desc:g('description').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim(),src:'Yahoo'+(sc?'・'+sc:'')}})}
+function parseCnyes(t){const j=JSON.parse(t),d=(j.items&&j.items.data)||j.data||[];
+  return d.map(i=>({title:(i.title||'').trim(),link:'https://news.cnyes.com/news/id/'+i.newsId,date:(i.publishAt||0)*1000||Date.now(),desc:(i.summary||'').replace(/<[^>]+>/g,'').replace(/&[a-z]+;/g,' ').replace(/\s+/g,' ').trim(),src:'鉅亨網'}))}
+// 混合來源：鉅亨網（外匯、國際政經）＋ Yahoo奇摩股市（國際財經、最新）；依時間混排、去除重複標題
+const NEWS_SRC=[{n:'鉅亨網',u:'https://api.cnyes.com/media/api/v1/newslist/category/forex?limit=30',ok:isJson,p:parseCnyes},{n:'鉅亨網',u:'https://api.cnyes.com/media/api/v1/newslist/category/wd_macro?limit=30',ok:isJson,p:parseCnyes},
+  {n:'Yahoo奇摩股市',u:'https://tw.stock.yahoo.com/rss?category=intl-markets',ok:isRss,p:parseFeed},{n:'Yahoo奇摩股市',u:'https://tw.stock.yahoo.com/rss?category=news',ok:isRss,p:parseFeed}];
+function cacheGet(k){try{const j=JSON.parse(localStorage.getItem(k));if(j&&j.at&&j.data)return j}catch(_){}return null}
+function cacheSet(k,o){try{localStorage.setItem(k,JSON.stringify(o))}catch(_){}}
+async function loadNews(){const rs=await Promise.allSettled(NEWS_SRC.map(async x=>x.p(await fetchText(x.u,x.ok)).map(i=>Object.assign(i,{n:x.n}))));
+  const all=[],src=new Set();rs.forEach((r,i)=>{if(r.status==='fulfilled'&&r.value.length){all.push(...r.value);src.add(NEWS_SRC[i].n)}});if(!all.length)throw new Error('連不上新聞來源');
+  const norm=t=>t.replace(/[\s　「」『』【】《》()（）:：,，.。!！?？、\-—–'"“”‘’]/g,'').slice(0,20),seen=new Set();
+  const items=all.filter(i=>i.title&&!seen.has(norm(i.title))&&seen.add(norm(i.title))).sort((a,b)=>b.date-a.date).slice(0,80);
+  const o={at:Date.now(),data:items,src:[...src]};cacheSet('fxp_news',o);return o}
+async function loadCal(){const t=await fetchText(CAL_URL,t=>{try{return Array.isArray(JSON.parse(t))}catch(_){return false}});const o={at:Date.now(),data:JSON.parse(t)};cacheSet('fxp_cal',o);return o}
 /* 財經術語對照（台灣慣用） */
 const CAL_DICT={'Non-Farm Employment Change':'非農就業人數變化','ADP Non-Farm Employment Change':'ADP 非農就業人數變化','Unemployment Rate':'失業率','Unemployment Claims':'初領失業救濟金人數',
  'Average Hourly Earnings':'平均時薪','JOLTS Job Openings':'JOLTS 職位空缺數','Employment Change':'就業人數變化','Claimant Count Change':'失業金申請人數變化','Average Earnings Index':'平均薪資指數',
@@ -936,34 +1041,47 @@ const IMP={High:['高','#ef5350'],Medium:['中','#f0883e'],Low:['低','#e3b341']
 function rNews(){
   const k=newsTab;if(k===newsKey2&&$('#nwBody'))return;newsKey2=k;
   const L=[['Investing.com 財經日曆','https://hk.investing.com/economic-calendar/'],['鉅亨網 外匯','https://news.cnyes.com/news/cat/forex'],['Yahoo 外匯新聞','https://tw.stock.yahoo.com/currency-news']];
-  $('#vNews').innerHTML=`<div class="nwBar"><div class="seg" id="nwTab"><button data-v="news" class="${k==='news'?'on':''}">中文新聞</button><button data-v="cal" class="${k==='cal'?'on':''}">財經日曆</button><button data-v="tv" class="${k==='tv'?'on':''}">TradingView</button></div>
+  $('#vNews').innerHTML=`<div class="nwBar"><div class="seg" id="nwTab"><button data-v="news" class="${k==='news'?'on':''}">新聞</button><button data-v="cal" class="${k==='cal'?'on':''}">財經日曆</button><button data-v="tv" class="${k==='tv'?'on':''}">TradingView</button></div>
    <div class="nwLinks">${L.map(l=>`<a href="${l[1]}" target="_blank" rel="noopener">${l[0]} ↗</a>`).join('')}</div></div><div id="nwBody"></div>`;
   if(k==='news')drawNews();else if(k==='cal')drawCal();else{
     $('#nwBody').innerHTML=`<div class="nwBox" id="nwNews" style="height:min(560px,70vh)"></div><p class="hint" style="padding:0 12px">TradingView 的新聞來源多為英文媒體，介面語言改成中文也只會翻譯按鈕，標題仍是原文。</p>`;
     tvWidget($('#nwNews'),'timeline',{feedMode:'market',market:'forex',displayMode:'regular'})}
 }
-async function drawNews(force){const B=$('#nwBody');if(!B)return;B.innerHTML='<div class="empty">載入新聞中…</div>';
-  let r;try{r=await loadNews(force)}catch(e){B.innerHTML=`<div class="empty">${e.message}。可以點上方的連結，直接看外匯新聞網站。<br><br><button class="btn" id="nwRetry">重試</button></div>`;return}
-  if(!$('#nwBody'))return;const list=newsAll?r.data:r.data.filter(i=>FX_KW.some(w=>i.title.includes(w)||i.desc.includes(w)));
-  B.innerHTML=`<div class="nwTools"><div class="seg"><button data-f="fx" class="${newsAll?'':'on'}">外匯／黃金相關</button><button data-f="all" class="${newsAll?'on':''}">全部財經</button></div><button class="btn" id="nwRefresh">↻ 更新</button><span class="mut sm">${fT(r.at)} 更新・來源 Yahoo奇摩股市</span></div>`
-   +(list.length?list.map(i=>`<a class="nwItem" href="${esc(i.link)}" target="_blank" rel="noopener"><b>${esc(i.title)}</b><span class="mut sm">${fT(i.date)}${i.src?'・'+esc(i.src):''}</span>${i.desc?`<span class="nwDesc">${esc(i.desc.slice(0,120))}</span>`:''}</a>`).join(''):'<div class="empty">目前沒有相關新聞，可切換「全部財經」</div>')}
-async function drawCal(force){const B=$('#nwBody');if(!B)return;B.innerHTML='<div class="empty">載入財經日曆中…</div>';
-  let r;try{r=await loadCal(force)}catch(e){B.innerHTML=`<div class="empty">${e.message}，改用 TradingView 日曆。</div><div class="nwBox" id="nwCal" style="height:min(560px,70vh)"></div>`;tvWidget($('#nwCal'),'events',{importanceFilter:'0,1',countryFilter:'us,jp,eu,gb,au,ca,ch,cn'});return}
-  if(!$('#nwBody'))return;const lv={High:3,Medium:2,Low:1,Holiday:2},min=calImp==='high'?3:calImp==='mid'?2:0,cur=S.sym.split('/'),now=Date.now();
+const RFB=id=>`<button class="ibtn" id="${id}" aria-label="更新" title="更新">${ico('refresh')}</button>`;
+let newsSeq=0,calSeq=0;
+function paintNews(r,busy){const B=$('#nwBody');if(!B||newsTab!=='news')return;const list=newsAll?r.data:r.data.filter(i=>FX_KW.some(w=>i.title.includes(w)||i.desc.includes(w)));
+  B.innerHTML=`<div class="nwTools"><div class="seg"><button data-f="fx" class="${newsAll?'':'on'}">外匯／黃金</button><button data-f="all" class="${newsAll?'on':''}">全部財經</button></div>${RFB('nwRefresh')}<span class="mut sm">${fT(r.at)} 更新・<span data-noi18n>${(r.src||['Yahoo奇摩股市']).join('、')}</span></span>${LG()!=='zh-TW'?'<span class="mut sm">（標題與摘要為即時機器翻譯）</span>':''}</div>`
+   +(list.length?list.map(i=>`<a class="nwItem" data-mtw href="${esc(i.link)}" target="_blank" rel="noopener"><b>${esc(i.title)}</b><span class="mut sm"><span class="nwSrc" data-noi18n>${esc(i.src||i.n||'')}</span>${fT(i.date)}</span>${i.desc?`<span class="nwDesc">${esc(i.desc.slice(0,120))}${i.desc.length>120?'…':''}</span>`:''}</a>`).join(''):'<div class="empty">目前沒有相關新聞，可切換「全部財經」</div>');
+  if(busy)$('#nwRefresh').classList.add('spin')}
+async function drawNews(force){const B=$('#nwBody');if(!B)return;const seq=++newsSeq,c=cacheGet('fxp_news');
+  if(c)paintNews(c);else B.innerHTML='<div class="empty">載入新聞中…</div>';
+  if(c&&!force&&Date.now()-c.at<10*60e3)return;if(c)paintNews(c,true);
+  try{const r=await loadNews();if(seq===newsSeq)paintNews(r)}
+  catch(e){if(seq!==newsSeq||!$('#nwBody'))return;if(c){paintNews(c);toast('新聞更新失敗，先顯示上次的資料')}else B.innerHTML=`<div class="empty">${e.message}。可以點上方的連結，直接看外匯新聞網站。<br><br><button class="btn" id="nwRetry">重試</button></div>`}}
+async function drawCal(force){const B=$('#nwBody');if(!B)return;const seq=++calSeq,c=cacheGet('fxp_cal');
+  if(c)paintCal(c);else B.innerHTML='<div class="empty">載入財經日曆中…</div>';
+  if(c&&!force&&Date.now()-c.at<30*60e3)return;if(c)paintCal(c,true);
+  try{const r=await loadCal();if(seq===calSeq)paintCal(r)}
+  catch(e){if(seq!==calSeq||!$('#nwBody'))return;if(c){paintCal(c);toast('日曆更新失敗，先顯示上次的資料')}
+    else{B.innerHTML=`<div class="empty">${e.message}，改用 TradingView 日曆。</div><div class="nwBox" id="nwCal" style="height:min(560px,70vh)"></div>`;tvWidget($('#nwCal'),'events',{importanceFilter:'0,1',countryFilter:'us,jp,eu,gb,au,ca,ch,cn'})}}}
+function paintCal(r,busy){const B=$('#nwBody');if(!B||newsTab!=='cal')return;const L=LG();
+  const lv={High:3,Medium:2,Low:1,Holiday:2},min=calImp==='high'?3:calImp==='mid'?2:0,cur=S.sym.split('/'),now=Date.now();
   const ev=r.data.filter(e=>(lv[e.impact]||0)>=min).map(e=>Object.assign({},e,{t:Date.parse(e.date)})).sort((a,b)=>a.t-b.t);
-  let day='',html=`<div class="nwTools"><div class="seg"><button data-i="high" class="${calImp==='high'?'on':''}">高影響</button><button data-i="mid" class="${calImp==='mid'?'on':''}">中以上</button><button data-i="all" class="${calImp==='all'?'on':''}">全部</button></div><button class="btn" id="calRefresh">↻ 更新</button><span class="mut sm">本週・台灣時間・${fT(r.at)} 更新</span></div>`;
+  let day='',html=`<div class="nwTools"><div class="seg"><button data-i="high" class="${calImp==='high'?'on':''}">高影響</button><button data-i="mid" class="${calImp==='mid'?'on':''}">中以上</button><button data-i="all" class="${calImp==='all'?'on':''}">全部</button></div>${RFB('calRefresh')}<span class="mut sm">本週・${L==='zh-TW'?'台灣時間':'本機時間'}・${fT(r.at)} 更新</span></div>`;
   const W=['日','一','二','三','四','五','六'];
-  for(const e of ev){const d=new Date(e.t),dk=`${d.getMonth()+1}/${d.getDate()}（${W[d.getDay()]}）`;if(dk!==day){day=dk;html+=`<div class="calDay">${dk}</div>`}
+  for(const e of ev){const d=new Date(e.t),dk=L==='zh-TW'?`${d.getMonth()+1}/${d.getDate()}（${W[d.getDay()]}）`:d.toLocaleDateString(L,{month:'numeric',day:'numeric',weekday:'short'});
+    if(dk!==day){day=dk;html+=`<div class="calDay" data-noi18n>${dk}</div>`}
     const zh=calZh(e.title),im=IMP[e.impact]||['—','#8491b4'],hot=cur.includes(e.country)||(e.country==='USD'&&S.sym==='XAU/USD'),past=e.t<now,act=e.actual;
     const tm=e.title==='Bank Holiday'||/All Day|Tentative/.test(e.time||'')?'全天':`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+    const main=L==='en'?`<b data-noi18n>${esc(e.title)}</b>`:`<b>${esc(zh||e.title)}</b>${zh?`<small class="mut" data-noi18n>${esc(e.title)}</small>`:(L==='zh-TW'?'<small class="mut">（尚無對照翻譯，顯示原文）</small>':'')}`;
     html+=`<div class="calRow${hot?' hot':''}${past?' past':''}"><span class="calT num">${tm}</span><span class="calImp" style="background:${im[1]}">${im[0]}</span><span class="calC">${CCY[e.country]||e.country}<small>${e.country}</small></span>
-      <div class="g"><b>${esc(zh||e.title)}</b>${zh?`<small class="mut">${esc(e.title)}</small>`:'<small class="mut">（尚無對照翻譯，顯示原文）</small>'}
-      <span class="sm num calV">${act?`公布 <b>${esc(act)}</b>　`:''}${e.forecast?`預測 ${esc(e.forecast)}　`:''}${e.previous?`前值 ${esc(e.previous)}`:''}</span></div></div>`}
-  B.innerHTML=html+(ev.length?'':'<div class="empty">本週沒有符合條件的事件</div>')+'<p class="hint" style="padding:6px 12px">資料來源 Forex Factory。中文為財經術語對照翻譯，下方小字是原文。標示亮框的是會影響目前商品的貨幣。</p>'}
+      <div class="g">${main}<span class="sm num calV">${act?`公布 <b>${esc(act)}</b>　`:''}${e.forecast?`預測 ${esc(e.forecast)}　`:''}${e.previous?`前值 ${esc(e.previous)}`:''}</span></div></div>`}
+  B.innerHTML=html+(ev.length?'':'<div class="empty">本週沒有符合條件的事件</div>')+`<p class="hint" style="padding:6px 12px">${L==='en'?'Source: Forex Factory. Highlighted rows affect the current symbol.':'資料來源 Forex Factory。中文為財經術語對照翻譯，下方小字是原文。標示亮框的是會影響目前商品的貨幣。'}</p>`;
+  if(busy)$('#calRefresh').classList.add('spin')}
 $('#vNews').onclick=e=>{const t=e.target.closest('button');if(!t)return;
   if(t.closest('#nwTab')){newsTab=t.dataset.v;newsKey2='';rNews();return}
-  if(t.dataset.f){newsAll=t.dataset.f==='all';drawNews();return}
-  if(t.dataset.i){calImp=t.dataset.i;drawCal();return}
+  if(t.dataset.f){newsAll=t.dataset.f==='all';const c=cacheGet('fxp_news');c?paintNews(c):drawNews();return}
+  if(t.dataset.i){calImp=t.dataset.i;const c=cacheGet('fxp_cal');c?paintCal(c):drawCal();return}
   if(t.id==='nwRefresh'||t.id==='nwRetry')drawNews(true);if(t.id==='calRefresh')drawCal(true)};
 function rQuotes(){
   $('#vQuotes').innerHTML=(desk()?'<div class="ph">報價 MARKET WATCH</div>':'')+Object.keys(SYMS).map(s=>{const p=px[s];return`<div class="row${s===S.sym?' cur':''}" data-s="${s}"><div class="g"><b>${s}</b>${s===S.sym?'<span class="tag">圖表中</span>':''}<div class="sm mut">${SYMS[s].name}　點差 ${costOf(s).sp}${p&&!desk()?'　'+fT(p.t):''}</div></div>
@@ -1249,7 +1367,7 @@ function setSheet(gapHelp){
   if(gapHelp)setTimeout(()=>{const e=$('#sCal');if(e)e.scrollIntoView({block:'center'})},100);
   $('#sFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const j=JSON.parse(rd.result);if(j.v!==1||!Array.isArray(j.pos))throw 0;loadAll(j)}catch(_){$('#sErr').textContent='這不是有效的備份檔'}};rd.readAsText(f)};
 }
-$('#gear').onclick=setSheet;$('#bell').onclick=ntSheet;$('#indBtn').onclick=indSheet;$('#drawBtn').onclick=drawSheet;$('#hSym').onclick=()=>go('vQuotes');
+$('#gear').onclick=setSheet;$('#langBtn').onclick=langSheet;$('#bell').onclick=ntSheet;$('#indBtn').onclick=indSheet;$('#drawBtn').onclick=drawSheet;$('#hSym').onclick=()=>go('vQuotes');
 const qTap=(id,side)=>()=>{const b=$(id);if(land()&&!b.classList.contains('peek')){document.querySelectorAll('#qbar .b').forEach(x=>x.classList.remove('peek'));b.classList.add('peek');clearTimeout(b._t);b._t=setTimeout(()=>b.classList.remove('peek'),4000);return}
   b.classList.remove('peek');orderSheet(side)};
 
@@ -1337,7 +1455,7 @@ async function dPut(id,obj){const body=JSON.stringify(obj);
   const bd='haiyi'+Date.now(),mp=`--${bd}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify({name:DFILE,parents:['appDataFolder']})}\r\n--${bd}\r\nContent-Type: application/json\r\n\r\n${body}\r\n--${bd}--`;
   return(await gFetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id',{method:'POST',headers:{'Content-Type':'multipart/related; boundary='+bd},body:mp})).json()}
 // 同步內容：交易資料與設定；畫面校正、字體大小屬於各裝置自己的偏好，不同步
-const LOCAL_ONLY=['px','cloud','ui','fz','credits'];
+const LOCAL_ONLY=['px','cloud','ui','fz','credits','lang'];
 function snapData(){const o=JSON.parse(JSON.stringify(S));LOCAL_ONLY.forEach(k=>delete o[k]);return o}
 function snapHash(o){const t=JSON.stringify(o,(k,v)=>['roll','lastSeen','ref','unread'].includes(k)?undefined:v);let h=0;for(let i=0;i<t.length;i++)h=(h*31+t.charCodeAt(i))|0;return h+':'+t.length}
 function summary(d){return`餘額 ${fM(d.bal||0)}・持倉 ${(d.pos||[]).length} 筆・紀錄 ${(d.hist||[]).filter(h=>h.sym).length} 筆`}
@@ -1394,7 +1512,7 @@ window.__fx={get S(){return S},rollPos,px,C,I,setPx,openPos,closePos,checkBar,ac
   if(demo()){for(const s in SYMS)if(!px[s])px[s]={mid:DEMO_BASE[s],t:Date.now()}}
   const layout=()=>{O={};$('#ticket').innerHTML='';if($('#shade').classList.contains('on'))closeSheet();if(desk())orderSheet('buy',$('#ticket'));go(desk()?'vTrade':'vChart');renderLive()};
   mq.addEventListener('change',layout);lq.addEventListener('change',()=>{renderLive();setTimeout(()=>{fitApp();resize()},80)});
-  renderTabs();renderTfs();layout();rBell();cloudInit();
+  i18nInit();renderTabs();renderTfs();layout();rBell();cloudInit();
   if(!demo())setStatus('wait','連線中…');
   await loadChart();
   await catchUp();
