@@ -345,6 +345,122 @@ nav button.on span{background:linear-gradient(90deg,var(--cy),var(--vi));-webkit
  #dial .ring button.on{color:var(--tx);background:linear-gradient(#10203f,#10203f) padding-box,linear-gradient(135deg,var(--cy),var(--vi)) border-box;border:1px solid transparent;box-shadow:0 0 10px #22d3ee55}
  #dial .ring .ctr{width:58px;height:58px;margin:-29px 0 0 -29px;left:50%;top:50%;border-radius:50%;color:var(--cy);font-size:calc(11px*var(--fz,1));background:#070b18;border:1px solid #22d3ee66;line-height:1.15}
 }
+
+/* ================= 戰區聊天室＋公告欄 ================= */
+#chatBtn{position:relative;display:inline-flex;align-items:center;justify-content:center;line-height:1;color:var(--tx);padding:2px 4px;flex:none;font-size:calc(18px*var(--fz,1))}
+#chatBtn svg.ic{width:1.3em;height:1.3em}
+#chatBtn.has svg.ic .nd{fill:var(--cy);filter:drop-shadow(0 0 3px var(--cy))}
+#chatBtn.open{color:var(--cy)}
+#chatN{position:absolute;top:-5px;right:-8px;background:linear-gradient(135deg,var(--cy),var(--vi));color:#fff;font-size:calc(9.5px*var(--fz,1));border-radius:9px;padding:0 4px;line-height:15px;min-width:15px;text-align:center;font-weight:700}
+#chatN[hidden]{display:none}
+#cShade{position:absolute;left:0;right:0;bottom:0;top:var(--chT,48px);z-index:18;background:#000a;opacity:0;pointer-events:none;transition:opacity .2s}
+html.chatOn #cShade{opacity:1;pointer-events:auto}
+#chat{position:absolute;z-index:19;top:var(--chT,48px);left:0;right:0;height:var(--chH,70%);display:flex;flex-direction:column;background:linear-gradient(180deg,#0e1730,#0a1124);overflow:hidden;
+ border-radius:0 0 18px 18px;border-bottom:1px solid #22d3ee55;box-shadow:0 18px 40px #000c;transform:translateY(calc(-100% - var(--chT,48px) - 30px));transition:transform .26s cubic-bezier(.2,.8,.2,1)}
+html.chatOn #chat{transform:none}
+.chMain{flex:1;min-width:0;min-height:0;display:flex;flex-direction:column}
+.chHead{display:flex;align-items:center;gap:8px;padding:8px 10px 6px;flex:none}
+.chTabs{display:flex;flex:1;min-width:0;gap:4px;padding:3px;background:var(--bg);border:1px solid var(--line);border-radius:10px}
+.chTabs button{flex:1;position:relative;display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 4px;border-radius:7px;color:var(--mut);font-weight:700;font-size:calc(13.5px*var(--fz,1));border:1px solid transparent}
+.chTabs button svg.ic{width:1.15em;height:1.15em}
+.chTabs button.on,.chRail button.on{color:var(--tx);background:linear-gradient(#10203f,#10203f) padding-box,linear-gradient(135deg,var(--cy),var(--vi)) border-box;border:1px solid transparent;box-shadow:0 0 12px #22d3ee22}
+.chTabs button.on svg.ic .nd,.chRail button.on svg.ic .nd{fill:var(--cy);filter:drop-shadow(0 0 3px var(--cy))}
+.chDot{position:absolute;top:5px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--cy);box-shadow:0 0 6px var(--cy)}
+.chDot[hidden]{display:none}
+.chX{color:var(--mut);font-size:calc(22px*var(--fz,1));line-height:1;padding:0 4px}
+.chTtl{display:none;flex:1;font-weight:800;letter-spacing:.12em;font-size:calc(13px*var(--fz,1))}
+.chTtl small{font-weight:600;letter-spacing:.2em;color:var(--mut);margin-left:8px;font-size:calc(10px*var(--fz,1))}
+.chSub{display:flex;align-items:center;gap:8px;padding:0 12px 6px;font-size:calc(11px*var(--fz,1));color:var(--mut);flex:none}
+.chSub .lv::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#3fb950;margin-right:5px;vertical-align:1px;box-shadow:0 0 6px #3fb950}
+.chSub .rule{margin-left:auto;display:inline-flex;align-items:center;gap:4px;color:var(--mut)}
+.chSub .rule svg.ic{width:1.1em;height:1.1em}
+.chBody{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 10px 10px;overscroll-behavior:contain;-webkit-user-select:text;user-select:text}
+.chPane{display:flex;flex-direction:column;flex:1;min-height:0}.chPane[hidden]{display:none}
+.chTm{text-align:center;color:#5d6a8f;font-size:calc(11px*var(--fz,1));margin:10px 0 6px;font-variant-numeric:tabular-nums}
+.chSys{margin:6px auto 10px;max-width:92%;text-align:center;font-size:calc(11.5px*var(--fz,1));color:var(--mut);background:#141d3899;border:1px dashed var(--line);border-radius:8px;padding:6px 10px;line-height:1.5}
+.chMsg{display:flex;gap:9px;margin:10px 0;align-items:flex-start}
+.chAv{flex:none;width:calc(38px*var(--fz,1));height:calc(38px*var(--fz,1))}.chAv svg{width:100%;height:100%;display:block}
+.chMb{min-width:0;max-width:calc(100% - 50px);display:flex;flex-direction:column;gap:3px}
+.chWho{display:flex;align-items:center;gap:6px;font-size:calc(11.5px*var(--fz,1));color:var(--mut);flex-wrap:wrap}.chWho b{color:#b9c4e4;font-weight:600}
+.chBdg{display:inline-flex;align-items:center;font-size:calc(9.5px*var(--fz,1));font-weight:800;letter-spacing:.04em;padding:1px 6px;border-radius:4px;line-height:1.5}
+.chBdg.top{color:#ffd76a;background:#3a2f0b;border:1px solid #e3b34166}.chBdg.off{color:#fff;background:linear-gradient(90deg,#0e9fb8,#6d47d9)}.chBdg.new{color:var(--mut);border:1px solid var(--line)}
+.chBub{align-self:flex-start;background:var(--panel2);border:1px solid var(--line);border-radius:4px 12px 12px 12px;padding:8px 11px;line-height:1.5;word-break:break-word;font-size:calc(14px*var(--fz,1))}
+.chBub .at{color:var(--cy)}
+.chMsg.me{flex-direction:row-reverse}.chMsg.me .chMb{align-items:flex-end}.chMsg.me .chWho{flex-direction:row-reverse}
+.chMsg.me .chBub{align-self:flex-end;border-radius:12px 4px 12px 12px;background:linear-gradient(135deg,#123257,#24205a);border-color:#3a4fa0}
+.chMsg.off .chBub{border-color:#22d3ee66;background:#0f2238}
+.chImg{padding:4px;width:min(260px,100%)}.chImg img{display:block;width:100%;border-radius:8px;cursor:zoom-in}
+.chImg small{display:flex;align-items:center;gap:4px;padding:5px 4px 1px;color:#7ee0f0;font-size:calc(10.5px*var(--fz,1));font-weight:700;letter-spacing:.04em}
+.chImg small svg.ic{width:1.1em;height:1.1em}.chImg div{padding:4px 6px 3px}
+/* 戰績卡：系統依成交紀錄產生 */
+.rc{width:min(250px,100%);border-radius:12px;padding:10px 12px;background:linear-gradient(#0d1a33,#0d1a33) padding-box,linear-gradient(135deg,var(--cy),var(--vi)) border-box;border:1px solid transparent;position:relative;overflow:hidden;-webkit-user-select:none;user-select:none}
+.rc::after{content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(#22d3ee22,transparent 70%)}
+.rcT{display:flex;align-items:center;justify-content:space-between;font-size:calc(10px*var(--fz,1));letter-spacing:.14em;color:var(--mut);font-weight:700}
+.rcT span{display:inline-flex;align-items:center;gap:4px;color:#7ee0f0}.rcT svg.ic{width:1.1em;height:1.1em}
+.rcS{display:flex;align-items:baseline;gap:6px;margin:6px 0 2px}.rcS b{font-size:calc(15px*var(--fz,1))}.rcS .cb,.rcS .cs{font-weight:700;font-size:calc(12px*var(--fz,1))}
+.rcP{font-size:calc(22px*var(--fz,1));font-weight:800;font-variant-numeric:tabular-nums;line-height:1.15}.rcP small{font-size:calc(12px*var(--fz,1));font-weight:600;margin-left:6px}
+.rcM{display:flex;justify-content:space-between;gap:6px;font-size:calc(11px*var(--fz,1));color:var(--mut);margin-top:4px;font-variant-numeric:tabular-nums}
+.rc svg.sp{display:block;width:100%;height:26px;margin-top:6px}
+.rcF{font-size:calc(9.5px*var(--fz,1));color:#5d6a8f;margin-top:4px}
+/* 輸入列（表情用手機內建鍵盤；圖片只能用 App 內的圖表擷取） */
+.chIn{display:flex;align-items:center;gap:6px;padding:7px 8px;border-top:1px solid var(--line);background:var(--panel);flex:none}
+.chIn .ib{flex:none;width:calc(36px*var(--fz,1));height:calc(36px*var(--fz,1));border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--mut);background:var(--panel2);border:1px solid var(--line)}
+.chIn .ib svg.ic{width:1.2em;height:1.2em}
+.chIn .ib.rec{color:#ffd76a;border-color:#e3b34155}.chIn .ib.snap{color:var(--cy);border-color:#22d3ee55}
+.chIn input{flex:1;min-width:0;height:calc(36px*var(--fz,1));border-radius:18px;border:1px solid var(--line);background:var(--bg);padding:0 14px;outline:0}
+.chIn input:focus{border-color:#22d3ee88}
+.chIn .send{color:#fff;background:linear-gradient(135deg,#0e9fb8,#6d47d9);border:0}.chIn .send:disabled{opacity:.4}
+.chWarn{display:none;margin:0 8px 6px;padding:7px 10px;border-radius:8px;font-size:calc(12px*var(--fz,1));line-height:1.5;background:#3a1418;border:1px solid #ef535066;color:#ffb4b4;flex:none}.chWarn.on{display:block}
+.chTray{display:none;flex:none;padding:8px;border-top:1px solid var(--line);background:#0b1328;gap:8px;overflow-x:auto}.chTray.on{display:flex}
+.chTray .rc{flex:none;width:200px;cursor:pointer}.chTray .rcP{font-size:calc(18px*var(--fz,1))}
+.chTray p{margin:0;flex:none;align-self:center;width:130px;font-size:calc(11px*var(--fz,1));color:var(--mut);line-height:1.5}
+.chPrev{display:none;align-items:center;gap:10px;margin:0 8px 6px;padding:6px;border-radius:10px;background:#0f2238;border:1px solid #22d3ee55;flex:none}.chPrev.on{display:flex}
+.chPrev img{height:calc(46px*var(--fz,1));border-radius:6px}.chPrev span{flex:1;min-width:0;font-size:calc(12px*var(--fz,1));color:#b9c4e4}.chPrev button{color:var(--mut);font-size:calc(20px*var(--fz,1));padding:0 6px}
+.chMenu{position:absolute;z-index:21;background:#141d38f7;border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px #000a;overflow:hidden;min-width:150px}
+.chMenu button{display:flex;align-items:center;gap:8px;width:100%;padding:10px 14px;text-align:left;font-size:calc(13.5px*var(--fz,1))}
+.chMenu button+button{border-top:1px solid var(--line)}.chMenu button.red{color:#ff8a87}.chMenu svg.ic{width:1.1em;height:1.1em}
+.chHint{position:absolute;left:0;right:0;margin:0 auto;width:max-content;max-width:90%;padding:5px 12px;border-radius:14px;background:#0c1326e6;border:1px solid var(--line);top:calc(var(--chT,48px) + var(--chH,70%) + 14px);z-index:19;text-align:center;color:#8491b4;font-size:calc(12px*var(--fz,1));pointer-events:none;opacity:0;transition:opacity .2s}
+html.chatOn .chHint{opacity:1}
+.chGrab{flex:none;height:18px;position:relative;cursor:grab;touch-action:none}
+.chGrab::after{content:"";position:absolute;left:50%;top:6px;width:42px;height:4px;margin-left:-21px;border-radius:2px;background:#2f3c66}
+.chRail{display:none;flex-direction:column;align-items:center;gap:6px;width:calc(62px*var(--fz,1));flex:none;padding:8px 0;background:#091022;border-right:1px solid var(--line)}
+.chRail button{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;width:calc(54px*var(--fz,1));padding:7px 0;border-radius:10px;color:var(--mut);font-size:calc(10.5px*var(--fz,1));font-weight:700;border:1px solid transparent}
+.chRail button svg.ic{width:1.7em;height:1.7em}.chRail .sp{flex:1}
+/* 公告欄 */
+.anHero{margin:4px 0 12px;padding:12px;border-radius:14px;background:linear-gradient(135deg,#22d3ee1c,#8b5cf633);border:1px solid #8b5cf655;display:flex;gap:10px;align-items:center}
+.anHero svg.ic{width:2em;height:2em;color:#c4b5fd;flex:none}.anHero b{display:block;font-size:calc(14.5px*var(--fz,1))}.anHero span{font-size:calc(11.5px*var(--fz,1));color:var(--mut);line-height:1.5}
+.anF{display:flex;gap:6px;margin:0 0 10px;overflow-x:auto}
+.anF button{flex:none;padding:5px 12px;border-radius:14px;border:1px solid var(--line);background:var(--panel2);font-size:calc(12px*var(--fz,1));color:var(--mut);font-weight:600}.anF button.on{border-color:var(--cy);color:var(--cy)}
+.an{position:relative;margin:0 0 12px;background:var(--panel);border:1px solid var(--line);overflow:hidden;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px))}
+.anCov{position:relative;height:calc(96px*var(--fz,1));display:flex;align-items:flex-end;padding:10px 12px;overflow:hidden}.anCov svg.bg{position:absolute;inset:0;width:100%;height:100%}
+.anCov .k{position:relative;display:inline-flex;align-items:center;gap:5px;font-size:calc(10.5px*var(--fz,1));font-weight:800;letter-spacing:.1em;padding:2px 8px;border-radius:5px;background:#070b18cc;border:1px solid #22d3ee66;color:#7ee0f0}.anCov .k svg.ic{width:1.15em;height:1.15em}
+.anCov .pin{position:absolute;top:10px;left:12px;font-size:calc(10px*var(--fz,1));color:#ffd76a;font-weight:700;letter-spacing:.08em}
+.anB{padding:10px 12px 12px}.anB h4{margin:0 0 4px;font-size:calc(15px*var(--fz,1));line-height:1.4}.anB p{margin:0;color:var(--mut);font-size:calc(12.5px*var(--fz,1));line-height:1.6}
+.anMeta{display:flex;flex-wrap:wrap;gap:4px 12px;margin:8px 0 10px;font-size:calc(11.5px*var(--fz,1));color:#b9c4e4}.anMeta span{display:inline-flex;align-items:center;gap:4px}.anMeta svg.ic{width:1.1em;height:1.1em;color:var(--cy)}
+.anAct{display:flex;align-items:center;gap:8px}.anAct .cd{flex:1;font-size:calc(11.5px*var(--fz,1));color:var(--mut);font-variant-numeric:tabular-nums}.anAct .cd b{color:var(--cy)}
+.anAct .btn{padding:8px 16px}.anAct .btn.done{border-color:#3fb95066;color:#7ee2a0}
+.anFoot{font-size:calc(11px*var(--fz,1));color:#5d6a8f;line-height:1.6;padding:4px 4px 14px}.anFoot b{color:var(--mut)}
+.verify{display:inline-flex;align-items:center;gap:3px;color:#7ee2a0;font-weight:700}.verify svg.ic{width:1.1em;height:1.1em}
+/* 圖表擷取模式 */
+#snapBar{display:none;position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:26;align-items:center;gap:8px;max-width:96%;padding:6px 6px 6px 14px;border-radius:22px;background:#0c1326f2;border:1px solid var(--cy);box-shadow:0 8px 24px #000a;font-size:calc(12.5px*var(--fz,1));white-space:nowrap}
+#snapBar span{overflow:hidden;text-overflow:ellipsis;min-width:0}
+#snapBar button{flex:none;padding:6px 12px;border-radius:16px;background:var(--panel2);border:1px solid var(--line);font-weight:700;display:inline-flex;align-items:center;gap:5px}
+#snapBar button svg.ic{width:1.1em;height:1.1em}
+#snapBar #snapGo{background:linear-gradient(90deg,#0e9fb8,#6d47d9);border:0;color:#fff}
+#snapFrame{display:none;position:absolute;inset:0;z-index:5;pointer-events:none;border:2px solid var(--cy);box-shadow:inset 0 0 28px #22d3ee44}
+html.snapOn #snapBar,html.snapOn #snapFrame{display:flex}
+#snapFrame.flash{animation:snapF .45s ease-out}@keyframes snapF{0%{background:#fffc}100%{background:transparent}}
+#chView{position:fixed;inset:0;z-index:40;background:#000e;display:none;align-items:center;justify-content:center;padding:calc(env(safe-area-inset-top) + 12px) 12px calc(env(safe-area-inset-bottom) + 12px)}
+#chView.on{display:flex}#chView img{max-width:100%;max-height:100%;border-radius:8px;box-shadow:0 0 0 1px #22d3ee55}
+/* 橫向與電腦：左側抽屜＋直排分頁，右邊K線照常可看 */
+@media (orientation:landscape) and (max-height:599px),(min-width:1000px) and (min-height:600px){
+ #chat{left:env(safe-area-inset-left);right:auto;width:min(470px,62vw);flex-direction:row;border-radius:0;border-bottom:0;border-right:1px solid #22d3ee55;box-shadow:14px 0 34px #000b;transform:translateX(calc(-100% - env(safe-area-inset-left) - 30px))}
+ html.chatOn #chat{transform:none}
+ #cShade{background:#0005}
+ .chRail{display:flex}.chTabs{display:none}.chTtl{display:block}
+ .chGrab,.chHint{display:none!important}
+ .anCov{height:calc(70px*var(--fz,1))}
+}
 </style>
 </head>
 <body>
@@ -356,7 +472,7 @@ nav button.on span{background:linear-gradient(90deg,var(--cy),var(--vi));-webkit
     <div id="hPx"><div><small>賣出 Bid</small><span id="hBid" class="num">—</span></div><div><small>買入 Ask</small><span id="hAsk" class="num">—</span></div></div>
     <div id="acctBar"></div>
     <div id="stat"><span id="statTx"></span><span id="dot"></span></div>
-    <button id="langBtn" aria-label="語言"><i id="langTag"></i></button>
+    <button id="chatBtn" aria-label="聊天室"><b id="chatN" hidden></b></button>
     <button id="cloudBtn" aria-label="雲端同步" hidden><i id="cloudDot"></i></button>
     <button id="bell" aria-label="通知"><b id="bellN" hidden></b></button>
     <button id="gear" aria-label="設定"></button>
@@ -369,7 +485,7 @@ nav button.on span{background:linear-gradient(90deg,var(--cy),var(--vi));-webkit
       <div id="ctabsRow"><div id="ctabs"></div><div id="tools"><button id="drawBtn">✎<span class="tx"> 繪圖</span></button><button id="indBtn">ƒ<span class="tx"> 指標</span></button></div></div>
       <div class="tbSub">時間週期</div><div id="tfs"></div><p class="tbHint">往右滑或點圖表即可收起；在圖表上點兩下可叫出週期圓盤。</p></div>
       <div id="tbShade"></div>
-      <div id="cwrap"><canvas id="cv"></canvas><div id="wmark" data-noi18n aria-hidden="true"><b>HAIYI SIMULATION</b><span id="wmTx"></span></div><div id="dbar"></div><button id="goLive">⇥ 最新</button><button id="edgeH" aria-label="開啟工具">‹</button><div id="dial" hidden></div></div>
+      <div id="cwrap"><canvas id="cv"></canvas><div id="wmark" data-noi18n aria-hidden="true"><b>HAIYI SIMULATION</b><span id="wmTx"></span></div><div id="dbar"></div><button id="goLive">⇥ 最新</button><button id="edgeH" aria-label="開啟工具">‹</button><div id="dial" hidden></div><div id="snapFrame"></div><div id="snapBar"><span>擷取圖表：先調好K線、指標與畫線</span><button id="snapNo">取消</button><button id="snapGo"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8M20 16v2.5a1.5 1.5 0 0 1-1.5 1.5H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16"/><circle cx="12" cy="12" r="3"/></svg>擷取</button></div></div>
       <div id="qbar"><button id="hub" aria-label="時間週期圓盤"></button>
         <button class="b sellbg" id="qSell">賣出<span class="lbl"> SELL</span><small id="qBid">—</small></button>
         <div id="lotBox"><button id="lotM">−</button><input id="lotIn" inputmode="decimal" aria-label="手數"><button id="lotP">＋</button></div>
@@ -385,17 +501,69 @@ nav button.on span{background:linear-gradient(90deg,var(--cy),var(--vi));-webkit
   </main>
   <nav id="nav"></nav>
   <div id="navShade"></div>
+  <div id="cShade"></div>
+  <div class="chHint">點擊下方空白處關閉・或把面板往上滑</div>
+  <section id="chat" aria-label="聊天室">
+    <div class="chRail" id="chRail">
+      <button data-t="arena" class="on"><span data-ic="arena"></span>戰區</button>
+      <button data-t="board"><span data-ic="megaphone"></span>公告<i class="chDot"></i></button>
+      <div class="sp"></div>
+      <button data-a="snap"><span data-ic="snap"></span>擷取</button>
+      <button data-a="rec"><span data-ic="trophy"></span>戰績</button>
+      <button data-a="rules"><span data-ic="shield"></span>規範</button>
+    </div>
+    <div class="chMain">
+      <div class="chHead">
+        <div class="chTabs"><button data-t="arena" class="on"><span data-ic="arena"></span>戰區</button><button data-t="board"><span data-ic="megaphone"></span>公告<i class="chDot"></i></button></div>
+        <div class="chTtl" id="chTtl">戰區<small>ARENA</small></div>
+        <button class="chX" id="chX" aria-label="關閉">×</button>
+      </div>
+      <div class="chPane" id="chPA">
+        <div class="chSub"><span class="lv">1,284 人在線</span><span>・慢速模式 5 秒</span><button class="rule" id="chRule"><span data-ic="shield"></span>聊天規範</button></div>
+        <div class="chBody" id="chFeed"></div>
+        <div class="chWarn" id="chWarn"></div>
+        <div class="chPrev" id="chPrev"></div>
+        <div class="chTray" id="chTray"></div>
+        <div class="chIn">
+          <button class="ib rec" id="chRec" aria-label="分享戰績"><span data-ic="trophy"></span></button>
+          <input id="chIn" maxlength="120" placeholder="點擊輸入" autocomplete="off" enterkeyhint="send">
+          <button class="ib snap" id="chSnap" aria-label="擷取圖表"><span data-ic="snap"></span></button>
+          <button class="ib send" id="chSend" aria-label="送出" disabled><span data-ic="send"></span></button>
+        </div>
+      </div>
+      <div class="chPane" id="chPB" hidden><div class="chBody" id="chBoard"></div></div>
+    </div>
+    <div class="chGrab" id="chGrab"></div>
+  </section>
 </div>
 <div id="shade"><div id="sheet"></div></div>
 <div id="toast"></div>
 <div id="alerts"></div>
+<div id="chView"></div>
 <script>
 'use strict';
 /* ================= 圖示（駭異科技 Circuit Line，GPT 設計・Claude 校正） ================= */
 const IC={"globe": "<circle cx=\"12\" cy=\"12\" r=\"8.5\"/><path d=\"M3.5 12h17\"/><path d=\"M12 3.5c2.5 2.4 3.7 5.2 3.7 8.5s-1.2 6.1-3.7 8.5c-2.5-2.4-3.7-5.2-3.7-8.5s1.2-6.1 3.7-8.5z\"/><circle class=\"nd\" cx=\"18.7\" cy=\"6.3\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>","refresh": "<path d=\"M19.5 12a7.5 7.5 0 1 1-2.3-5.4\"/><path d=\"M19.6 4v3.8h-3.8\"/><circle class=\"nd\" cx=\"12\" cy=\"12\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>","cloud": "<path d=\"M7.5 18.5h9.5a4 4 0 0 0 .5-7.97A5.5 5.5 0 0 0 7 10a4.25 4.25 0 0 0 .5 8.5z\"/><path d=\"M10 14.5h4\"/><circle class=\"nd\" cx=\"15.5\" cy=\"14.5\" r=\"1.3\" fill=\"currentColor\" stroke=\"none\"/>","quotes": "<path d=\"M5 6.5h8\"/><path d=\"M5 11.5h8\"/><path d=\"M5 16.5h8\"/><path d=\"M18 3.5v7\"/><path d=\"M15.5 6 18 3.5 20.5 6\"/><path d=\"M18 13.5v7\"/><path d=\"M15.5 18 18 20.5 20.5 18\"/><circle class=\"nd\" cx=\"4.5\" cy=\"20\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "chart": "<path d=\"M6 4.5v3.5M6 14v5\"/><rect x=\"4.5\" y=\"8\" width=\"3\" height=\"6\" rx=\"0.6\"/><path d=\"M12 3v3M12 13.5v4\"/><rect x=\"10.5\" y=\"6\" width=\"3\" height=\"7.5\" rx=\"0.6\"/><path d=\"M18 6.5v3.5M18 15v3\"/><rect x=\"16.5\" y=\"10\" width=\"3\" height=\"5\" rx=\"0.6\"/><circle class=\"nd\" cx=\"12\" cy=\"19.5\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "trade": "<path d=\"M4 7h14\"/><path d=\"M15 4l3 3-3 3\"/><path d=\"M20 17H6\"/><path d=\"M9 14l-3 3 3 3\"/><circle class=\"nd\" cx=\"12\" cy=\"12\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "history": "<path d=\"M4 11a8 8 0 1 1 2.4 5.7\"/><path d=\"M4 6v5h5\"/><path d=\"M12 8v4l3 2\"/><circle class=\"nd\" cx=\"5.5\" cy=\"18\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "news": "<path d=\"M5 5.5h12.5A1.5 1.5 0 0 1 19 7v10.5A1.5 1.5 0 0 1 17.5 19H7a2 2 0 0 1-2-2V5.5Z\"/><path d=\"M5 8.5H3.75A.75.75 0 0 0 3 9.25V17a2 2 0 0 0 2 2\"/><rect x=\"7.5\" y=\"8\" width=\"4\" height=\"4\" rx=\"0.6\"/><path d=\"M13.5 8.5H16.5\"/><path d=\"M13.5 11.5H16.5\"/><path d=\"M7.5 15H16.5\"/><path d=\"M7.5 17.5H14.5\"/><circle class=\"nd\" cx=\"19\" cy=\"4.5\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "info": "<path d=\"M8 3.5h8l4.5 4.5v8L16 20.5H8L3.5 16V8L8 3.5Z\"/><path d=\"M12 11v5\"/><path d=\"M12 8h.01\"/><circle class=\"nd\" cx=\"20.5\" cy=\"16\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "bell": "<path d=\"M6.5 9a5.5 5.5 0 1 1 11 0c0 2 .5 3.8 1.8 5.5H4.7C6 12.8 6.5 11 6.5 9Z\"/><path d=\"M10 18.5a2 2 0 0 0 4 0\"/><path d=\"M12 3.5v-1\"/><circle class=\"nd\" cx=\"18.5\" cy=\"6\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "gear": "<path d=\"M12 3.5v2\"/><path d=\"M12 18.5v2\"/><path d=\"M20.5 12h-2\"/><path d=\"M5.5 12h-2\"/><path d=\"M18.01 5.99l-1.41 1.41\"/><path d=\"M7.4 16.6l-1.41 1.41\"/><path d=\"M18.01 18.01l-1.41-1.41\"/><path d=\"M7.4 7.4 5.99 5.99\"/><circle cx=\"12\" cy=\"12\" r=\"4.5\"/><circle cx=\"12\" cy=\"12\" r=\"1.75\"/><circle class=\"nd\" cx=\"18.5\" cy=\"5.5\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>", "menu": "<path d=\"M6 7h12\"/><path d=\"M6 12h12\"/><path d=\"M6 17h12\"/><circle class=\"nd\" cx=\"4.5\" cy=\"17\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>"};
+/* 聊天室圖示（Circuit Line） */
+const CHAT_IC={
+ talk:'<path d="M9 7.2V6.5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 2 2v5.2a2 2 0 0 1-2 2h-1"/><path d="M3.5 10.2a2 2 0 0 1 2-2h8.5a2 2 0 0 1 2 2v5.3a2 2 0 0 1-2 2H9.2l-3.7 3v-3a2 2 0 0 1-2-2z"/><path d="M6.6 12.9h3.6l1.3-1.3"/><circle class="nd" cx="12.7" cy="11.4" r="1.4" fill="currentColor" stroke="none"/>',
+ arena:'<path d="M4.5 4.5 10.6 10.6M13.4 13.4l2.3 2.3"/><path d="M19.5 4.5 8.3 15.7"/><path d="M13 17.3l4.3-4.3M6.7 13l4.3 4.3"/><path d="M16.6 16.6l2.9 2.9M7.4 16.6l-2.9 2.9"/><circle class="nd" cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/>',
+ megaphone:'<path d="M4 10.2v3.6a1 1 0 0 0 1 1h2.2l6.3 4V5.2L7.2 9.2H5a1 1 0 0 0-1 1z"/><path d="M7.6 14.8l1.1 4.4"/><path d="M16.6 9.4a3.6 3.6 0 0 1 0 5.2"/><path d="M18.6 6.6l1.6-1.6"/><circle class="nd" cx="20.6" cy="4.6" r="1.4" fill="currentColor" stroke="none"/>',
+ trophy:'<path d="M8 4.5h8V10a4 4 0 0 1-8 0z"/><path d="M8 6.5H5.2v1.2A3 3 0 0 0 8.4 10.7"/><path d="M16 6.5h2.8v1.2a3 3 0 0 1-3.2 3"/><path d="M12 14v3"/><path d="M8.5 20h7"/><path d="M10 17h4v3"/><circle class="nd" cx="12" cy="8.6" r="1.3" fill="currentColor" stroke="none"/>',
+ snap:'<path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8M20 16v2.5a1.5 1.5 0 0 1-1.5 1.5H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16"/><path d="M9.5 8v8M14.5 7v7.5"/><rect x="8.5" y="10" width="2" height="3.5" rx=".4"/><rect x="13.5" y="9" width="2" height="3.5" rx=".4"/><circle class="nd" cx="18" cy="12" r="1.3" fill="currentColor" stroke="none"/>',
+ send:'<path d="M4 11.6 20 4.5l-6.6 15.3-2.6-6.3z"/><path d="M10.8 13.5 20 4.5"/>',
+ flag:'<path d="M5.5 20.5v-16"/><path d="M5.5 5h11l-2 3.5 2 3.5h-11"/><circle class="nd" cx="5.5" cy="20.5" r="1.3" fill="currentColor" stroke="none"/>',
+ copy:'<rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5V6.5a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/>',
+ mute:'<path d="M4 10.2v3.6a1 1 0 0 0 1 1h2.2l6.3 4V5.2L7.2 9.2H5a1 1 0 0 0-1 1z"/><path d="M17 9.5l4 5M21 9.5l-4 5"/>',
+ cal:'<rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3.5v4M16 3.5v4"/><circle class="nd" cx="15.5" cy="15" r="1.3" fill="currentColor" stroke="none"/>',
+ clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+ lecture:'<rect x="3.5" y="4.5" width="17" height="11" rx="1.5"/><path d="M12 15.5v4M8.5 19.5h7"/><path d="M7 12l3-3 2.2 2.2L16 7.5"/><circle class="nd" cx="16" cy="7.5" r="1.3" fill="currentColor" stroke="none"/>',
+ gallery:'<rect x="3.5" y="5" width="17" height="14" rx="2"/><path d="m3.5 16 5-5 4 4 2.5-2.5 5.5 5.5"/><circle class="nd" cx="16" cy="9.2" r="1.4" fill="currentColor" stroke="none"/>'};
+Object.assign(IC,CHAT_IC);
 const ico=k=>`<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[k]}</svg>`;
-for(const[id,k]of[['menuBtn','menu'],['langBtn','globe'],['cloudBtn','cloud'],['bell','bell'],['gear','gear']]){const e=document.getElementById(id);if(e)e.insertAdjacentHTML('afterbegin',ico(k))}
+for(const[id,k]of[['menuBtn','menu'],['chatBtn','talk'],['cloudBtn','cloud'],['bell','bell'],['gear','gear']]){const e=document.getElementById(id);if(e)e.insertAdjacentHTML('afterbegin',ico(k))}
 const I18N={
+'戰區':['Arena','アリーナ','아레나'],'公告':['Board','お知らせ','공지'],'聊天室':['Chat','チャット','채팅'],'擷取':['Capture','キャプチャ','캡처'],'擷取圖表':['Capture chart','チャートをキャプチャ','차트 캡처'],'戰績':['Results','戦績','전적'],'規範':['Rules','ルール','규칙'],'點擊輸入':['Type a message','メッセージを入力','메시지 입력'],'聊天規範':['Chat rules','チャットルール','채팅 규칙'],'戰績卡':['Result card','戦績カード','전적 카드'],'系統認證':['Verified','システム認証','시스템 인증'],'檢舉':['Report','通報','신고'],'複製文字':['Copy text','テキストをコピー','텍스트 복사'],
 '報價':['Quotes','気配値','시세'],'圖表':['Chart','チャート','차트'],'交易':['Trade','取引','거래'],'歷史':['History','履歴','내역'],'新聞':['News','ニュース','뉴스'],'資訊':['Info','情報','정보'],
 '設定':['Settings','設定','설정'],'通知':['Alerts','通知','알림'],'語言':['Language','言語','언어'],'選單':['Menu','メニュー','메뉴'],'雲端同步':['Cloud sync','クラウド同期','클라우드 동기화'],
 '賣出':['Sell','売り','매도'],'買入':['Buy','買い','매수'],'賣出 SELL':['SELL','売り SELL','매도 SELL'],'買入 BUY':['BUY','買い BUY','매수 BUY'],'賣出 Bid':['Bid','売値 Bid','매도 Bid'],'買入 Ask':['Ask','買値 Ask','매수 Ask'],
@@ -1196,7 +1364,7 @@ $('#vInfo').onclick=async e=>{if(e.target.id==='loadD'){try{const bars=await get
 
 /* ---------- 底部面板 ---------- */
 let sheetAt=0;
-function sheet(html){sheetAt=Date.now();if(/data-back|data-go/.test(html))$('#sheet').onclick=e=>{const g=e.target.closest('[data-go]');if(g){e.stopPropagation();stGo(g.dataset.go);return}if(e.target.closest('[data-back]')){e.stopPropagation();setSheet('home')}};if(!/class="stHead"|stWrap/.test(html)){$('#sheet').classList.remove('stSheet')}$('#sheet').innerHTML=html;$('#shade').classList.add('on')}
+function sheet(html){if(window.__chClose)window.__chClose();sheetAt=Date.now();if(/data-back|data-go/.test(html))$('#sheet').onclick=e=>{const g=e.target.closest('[data-go]');if(g){e.stopPropagation();stGo(g.dataset.go);return}if(e.target.closest('[data-back]')){e.stopPropagation();setSheet('home')}};if(!/class="stHead"|stWrap/.test(html)){$('#sheet').classList.remove('stSheet')}$('#sheet').innerHTML=html;$('#shade').classList.add('on')}
 function closeSheet(){$('#shade').classList.remove('on');$('#sheet').innerHTML='';$('#sheet').classList.remove('stSheet');$('#sheet').onclick=null;renderLive()}
 $('#shade').addEventListener('click',e=>{if(e.target.id==='shade'&&Date.now()-sheetAt<450)return;if(e.target.id==='shade'||e.target.dataset.x)closeSheet()});
 const head=t=>`<h2><span>${t}</span><button data-x="1">×</button></h2>`;
@@ -1542,7 +1710,7 @@ function stDisplay(){sheet(subHead('字體與畫面')+`<h3 style="margin-left:0"
   $('#sFz').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.fz=+b.dataset.v;save();applyFz();$('#sFz').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))};
   $('#padReset').onclick=()=>{S.ui={padT:null,padB:null};save();fitApp();setTimeout(padShow,30)};padShow();
   const dg=screenDiag();$('#sDiag').innerHTML=`螢幕 ${screen.width}×${screen.height}，網頁可用 ${dg.sw}×${dg.vh}，縮放 ${window.visualViewport?visualViewport.scale.toFixed(2):'—'}，內容寬 ${document.documentElement.scrollWidth}，頂部安全區 ${Math.round(dg.top)}，主畫面：${standalone()?'是':'否'}。`}
-$('#gear').onclick=()=>setSheet('home');$('#langBtn').onclick=langSheet;$('#bell').onclick=ntSheet;$('#indBtn').onclick=indSheet;$('#drawBtn').onclick=drawSheet;$('#hSym').onclick=()=>go('vQuotes');
+$('#gear').onclick=()=>setSheet('home');$('#bell').onclick=ntSheet;$('#indBtn').onclick=indSheet;$('#drawBtn').onclick=drawSheet;$('#hSym').onclick=()=>go('vQuotes');
 const qTap=(id,side)=>()=>{const b=$(id);if(land()&&!b.classList.contains('peek')){document.querySelectorAll('#qbar .b').forEach(x=>x.classList.remove('peek'));b.classList.add('peek');clearTimeout(b._t);b._t=setTimeout(()=>b.classList.remove('peek'),4000);return}
   b.classList.remove('peek');orderSheet(side)};
 
@@ -1682,13 +1850,163 @@ function cloudInit(){
   setCloud(S.cloud&&S.cloud.email?(S.cloud.auto?'wait':'off'):'off',S.cloud&&S.cloud.email?'點 ☁ 連線同步':'');
   if(back||tokOK())cloudConnect()}
 
+/* ================= 戰區聊天室＋公告欄（雛形：訊息先用示範資料，之後接即時資料庫） ================= */
+// 規則：全部匿名、不能互加好友、不能私訊；表情用手機內建鍵盤；圖片只能用 App 內的「圖表擷取」，不開放上傳相簿照片
+const CH={open:false,tab:'arena',unread:3,boardSeen:false,last:0,snap:null,joined:new Set(),anF:'all',menu:null};
+if(!S.chatId){S.chatId=['霧狐','青鯊','夜鷹','藍鯨','銀隼','赤狐','墨鯨','雷鳥','星魟','冰狼'][Math.random()*10|0]+'#'+String(Math.random()*1e4|0).padStart(4,'0');save()}
+const ME=()=>S.chatId;
+function chHash(s){let h=2166136261;for(const c of String(s))h=Math.imul(h^c.charCodeAt(0),16777619);return h>>>0}
+/* 匿名頭像：依代號產生的電路紋六角徽章（不提供上傳照片） */
+function chAvatar(name,ring){const h=chHash(name),hue=[188,262,205,290,170,230][h%6],hue2=(hue+60)%360,r=n=>(h>>n)&7;
+  const lines=[0,1,2].map(i=>{const y=7+i*5+r(i*3)%3,x1=5+r(i*2+1),x2=19-r(i*2+5)%4;return`<path d="M${x1} ${y}h${((x2-x1)*.55).toFixed(1)}l2 ${i%2?2:-2}H${x2}" stroke="hsl(${hue} 90% 70%)" stroke-width="1" fill="none" opacity=".75"/><circle cx="${x2}" cy="${y+(i%2?2:-2)}" r="1.1" fill="hsl(${hue2} 90% 75%)"/>`}).join('');
+  return`<svg viewBox="0 0 24 24"><defs><linearGradient id="g${h}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl(${hue} 70% 22%)"/><stop offset="1" stop-color="hsl(${hue2} 60% 16%)"/></linearGradient></defs>
+   <path d="M12 1.5 21.1 6.75v10.5L12 22.5 2.9 17.25V6.75z" fill="url(#g${h})" stroke="${ring||`hsl(${hue} 80% 60%)`}" stroke-width="${ring?1.4:.9}"/>${lines}
+   <text x="12" y="16.2" text-anchor="middle" font-size="7.5" font-weight="800" fill="#fff" font-family="-apple-system,sans-serif">${esc(String(name).replace(/^[^#]*#/,'').slice(0,2))}</text></svg>`}
+const CH_OFFAV=`<svg viewBox="0 0 24 24"><defs><linearGradient id="chog" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs><path d="M12 1.5 21.1 6.75v10.5L12 22.5 2.9 17.25V6.75z" fill="#070b18" stroke="url(#chog)" stroke-width="1.6"/><text x="12" y="15.3" text-anchor="middle" font-size="6.2" font-weight="900" fill="#7ee0f0" font-family="-apple-system,sans-serif">HAIYI</text></svg>`;
+/* 戰績卡：只能由系統依成交紀錄產生，無法修改數字 */
+function chSpark(up,seed){let v=13,pts=[];for(let i=0;i<24;i++){const r=((chHash(seed+i)%100)/100-.5)*5;v=Math.max(3,Math.min(23,v+r+(up?-.45:.45)));pts.push(`${(i*100/23).toFixed(1)},${v.toFixed(1)}`)}
+  return`<svg class="sp" viewBox="0 0 100 26" preserveAspectRatio="none"><polyline points="${pts.join(' ')}" fill="none" stroke="${up?'#26a69a':'#ef5350'}" stroke-width="1.6" vector-effect="non-scaling-stroke"/></svg>`}
+const chDur=ms=>{const m=Math.max(1,Math.round(ms/60000)),h=Math.floor(m/60),d=Math.floor(h/24);return d?`${d}天${h%24}小時`:h?`${h}小時${m%60}分`:`${m}分`};
+function recOf(h){const pip=SYMS[h.sym].pip,dir=h.side==='buy'?1:-1;return{sym:h.sym,side:h.side,lots:h.lots,pnl:h.pnl,pips:(h.close-h.open)/pip*dir,open:fP(h.sym,h.open),close:fP(h.sym,h.close),hold:chDur(h.ct-h.ot),id:h.id}}
+function recCard(r){const up=r.pnl>=0;return`<div class="rc"><div class="rcT">戰績卡<span>${ico('shield')}系統認證</span></div>
+  <div class="rcS"><b>${r.sym}</b><span class="${r.side==='buy'?'cb':'cs'}">${r.side==='buy'?'買':'賣'} ${r.lots} 手</span></div>
+  <div class="rcP ${up?'up':'dn'}">${up?'+':'−'}$${Math.abs(r.pnl).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}<small>${r.pips>=0?'+':'−'}${Math.abs(r.pips).toFixed(1)} 點</small></div>
+  <div class="rcM"><span>${r.open} → ${r.close}</span><span>持倉 ${r.hold}</span></div>${chSpark(up,r.sym+r.pnl)}<div class="rcF">HAIYI 模擬帳戶・虛擬資金・不構成投資建議</div></div>`}
+/* 示範訊息 */
+const CH_FEED=[
+ {tm:'09:36'},
+ {sys:'歡迎來到戰區！這裡是公開聊天室：所有人匿名、不能互加好友，也不能分享聯絡方式或連結。表情請用手機鍵盤；分享圖片請用「圖表擷取」。'},
+ {u:'夜鷹#1093',bdg:['top','挑戰賽 TOP 4'],t:'週五非農那根K線真的嚇人，黃金一分鐘拉了快 200 點'},
+ {u:'藍鯨#4821',t:'我掛在 2655 的 Sell Limit 直接被掃掉 😂 停損設太近了'},
+ {u:'夜鷹#1093',bdg:['top','挑戰賽 TOP 4'],t:'數據公布前我都先把停損拉寬或乾脆不留倉，點差會突然放大'},
+ {tm:'09:57'},
+ {u:'青鯊#3310',bdg:['new','新手'],rec:{sym:'XAU/USD',side:'buy',lots:0.5,pnl:812.4,pips:162.5,open:'2631.40',close:'2647.65',hold:'3小時12分'}},
+ {u:'青鯊#3310',bdg:['new','新手'],t:'第一次單筆賺超過 160 點！不過是模擬帳戶 hhh'},
+ {u:'藍鯨#4821',t:'<span class="at">@青鯊#3310</span> 恭喜！可以用圖表擷取把進出場位置分享出來看看'},
+ {u:'HAIYI 官方',off:1,t:'📣 第一屆模擬交易挑戰賽 12/1 開跑，到「公告」就能報名，免費參加！'}];
+/* 發言過濾：不能留聯絡方式、連結、私下拉人或保證獲利 */
+const CH_BLOCK=[
+ [/https?:\/\/|www\.|\.(com|net|org|io|tw|cc|me|ly|gg|xyz)\b|t\.me|lin\.ee|line\.me/i,'不能貼網址或連結'],
+ [/\b(line|telegram|tg|wechat|whatsapp|discord|dc|ig|instagram|fb|qq|kakao)\b|賴|ㄌㄞ|ＬＩＮＥ|微信|飛機群/i,'不能留通訊軟體帳號'],
+ [/加我|加好友|私我|私訊|密我|私聊|帶單|跟單|喊單|保證獲利|穩賺|包賺|老師帶|投顧群|飆股群|入群|進群/,'不能私下拉人、帶單或保證獲利'],
+ [/(\d[\s-]?){8,}/,'不能留電話或一長串數字'],
+ [/@[a-z0-9_.]{3,}/i,'不能留社群帳號']];
+function chCheck(t){for(const[re,why]of CH_BLOCK)if(re.test(t))return why;return null}
+
+function chMsgHTML(m){
+  if(m.tm)return`<div class="chTm">${m.tm}</div>`;if(m.sys)return`<div class="chSys">${m.sys}</div>`;
+  const me=m.u===ME(),b=m.off?'<span class="chBdg off">官方</span>':m.bdg?`<span class="chBdg ${m.bdg[0]}">${m.bdg[1]}</span>`:'';
+  const body=m.rec?recCard(m.rec):m.img?`<div class="chBub chImg"><img src="${m.img}" alt="圖表擷取" data-big="1"><small>${ico('snap')}圖表擷取・<span data-noi18n>${esc(m.cap||'')}</span></small>${m.t?`<div>${esc(m.t)}</div>`:''}</div>`:`<div class="chBub">${m.raw?esc(m.t):m.t}</div>`;
+  return`<div class="chMsg${me?' me':''}${m.off?' off':''}" data-u="${esc(m.u)}"><div class="chAv">${m.off?CH_OFFAV:chAvatar(m.u,me?'#22d3ee':'')}</div>
+   <div class="chMb"><div class="chWho"><b data-noi18n>${esc(me?'你・'+m.u:m.u)}</b>${b}</div>${body}</div></div>`}
+const chEnd=()=>requestAnimationFrame(()=>{const f=$('#chFeed');if(f)f.scrollTop=f.scrollHeight});
+function chFeed(){$('#chFeed').innerHTML=CH_FEED.map(chMsgHTML).join('');chEnd()}
+function chWarn(t){const w=$('#chWarn');if(!t){w.classList.remove('on');return}w.innerHTML=`<b>這則訊息無法送出：${t}。</b><br>戰區是公開交流區，為了保護大家不被私下拉去帶單或詐騙，系統會自動攔截聯絡方式與連結。`;w.classList.add('on')}
+function chUpd(){const v=$('#chIn').value.trim();$('#chSend').disabled=!v&&!CH.snap;chWarn(v?chCheck(v):null)}
+function chSend(){const i=$('#chIn'),t=i.value.trim();if(!t&&!CH.snap)return;const bad=t&&chCheck(t);if(bad)return chWarn(bad);
+  const w=5-(Date.now()-CH.last)/1000;if(w>0)return toast(`慢速模式：${Math.ceil(w)} 秒後才能再發言`);
+  CH.last=Date.now();CH_FEED.push(CH.snap?{u:ME(),img:CH.snap.src,cap:CH.snap.cap,t}:{u:ME(),t,raw:1});i.value='';chSnapClear();chUpd();chFeed()}
+/* 分享戰績：從自己的成交紀錄挑一筆，系統產生卡片 */
+function chTray(on){const t=$('#chTray');on=on??!t.classList.contains('on');t.classList.toggle('on',on);if(!on)return;
+  const L=S.hist.filter(h=>h.sym).slice(0,12);
+  t.innerHTML=`<p>點一張卡片分享到戰區。戰績卡由系統依你的成交紀錄產生，無法修改。</p>`+(L.length?L.map(h=>`<div data-r="${h.id}">${recCard(recOf(h))}</div>`).join(''):'<p>還沒有成交紀錄。到「圖表」下單、平倉後就能分享。</p>')}
+/* 訊息選單：複製、隱藏、檢舉 */
+const chMenuOff=()=>{if(CH.menu){CH.menu.remove();CH.menu=null}};
+/* 公告欄 */
+const CH_AN=[
+ {k:'event',pin:1,kt:'官方活動',ic:'trophy',t:'第一屆 HAIYI 模擬交易挑戰賽',d:'用 $10,000 虛擬資金，兩週內比報酬率。名次看「報酬率＋最大回撤」，鼓勵控管風險而不是重壓。',meta:[['cal','12/1（一）～ 12/14（日）'],['shield','免報名費・虛擬資金']],cta:'報名參加',done:'已報名',at:Date.parse('2026-12-01T00:00:00+08:00'),hue:[188,262]},
+ {k:'talk',kt:'線上講座',ic:'lecture',t:'新手最常忽略的成本：點差、隔夜利息與強制平倉',d:'用 App 裡的真實數字，示範一筆單從開倉到被強平的完整過程。',meta:[['cal','12/6（六）20:00'],['clock','60 分鐘・線上']],cta:'提醒我',done:'已設定提醒',at:Date.parse('2026-12-06T20:00:00+08:00'),hue:[205,290]},
+ {k:'expo',kt:'展覽',ic:'gallery',t:'從 0 到 App：HAIYI 開發日誌展',d:'一路從單一 HTML 檔到雲端同步、四國語言的開發紀錄，附設計草圖與改版前後對照。',meta:[['cal','即日起'],['gallery','線上展覽']],cta:'前往觀展',done:'',hue:[170,230]}];
+function chCover(a){const[h1,h2]=a.hue,s=chHash(a.t);let p='';for(let i=0;i<7;i++){const y=12+i*12+(s>>i&7),x=(s>>(i+3)&63)+10,e=x+60+(s>>i&31);p+=`<path d="M0 ${y}H${x}l8 8H${e}" stroke="hsl(${i%2?h1:h2} 85% 65%)" stroke-width=".8" fill="none" opacity=".45"/><circle cx="${e}" cy="${y+8}" r="1.6" fill="hsl(${h1} 90% 70%)" opacity=".8"/>`}
+  return`<svg class="bg" viewBox="0 0 300 100" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="c${s}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl(${h1} 70% 18%)"/><stop offset="1" stop-color="hsl(${h2} 55% 14%)"/></linearGradient></defs><rect width="300" height="100" fill="url(#c${s})"/>${p}<g transform="translate(232 18) scale(2.6)" stroke="hsl(${h1} 90% 72%)" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity=".9">${IC[a.ic]}</g></svg>`}
+function chCd(at){const s=Math.max(0,at-Date.now())/1000;if(!s)return'進行中';const d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60);return`倒數 <b>${d}</b> 天 <b>${h}</b> 時 <b>${m}</b> 分`}
+function chBoard(){const L=CH_AN.filter(a=>CH.anF==='all'||a.k===CH.anF);
+  $('#chBoard').innerHTML=`<div class="anHero">${ico('megaphone')}<div><b>公告欄</b><span>官方活動、講座與展覽都在這裡。之後進駐的講師與機構會先審核資格，通過後標示 <span class="verify">${ico('shield')}已驗證</span>。</span></div></div>
+   <div class="anF">${[['all','全部'],['event','活動・比賽'],['talk','講座'],['expo','展覽']].map(f=>`<button data-f="${f[0]}" class="${CH.anF===f[0]?'on':''}">${f[1]}</button>`).join('')}</div>`
+  +L.map(a=>`<article class="an"><div class="anCov">${chCover(a)}<span class="k">${ico(a.ic)}${a.kt}</span>${a.pin?'<span class="pin">▲ 置頂</span>':''}</div>
+    <div class="anB"><h4>${a.t}</h4><p>${a.d}</p><div class="anMeta">${a.meta.map(m=>`<span>${ico(m[0])}${m[1]}</span>`).join('')}<span class="verify">${ico('shield')}HAIYI 官方</span></div>
+    <div class="anAct"><span class="cd" data-at="${a.at||''}">${a.at?chCd(a.at):'隨時可看'}</span><button class="btn ${CH.joined.has(a.t)?'done':'brand'}" data-j="${esc(a.t)}">${CH.joined.has(a.t)?a.done||a.cta:a.cta}</button></div></div></article>`).join('')
+  +`<p class="anFoot"><b>關於公告欄</b>：所有活動使用虛擬資金，不收報名費。公告內容僅供學習交流，不構成投資建議或獲利保證。合作講師須通過資格審核，禁止宣稱保證獲利或招攬私下帶單。</p>`}
+/* 版面：抽屜位置與高度（直向從頂列往下；橫向與電腦從左側滑出；鍵盤彈出時自動縮短） */
+function chMeasure(){const h=$('header'),H=$('#app').clientHeight,top=h.offsetTop+h.offsetHeight,vv=window.visualViewport,vis=(vv?vv.offsetTop+vv.height:innerHeight)-top,wide=land()||desk();
+  const r=document.documentElement.style;r.setProperty('--chT',top+'px');r.setProperty('--chH',Math.max(220,Math.min(wide?H-top:Math.round((H-top)*.84),vis))+'px')}
+function chTab(t){CH.tab=t;document.querySelectorAll('#chat [data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+  $('#chPA').hidden=t!=='arena';$('#chPB').hidden=t!=='board';$('#chTtl').innerHTML=t==='arena'?'戰區<small>ARENA</small>':'公告<small>BOARD</small>';
+  if(t==='board'){CH.boardSeen=true;chBoard()}else chEnd();document.querySelectorAll('#chat .chDot').forEach(d=>d.hidden=CH.boardSeen);chMenuOff();chTray(false)}
+function chOpen(on){on=on??!CH.open;CH.open=on;document.documentElement.classList.toggle('chatOn',on);$('#chatBtn').classList.toggle('open',on);
+  if(on){if(land())tbOpen(false);closeDial();chMeasure();CH.unread=0;$('#chatN').hidden=true;$('#chatBtn').classList.remove('has');if(CH.tab==='arena')chEnd()}
+  else{chMenuOff();const i=$('#chIn');if(i)i.blur()}}
+window.__chClose=()=>{if(CH.open)chOpen(false)};
+function chRules(){CH_FEED.push({sys:'<b>戰區聊天規範</b><br>① 全部匿名，不能互加好友、不能私訊<br>② 禁止留聯絡方式、網址、QR Code<br>③ 禁止帶單、喊單、保證獲利<br>④ 戰績只能用系統戰績卡分享<br>⑤ 圖片只能用「圖表擷取」，不開放上傳相簿照片<br>⑥ 被多人檢舉會先暫時禁言，再由管理員複查'});chTab('arena');chFeed()}
+/* ---- 圖表擷取：只能擷取「圖表」畫面（K線、指標、畫線），不能擷取持倉、歷史等其他頁面 ---- */
+function chSnapClear(){CH.snap=null;const p=$('#chPrev');if(p){p.classList.remove('on');p.innerHTML=''}}
+function chSnapStart(){chOpen(false);if(!desk())go('vChart');if(land())tbOpen(false);closeDial();tool=null;pend=[];sel=null;updDbar();C.cross=null;
+  document.documentElement.classList.add('snapOn');requestAnimationFrame(()=>{resize();draw()})}
+function chSnapEnd(back){document.documentElement.classList.remove('snapOn');if(back)chOpen(true)}
+function chSnapTake(){
+  const bad=drawsOf(S.sym).filter(d=>d.type==='text'&&d.text).map(d=>chCheck(d.text)).find(Boolean);
+  if(bad)return toast(`圖表上的文字標註${bad}，請刪除那個文字後再擷取`,4500);
+  if(!C.data.length)return toast('K線還在載入，請稍候');
+  C.cross=null;sel=null;updDbar();draw();
+  const src=C.cv,sw=src.width,sh=src.height,d=dpr,hd=Math.round(42*d),ft=Math.round(20*d),k=Math.min(1,1280/Math.max(sw,1));
+  const o=document.createElement('canvas');o.width=Math.round(sw*k);o.height=Math.round((sh+hd+ft)*k);const x=o.getContext('2d');x.scale(k,k);
+  const F=n=>`${n} ${'-apple-system,"PingFang TC","Segoe UI",sans-serif'}`;
+  x.fillStyle='#070b18';x.fillRect(0,0,sw,sh+hd+ft);
+  const g=x.createLinearGradient(0,0,sw,0);g.addColorStop(0,'#0e2a44');g.addColorStop(1,'#241a4f');x.fillStyle=g;x.fillRect(0,0,sw,hd);
+  const g2=x.createLinearGradient(0,0,sw,0);g2.addColorStop(0,'#22d3ee');g2.addColorStop(.5,'#8b5cf6');g2.addColorStop(1,'#1e2a4c');x.fillStyle=g2;x.fillRect(0,hd-2*d,sw,2*d);
+  x.textBaseline='middle';x.textAlign='left';x.font=F(`800 ${15*d}px`);x.fillStyle='#e8ecf8';x.fillText(`${S.sym}  ${tfName(S.tf)}`,12*d,hd/2);
+  x.font=F(`${11*d}px`);x.fillStyle='#8491b4';x.textAlign='right';x.fillText(new Date().toLocaleString(LG()==='zh-TW'?'zh-TW':LG(),{hour12:false}),sw-12*d,hd/2);
+  x.drawImage(src,0,hd);
+  x.save();x.globalAlpha=.09;x.fillStyle='#9aa8d6';x.textAlign='center';x.font=F(`800 ${Math.round(sw/15)}px`);x.fillText('HAIYI SIMULATION',sw/2,hd+sh*.45);x.restore();
+  x.fillStyle='#0c1326';x.fillRect(0,hd+sh,sw,ft);x.textAlign='left';x.fillStyle='#5d6a8f';x.font=F(`${9.5*d}px`);x.fillText('HAIYI 駭異科技.FX ・ SIMULATION ・ '+T('模擬圖表，不構成投資建議'),10*d,hd+sh+ft/2);
+  CH.snap={src:o.toDataURL('image/jpeg',.85),cap:`${S.sym} ${tfName(S.tf)}`};
+  const fr=$('#snapFrame');fr.classList.remove('flash');void fr.offsetWidth;fr.classList.add('flash');
+  setTimeout(()=>{chSnapEnd(true);chTab('arena');const p=$('#chPrev');p.innerHTML=`<img src="${CH.snap.src}" alt=""><span>已擷取圖表・<b data-noi18n>${esc(CH.snap.cap)}</b><br><small class="mut">可以再打一段說明，按送出分享</small></span><button id="chPrevX" aria-label="移除">×</button>`;p.classList.add('on');chUpd()},380)}
+function chInit(){
+  document.querySelectorAll('#chat [data-ic]').forEach(e=>{e.outerHTML=ico(e.dataset.ic)});
+  $('#chatN').textContent=CH.unread;$('#chatN').hidden=!CH.unread;$('#chatBtn').classList.toggle('has',!!CH.unread);
+  $('#chatBtn').onclick=()=>chOpen();$('#chX').onclick=()=>chOpen(false);$('#cShade').onclick=()=>chOpen(false);
+  document.querySelectorAll('#chat [data-t]').forEach(b=>b.onclick=()=>chTab(b.dataset.t));
+  $('#chRail').addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;if(a==='snap')chSnapStart();else if(a==='rec'){chTab('arena');chTray(true)}else chRules()});
+  $('#chRule').onclick=chRules;
+  const inp=$('#chIn');inp.addEventListener('input',chUpd);inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing){e.preventDefault();chSend()}});
+  $('#chSend').onclick=chSend;$('#chRec').onclick=()=>chTray();$('#chSnap').onclick=chSnapStart;
+  $('#chPrev').onclick=e=>{if(e.target.closest('#chPrevX')){chSnapClear();chUpd()}};
+  $('#chTray').onclick=e=>{const c=e.target.closest('[data-r]');if(!c)return;const h=S.hist.find(x=>x.id===+c.dataset.r);if(!h)return;
+    const w=5-(Date.now()-CH.last)/1000;if(w>0)return toast(`慢速模式：${Math.ceil(w)} 秒後才能再發言`);CH.last=Date.now();CH_FEED.push({u:ME(),rec:recOf(h)});chTray(false);chFeed();toast('已分享戰績卡')};
+  $('#chFeed').addEventListener('click',e=>{const im=e.target.closest('img[data-big]');if(im){const v=$('#chView');v.innerHTML=`<img src="${im.src}" alt="">`;v.classList.add('on');return}
+    const m=e.target.closest('.chMsg');chMenuOff();if(!m||m.classList.contains('me')||m.classList.contains('off'))return;
+    const a=$('#app').getBoundingClientRect(),r=m.querySelector('.chBub,.rc').getBoundingClientRect(),mm=document.createElement('div');mm.className='chMenu';
+    mm.innerHTML=`<button data-m="copy">${ico('copy')}複製文字</button><button data-m="mute">${ico('mute')}不再看到 <span data-noi18n>${esc(m.dataset.u)}</span></button><button data-m="rep" class="red">${ico('flag')}檢舉</button>`;
+    mm.style.left=Math.max(8,Math.min(r.left-a.left,a.width-180))+'px';mm.style.top=Math.min(r.bottom-a.top+4,a.height-150)+'px';$('#app').appendChild(mm);CH.menu=mm;
+    mm.onclick=ev=>{const b=ev.target.closest('button');if(!b)return;const k=b.dataset.m,txt=(m.querySelector('.chBub')||{}).innerText||'';chMenuOff();
+      if(k==='rep')toast('已檢舉，管理員會在 24 小時內處理。被多人檢舉的帳號會先暫時禁言。',3500);
+      else if(k==='mute'){document.querySelectorAll(`#chFeed .chMsg[data-u="${CSS.escape(m.dataset.u)}"]`).forEach(x=>x.remove());toast('已隱藏這位使用者的訊息')}
+      else{try{navigator.clipboard.writeText(txt).then(()=>toast('已複製'),()=>toast('無法複製'))}catch(_){toast('無法複製')}}}});
+  $('#chFeed').addEventListener('scroll',chMenuOff);
+  $('#chView').onclick=()=>$('#chView').classList.remove('on');
+  $('#chBoard').onclick=e=>{const f=e.target.closest('[data-f]');if(f){CH.anF=f.dataset.f;return chBoard()}
+    const j=e.target.closest('[data-j]');if(!j)return;const a=CH_AN.find(x=>x.t===j.dataset.j);if(a.k==='expo')return toast('展覽頁面準備中，敬請期待');
+    if(CH.joined.has(a.t))CH.joined.delete(a.t);else{CH.joined.add(a.t);toast(a.k==='event'?'報名成功！比賽開始時會通知你':'已設定提醒，開始前 30 分鐘通知你')}chBoard()};
+  setInterval(()=>{if(CH.open&&CH.tab==='board')document.querySelectorAll('#chBoard .cd[data-at]').forEach(e=>{if(e.dataset.at)e.innerHTML=chCd(+e.dataset.at)})},30000);
+  $('#snapNo').onclick=()=>chSnapEnd(true);$('#snapGo').onclick=chSnapTake;
+  // 橫向時工具抽屜藏在圖表右側外面；圖表區不應被捲動，否則抽屜會露出來
+  {const vc=$('#vChart');vc.addEventListener('scroll',()=>{if(vc.scrollLeft||vc.scrollTop){vc.scrollLeft=0;vc.scrollTop=0}})}
+  // 直向：把抽屜往上滑可收起
+  {let y0=null;const g=$('#chGrab'),c=$('#chat');g.addEventListener('pointerdown',e=>{y0=e.clientY;try{g.setPointerCapture(e.pointerId)}catch(_){}});
+   g.addEventListener('pointermove',e=>{if(y0==null)return;c.style.transition='none';c.style.transform=`translateY(${Math.min(0,e.clientY-y0)}px)`});
+   const up=e=>{if(y0==null)return;const d=e.clientY-y0;y0=null;c.style.transform='';c.style.transition='';if(d<-60)chOpen(false)};g.addEventListener('pointerup',up);g.addEventListener('pointercancel',up)}
+  addEventListener('resize',()=>{if(CH.open)chMeasure()});lq.addEventListener('change',()=>setTimeout(chMeasure,120));mq.addEventListener('change',()=>setTimeout(chMeasure,120));
+  if(window.visualViewport){const f=()=>{if(CH.open){chMeasure();if(CH.tab==='arena'&&document.activeElement===$('#chIn'))chEnd()}};visualViewport.addEventListener('resize',f);visualViewport.addEventListener('scroll',f)}
+  chFeed();chTab('arena');chMeasure()}
+
 /* ================= 啟動 ================= */
 window.__fx={get S(){return S},rollPos,px,C,I,setPx,openPos,closePos,checkBar,acct,pnl,marginFor,bid,ask};
 (async function init(){
   if(demo()){for(const s in SYMS)if(!px[s])px[s]={mid:DEMO_BASE[s],t:Date.now()}}
   const layout=()=>{O={};$('#ticket').innerHTML='';if($('#shade').classList.contains('on'))closeSheet();if(desk())orderSheet('buy',$('#ticket'));go(desk()?'vTrade':'vChart');renderLive()};
   mq.addEventListener('change',layout);lq.addEventListener('change',()=>{renderLive();setTimeout(()=>{fitApp();resize()},80)});
-  i18nInit();consentGate();{const w=$('#wmTx');if(w)w.textContent=DL().short}renderTabs();renderTfs();layout();rBell();cloudInit();
+  i18nInit();consentGate();{const w=$('#wmTx');if(w)w.textContent=DL().short}renderTabs();renderTfs();layout();rBell();cloudInit();chInit();
   if(!demo())setStatus('wait','連線中…');
   await loadChart();
   await catchUp();
